@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keto Guide - CrowdSourced Cooking</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 1rem 2rem;
+      color: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-decoration: none;
+      color: white;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      opacity: 0.9;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover {
+      opacity: 1;
+    }
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .page-title {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+    .page-title h1 {
+      font-size: 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .section-card h2 {
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+      color: #667eea;
+    }
+    .section-card p, .section-card li {
+      color: #555;
+    }
+    .section-card ul {
+      margin-left: 1.5rem;
+      margin-top: 0.5rem;
+    }
+    .section-card li {
+      margin-bottom: 0.3rem;
+    }
+    .food-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .food-item {
+      background: #f8f9fa;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    .stat-box {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .stat-box .number {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .stat-box .label {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: white;
+      opacity: 0.8;
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html" class="logo">🍳 CrowdSourced Cooking</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="keto.html">Keto</a></li>
+        <li><a href="#recipes">Recipes</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main>
+    <div class="page-title">
+      <h1>🥑 What is Keto?</h1>
+    </div>
+    
+    <div class="section-card">
+      <h2>Understanding the Ketogenic Diet</h2>
+      <p>The ketogenic diet is a low-carb, high-fat eating plan that puts your body into a metabolic state called ketosis. When this happens, your body becomes incredibly efficient at burning fat for energy instead of carbohydrates.</p>
+    </div>
+    
+    <div class="section-card">
+      <h2>⚡ Key Benefits</h2>
+      <ul>
+        <li>🔥 Weight loss — fat becomes the primary fuel source</li>
+        <li>🧠 Improved mental clarity — stable blood sugar means fewer crashes</li>
+        <li>⚡ Higher energy levels — more efficient fat burning</li>
+        <li>🍳 Better blood sugar control — reduced insulin spikes</li>
+      </ul>
+    </div>
+    
+    <div class="section-card">
+      <h2>📊 Keto Statistics</h2>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="number">70%</div>
+          <div class="label">Healthy Fats</div>
+        </div>
+        <div class="stat-box">
+          <div class="number">25%</div>
+          <div class="label">Protein</div>
+        </div>
+        <div class="stat-box">
+          <div class="number">5%</div>
+          <div class="label">Net Carbs</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section-card">
+      <h2>🍽️ What to Eat on Keto</h2>
+      
+      <h3>🥩 Proteins</h3>
+      <div class="food-grid">
+        <div class="food-item">Beef</div>
+        <div class="food-item">Chicken</div>
+        <div class="food-item">Pork</div>
+        <div class="food-item">Fish</div>
+        <div class="food-item">Eggs</div>
+        <div class="food-item">Lamb</div>
+      </div>
+      
+      <h3 style="margin-top: 1rem;">🥦 Low-Carb Vegetables</h3>
+      <div class="food-grid">
+        <div class="food-item">Broccoli</div>
+        <div class="food-item">Cauliflower</div>
+        <div class="food-item">Spinach</div>
+        <div class="food-item">Kale</div>
+        <div class="food-item">Lettuce</div>
+        <div class="food-item">Zucchini</div>
+        <div class="food-item">Bell Peppers</div>
+        <div class="food-item">Asparagus</div>
+      </div>
+      
+      <h3 style="margin-top: 1rem;">🥑 Healthy Fats</h3>
+      <div class="food-grid">
+        <div class="food-item">Olive Oil</div>
+        <div class="food-item">Butter</div>
+        <div class="food-item">Coconut Oil</div>
+        <div class="food-item">Avocado</div>
+        <div class="food-item">Cheese</div>
+        <div class="food-item">Heavy Cream</div>
+      </div>
+      
+      <h3 style="margin-top: 1rem;">❌ Avoid</h3>
+      <div class="food-grid">
+        <div class="food-item">Sugary Foods</div>
+        <div class="food-item">Grains</div>
+        <div class="food-item">Most Fruits</div>
+        <div class="food-item">Root Vegetables</div>
+        <div class="food-item">Starchy Foods</div>
+      </div>
+    </div>
+    
+    <div class="section-card">
+      <h2>📏 Keto Macros</h2>
+      <p><strong>Daily Net Carbs:</strong> 20-50g</p>
+      <p><strong>Protein:</strong> 0.8-1g per pound of body weight</p>
+      <p><strong>Fats:</strong> Eat until satisfied — no need to count calories!</p>
+    </div>
+  </main>
+  
+  <footer>
+    <p>© 2026 CrowdSourced Cooking — Made with ❤️ by cooks, for cooks</p>
+  </footer>
+</body>
+</html>
