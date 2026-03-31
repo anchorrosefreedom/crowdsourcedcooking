@@ -25,6 +25,10 @@
     .divider span { background: white; padding: 0 15px; position: relative; }
     .user-info { display: none; text-align: center; padding: 20px; }
     .user-info.show { display: block; }
+    .nav-bar { display: none; margin-bottom: 20px; text-align: center; }
+    .nav-bar.show { display: block; }
+    .nav-bar a { color: #2a9d8f; text-decoration: none; margin: 0 10px; font-weight: 500; }
+    .nav-bar a:hover { text-decoration: underline; }
     .avatar { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 15px; background: #2a9d8f; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; }
     .btn-logout { background: #c0392b; }
     .error { color: #dc3545; font-size: 14px; margin-top: 10px; display: none; }
@@ -34,6 +38,13 @@
 </head>
 <body>
   <div class="container">
+    <div class="nav-bar" id="nav-bar">
+      <a href="index.html">Home</a> |
+      <a href="about.html">About</a> |
+      <a href="categories.html">Categories</a> |
+      <a href="keto.html">Keto</a> |
+      <a href="submit-recipe.html">Submit Recipe</a>
+    </div>
     <h1>🍳 CrowdSourced Cooking</h1>
     <p class="subtitle">Join our community of recipe creators</p>
     
@@ -153,11 +164,13 @@
     onAuthStateChanged(auth, user => {
       const forms = document.querySelectorAll('.tabs-content > div');
       const userInfo = document.getElementById('user-info');
+      const navBar = document.getElementById('nav-bar');
       
       if (user) {
         forms.forEach(f => f.style.display = 'none');
         document.querySelector('.tabs').style.display = 'none';
         userInfo.classList.add('show');
+        navBar.classList.add('show');
         document.getElementById('user-name').textContent = `Welcome, ${user.displayName || user.email}!`;
         document.getElementById('user-email').textContent = user.email;
         document.getElementById('user-avatar').textContent = user.photoURL ? '� foto' : (user.displayName ? user.displayName[0].toUpperCase() : '👤');
@@ -165,6 +178,7 @@
         forms.forEach(f => f.style.display = '');
         document.querySelector('.tabs').style.display = 'flex';
         userInfo.classList.remove('show');
+        navBar.classList.remove('show');
       }
     });
   </script>
