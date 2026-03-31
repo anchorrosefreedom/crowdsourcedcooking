@@ -6,27 +6,27 @@
   <title>Login - CrowdSourced Cooking</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-    .container { background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); width: 100%; max-width: 420px; padding: 40px; }
-    h1 { color: #333; margin-bottom: 10px; font-size: 28px; text-align: center; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .container { background: white; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 100%; max-width: 420px; padding: 40px; }
+    h1 { color: #264653; margin-bottom: 10px; font-size: 28px; text-align: center; }
     .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
     .tabs { display: flex; margin-bottom: 30px; border-bottom: 2px solid #eee; }
     .tab { flex: 1; padding: 15px; text-align: center; cursor: pointer; color: #666; font-weight: 600; transition: all 0.3s; }
-    .tab.active { color: #667eea; border-bottom: 2px solid #667eea; margin-bottom: -2px; }
+    .tab.active { color: #2a9d8f; border-bottom: 2px solid #2a9d8f; margin-bottom: -2px; }
     .form-group { margin-bottom: 20px; }
     label { display: block; margin-bottom: 8px; color: #333; font-weight: 500; }
     input { width: 100%; padding: 14px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 16px; transition: border-color 0.3s; }
-    input:focus { outline: none; border-color: #667eea; }
-    .btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s; margin-bottom: 15px; }
-    .btn:hover { transform: translateY(-2px); }
-    .btn-google { background: #4285f4; }
+    input:focus { outline: none; border-color: #2a9d8f; }
+    .btn { width: 100%; padding: 16px; background: #2a9d8f; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s, background 0.2s; margin-bottom: 15px; }
+    .btn:hover { transform: translateY(-2px); background: #21867a; }
+    .btn-google { background: #264653; }
     .divider { text-align: center; color: #999; margin: 20px 0; position: relative; }
     .divider::before { content: ''; position: absolute; left: 0; top: 50%; width: 100%; height: 1px; background: #eee; }
     .divider span { background: white; padding: 0 15px; position: relative; }
     .user-info { display: none; text-align: center; padding: 20px; }
     .user-info.show { display: block; }
-    .avatar { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; }
-    .btn-logout { background: #dc3545; }
+    .avatar { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 15px; background: #2a9d8f; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; }
+    .btn-logout { background: #c0392b; }
     .error { color: #dc3545; font-size: 14px; margin-top: 10px; display: none; }
     .tabs-content > div { display: none; }
     .tabs-content > div.active { display: block; }
