@@ -28,6 +28,16 @@
     .nav a { color: #667eea; text-decoration: none; margin: 0 10px; }
     .user-info { text-align: right; margin-bottom: 20px; font-size: 14px; color: #666; }
     .user-info span { font-weight: 600; color: #333; }
+    .file-upload { border: 2px dashed #e0e0e0; border-radius: 10px; padding: 30px; text-align: center; cursor: pointer; transition: border-color 0.3s, background 0.3s; }
+    .file-upload:hover { border-color: #667eea; background: #f8f9fa; }
+    .file-upload.dragover { border-color: #667eea; background: #f0f4ff; }
+    .file-upload input { display: none; }
+    .file-upload-icon { font-size: 40px; margin-bottom: 10px; }
+    .file-upload-text { color: #666; }
+    .file-upload-text strong { color: #667eea; }
+    .preview-image { max-width: 100%; max-height: 200px; border-radius: 10px; margin-top: 15px; display: none; }
+    .file-required-note { font-size: 12px; color: #dc3545; margin-top: 5px; }
+    .file-optional-note { font-size: 12px; color: #28a745; margin-top: 5px; }
   </style>
 </head>
 <body>
@@ -92,6 +102,19 @@
             <input type="text" id="userId" readonly style="background: #f5f5f5; color: #666;">
           </div>
         </div>
+
+        <div class="form-group">
+          <label>Recipe Photo</label>
+          <div class="file-upload" id="file-upload">
+            <input type="file" id="recipe-image" accept="image/*">
+            <div class="file-upload-icon">📷</div>
+            <div class="file-upload-text">
+              <strong>Click to upload</strong> or drag and drop<br>
+              <span id="file-note" class="file-required-note">Required for new recipes</span>
+            </div>
+            <img id="preview-image" class="preview-image">
+          </div>
+        </div>
         
         <div class="form-group">
           <label>Ingredients *</label>
@@ -114,6 +137,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
@@ -127,8 +151,22 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+    const storage = getStorage(app);
 
     let currentUser = null;
+    let selectedFile = null;
+    let isFork = false;
+
+    // Check if this is a fork (editing existing recipe)
+    const urlParams = new URLSearchParams(window.location.search);
+    const originalRecipeId = urlParams.get('fork');
+    if (originalRecipeId) {
+      isFork = true;
+      document.querySelector('h1').textContent = '🍳 Fork a Recipe';
+      document.querySelector('.subtitle').textContent = 'Modify this recipe and make it your own!';
+      document.getElementById('file-note').textContent = 'Optional - keep original image if empty';
+      document.getElementById('file-note').className = 'file-optional-note';
+    }
 
     onAuthStateChanged(auth, user => {
       if (user) {
@@ -147,6 +185,46 @@
       signOut(auth);
     };
 
+    // File upload handling
+    const fileInput = document.getElementById('recipe-image');
+    const fileUpload = document.getElementById('file-upload');
+    const previewImage = document.getElementById('preview-image');
+
+    fileUpload.addEventListener('click', () => fileInput.click());
+    
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        selectedFile = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          previewImage.src = e.target.result;
+          previewImage.style.display = 'block';
+        };
+        reader.readAsDataURL(selectedFile);
+      }
+    });
+
+    // Drag and drop
+    fileUpload.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      fileUpload.classList.add('dragover');
+    });
+    fileUpload.addEventListener('dragleave', () => fileUpload.classList.remove('dragover'));
+    fileUpload.addEventListener('drop', (e) => {
+      e.preventDefault();
+      fileUpload.classList.remove('dragover');
+      if (e.dataTransfer.files.length > 0) {
+        selectedFile = e.dataTransfer.files[0];
+        fileInput.files = e.dataTransfer.files;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          previewImage.src = e.target.result;
+          previewImage.style.display = 'block';
+        };
+        reader.readAsDataURL(selectedFile);
+      }
+    });
+
     document.getElementById('submit-recipe').addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -159,13 +237,29 @@
         errorEl.style.display = 'block';
         return;
       }
+
+      // Check image requirement
+      if (!isFork && !selectedFile) {
+        errorEl.textContent = 'Please upload a photo for new recipes';
+        errorEl.style.display = 'block';
+        return;
+      }
       
       btn.disabled = true;
-      btn.textContent = 'Submitting...';
+      btn.textContent = 'Uploading image...';
       errorEl.style.display = 'none';
       successEl.style.display = 'none';
       
       try {
+        let imageUrl = null;
+        
+        // Upload image if provided
+        if (selectedFile) {
+          const storageRef = ref(storage, `recipes/${Date.now()}_${selectedFile.name}`);
+          await uploadBytes(storageRef, selectedFile);
+          imageUrl = await getDownloadURL(storageRef);
+        }
+        
         const recipe = {
           title: document.getElementById('title').value,
           category: document.getElementById('category').value,
@@ -178,6 +272,7 @@
           userId: document.getElementById('userId').value,
           authorEmail: currentUser.email,
           authorName: currentUser.displayName || currentUser.email.split('@')[0],
+          imageUrl: imageUrl,
           upvotes: 0,
           downvotes: 0,
           createdAt: serverTimestamp()
