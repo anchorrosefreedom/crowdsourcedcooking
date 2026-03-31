@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Categories - CrowdSourced Cooking</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f8f9fa;
+      min-height: 100vh;
+    }
+    header {
+      background: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: #2a9d8f;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .page-title {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .page-title h1 {
+      font-size: 2rem;
+      color: #264653;
+      margin-bottom: 0.5rem;
+    }
+    .page-title p {
+      color: #666;
+    }
+    .category-section {
+      margin-bottom: 2.5rem;
+    }
+    .category-section h2 {
+      font-size: 1.5rem;
+      color: #264653;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .category-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .category-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    .category-card h3 {
+      font-size: 1.2rem;
+      color: #264653;
+      margin-bottom: 0.5rem;
+    }
+    .category-card p {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    .subcategories {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 0.75rem;
+    }
+    .subcat-tag {
+      background: #e9f5f4;
+      color: #2a9d8f;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+      background: white;
+      margin-top: 3rem;
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:40px; vertical-align:middle;"></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="keto.html">Keto</a></li>
+        <li><a href="submit-recipe.html">Submit Recipe</a></li>
+        <li><a href="login.html" id="auth-link">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main>
+    <div class="page-title">
+      <h1>🍽️ Browse Recipes</h1>
+      <p>Find the perfect recipe by category</p>
+    </div>
+    
+    <div class="category-section">
+      <h2>🥑 Diet Lifestyles</h2>
+      <div class="category-grid">
+        <a href="category.html?cat=keto" class="category-card">
+          <h3>🥑 Keto</h3>
+          <p>Low-carb, high-fat recipes for the ketogenic lifestyle</p>
+          <div class="subcategories">
+            <span class="subcat-tag">Main Dishes</span>
+            <span class="subcat-tag">Breakfasts</span>
+            <span class="subcat-tag">Side Dishes</span>
+          </div>
+        </a>
+        <a href="category.html?cat=carnivore" class="category-card">
+          <h3>🥩 Carnivore</h3>
+          <p>All-meat, animal-based recipes</p>
+          <div class="subcategories">
+            <span class="subcat-tag">Main Dishes</span>
+            <span class="subcat-tag">Breakfasts</span>
+            <span class="subcat-tag">Side Dishes</span>
+          </div>
+        </a>
+      </div>
+    </div>
+    
+    <div class="category-section">
+      <h2>🥩 Proteins</h2>
+      <div class="category-grid">
+        <a href="category.html?cat=beef" class="category-card">
+          <h3>🥩 Beef</h3>
+          <p>Classic beef recipes for every meal</p>
+          <div class="subcategories">
+            <span class="subcat-tag">Main Dishes</span>
+            <span class="subcat-tag">Breakfasts</span>
+            <span class="subcat-tag">Side Dishes</span>
+          </div>
+        </a>
+        <a href="category.html?cat=chicken" class="category-card">
+          <h3>🍗 Chicken</h3>
+          <p>Versatile chicken recipes</p>
+          <div class="subcategories">
+            <span class="subcat-tag">Main Dishes</span>
+            <span class="subcat-tag">Breakfasts</span>
+            <span class="subcat-tag">Side Dishes</span>
+          </div>
+        </a>
+        <a href="category.html?cat=pork" class="category-card">
+          <h3>🐷 Pork</h3>
+          <p>Pork chops, bacon, ribs, and more</p>
+          <div class="subcategories">
+            <span class="subcat-tag">Main Dishes</span>
+            <span class="subcat-tag">Breakfasts</span>
+            <span class="subcat-tag">Side Dishes</span>
+          </div>
+        </a>
+        <a href="category.html?cat=fish" class="category-card">
+          <h3>🐟 Fish & Seafood</h3>
+          <p>Fresh fish and seafood recipes</p>
+          <div class="subcategories">
+            <span class="subcat-tag">Main Dishes</span>
+            <span class="subcat-tag">Breakfasts</span>
+            <span class="subcat-tag">Side Dishes</span>
+          </div>
+        </a>
+      </div>
+    </div>
+    
+    <div class="category-section">
+      <h2>🍽️ Meal Types</h2>
+      <div class="category-grid">
+        <a href="category.html?cat=main-dishes" class="category-card">
+          <h3>🍝 Main Dishes</h3>
+          <p>Center-of-the-plate entrees</p>
+          <div class="subcategories">
+            <span class="subcat-tag">Beef</span>
+            <span class="subcat-tag">Chicken</span>
+            <span class="subcat-tag">Pork</span>
+            <span class="subcat-tag">Fish</span>
+          </div>
+        </a>
+        <a href="category.html?cat=side-dishes" class="category-card">
+          <h3>🥗 Side Dishes</h3>
+          <p>Perfect accompaniments</p>
+          <div class="subcategories">
+            <span class="subcat-tag">Vegetables</span>
+            <span class="subcat-tag">Salads</span>
+            <span class="subcat-tag">Starches</span>
+          </div>
+        </a>
+        <a href="category.html?cat=breakfasts" class="category-card">
+          <h3>🍳 Breakfasts</h3>
+          <p>Morning meals and brunch</p>
+          <div class="subcategories">
+            <span class="subcat-tag">Eggs</span>
+            <span class="subcat-tag">Pancakes</span>
+            <span class="subcat-tag">Meats</span>
+          </div>
+        </a>
+      </div>
+    </div>
+    
+    <div class="category-section">
+      <h2>🍰 More Categories</h2>
+      <div class="category-grid">
+        <a href="category.html?cat=desserts" class="category-card">
+          <h3>🍰 Desserts</h3>
+          <p>Sweet treats and confections</p>
+        </a>
+        <a href="category.html?cat=breads" class="category-card">
+          <h3>🍞 Breads</h3>
+          <p>Homemade breads and baked goods</p>
+        </a>
+        <a href="category.html?cat=drinks" class="category-card">
+          <h3>🥤 Drinks</h3>
+          <p>Beverages, smoothies, and cocktails</p>
+        </a>
+      </div>
+    </div>
+  </main>
+  
+  <footer>
+    <p>© 2026 CrowdSourced Cooking — Made by cooks, for cooks</p>
+  </footer>
+</body>
+</html>

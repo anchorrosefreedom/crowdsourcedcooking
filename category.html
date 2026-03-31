@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Category - CrowdSourced Cooking</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f8f9fa;
+      min-height: 100vh;
+    }
+    header {
+      background: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: #2a9d8f;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .breadcrumb {
+      margin-bottom: 1.5rem;
+    }
+    .breadcrumb a {
+      color: #2a9d8f;
+      text-decoration: none;
+    }
+    .breadcrumb span {
+      color: #666;
+    }
+    .page-title {
+      margin-bottom: 2rem;
+    }
+    .page-title h1 {
+      font-size: 2rem;
+      color: #264653;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .subcategories {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+    .subcat-tag {
+      background: white;
+      color: #264653;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: all 0.2s;
+    }
+    .subcat-tag:hover, .subcat-tag.active {
+      background: #2a9d8f;
+      color: white;
+    }
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .recipe-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .recipe-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    .recipe-image {
+      width: 100%;
+      height: 180px;
+      background: linear-gradient(135deg, #e9f5f4 0%, #d4e8e5 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+    .recipe-content {
+      padding: 1.25rem;
+    }
+    .recipe-tags {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .tag {
+      background: #e9f5f4;
+      color: #2a9d8f;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .recipe-title {
+      font-size: 1.1rem;
+      color: #264653;
+      margin-bottom: 0.5rem;
+    }
+    .recipe-desc {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+    }
+    .recipe-meta {
+      display: flex;
+      gap: 1rem;
+      color: #888;
+      font-size: 0.8rem;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #666;
+    }
+    .empty-state h3 {
+      color: #264653;
+      margin-bottom: 0.5rem;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+      background: white;
+      margin-top: 3rem;
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .recipe-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:40px; vertical-align:middle;"></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="keto.html">Keto</a></li>
+        <li><a href="submit-recipe.html">Submit Recipe</a></li>
+        <li><a href="login.html" id="auth-link">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main>
+    <div class="breadcrumb">
+      <a href="categories.html">← All Categories</a>
+    </div>
+    
+    <div class="page-title" id="page-title">
+      <h1 id="category-title">Loading...</h1>
+      <div class="subcategories" id="subcategories"></div>
+    </div>
+    
+    <div class="recipe-grid" id="recipe-grid">
+      <!-- Recipes will be loaded here -->
+    </div>
+  </main>
+  
+  <footer>
+    <p>© 2026 CrowdSourced Cooking — Made by cooks, for cooks</p>
+  </footer>
+  
+  <script>
+    // Category definitions with emojis and subcategories
+    const categories = {
+      'keto': { title: '🥑 Keto Recipes', emoji: '🥑', subcats: ['Main Dishes', 'Breakfasts', 'Side Dishes'] },
+      'carnivore': { title: '🥩 Carnivore Recipes', emoji: '🥩', subcats: ['Main Dishes', 'Breakfasts', 'Side Dishes'] },
+      'beef': { title: '🥩 Beef Recipes', emoji: '🥩', subcats: ['Main Dishes', 'Breakfasts', 'Side Dishes'] },
+      'chicken': { title: '🍗 Chicken Recipes', emoji: '🍗', subcats: ['Main Dishes', 'Breakfasts', 'Side Dishes'] },
+      'pork': { title: '🐷 Pork Recipes', emoji: '🐷', subcats: ['Main Dishes', 'Breakfasts', 'Side Dishes'] },
+      'fish': { title: '🐟 Fish & Seafood', emoji: '🐟', subcats: ['Main Dishes', 'Breakfasts', 'Side Dishes'] },
+      'main-dishes': { title: '🍝 Main Dishes', emoji: '🍝', subcats: ['Beef', 'Chicken', 'Pork', 'Fish'] },
+      'side-dishes': { title: '🥗 Side Dishes', emoji: '🥗', subcats: ['Vegetables', 'Salads', 'Starches'] },
+      'breakfasts': { title: '🍳 Breakfasts', emoji: '🍳', subcats: ['Eggs', 'Pancakes', 'Meats'] },
+      'desserts': { title: '🍰 Desserts', emoji: '🍰', subcats: [] },
+      'breads': { title: '🍞 Breads', emoji: '🍞', subcats: [] },
+      'drinks': { title: '🥤 Drinks', emoji: '🥤', subcats: [] }
+    };
+    
+    // Get category from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const cat = urlParams.get('cat') || 'main-dishes';
+    
+    // Sample recipes (will be replaced with Firestore data)
+    const sampleRecipes = [
+      { title: 'Keto Cheeseburger Pie', tags: ['Keto', 'Carnivore'], desc: 'A delicious, satisfying cheeseburger pie with zero carbs.', time: '45 min', votes: 24 },
+      { title: 'Garlic Butter Steak', tags: ['Beef', 'Keto'], desc: 'Juicy steak with garlic butter sauce.', time: '20 min', votes: 45 },
+      { title: 'Chicken Parmesan', tags: ['Chicken', 'Main Dish'], desc: 'Classic breaded chicken with marinara and cheese.', time: '40 min', votes: 32 },
+      { title: 'Bacon Egg Cups', tags: ['Breakfast', 'Keto'], desc: 'Crispy bacon cups filled with egg.', time: '15 min', votes: 28 },
+      { title: 'Cauliflower Mac & Cheese', tags: ['Keto', 'Side Dish'], desc: 'Low-carb twist on a comfort food classic.', time: '30 min', votes: 19 },
+      { title: 'Carnivore Cheesecake Fluff', tags: ['Carnivore', 'Dessert'], desc: 'Light and airy cheesecake dessert.', time: '10 min', votes: 37 },
+      { title: 'Keto Magic Cookies', tags: ['Keto', 'Dessert'], desc: 'Flourless cookies with only 1.5g net carbs.', time: '25 min', votes: 41 },
+      { title: 'Grilled Salmon', tags: ['Fish', 'Keto'], desc: 'Fresh salmon with lemon and herbs.', time: '15 min', votes: 33 }
+    ];
+    
+    const categoryData = categories[cat] || { title: 'Recipes', emoji: '🍽️', subcats: [] };
+    
+    document.getElementById('category-title').textContent = categoryData.title;
+    
+    // Add subcategory tags
+    const subcatContainer = document.getElementById('subcategories');
+    if (categoryData.subcats.length > 0) {
+      categoryData.subcats.forEach(sub => {
+        const tag = document.createElement('a');
+        tag.className = 'subcat-tag';
+        tag.href = `category.html?cat=${cat}&sub=${encodeURIComponent(sub)}`;
+        tag.textContent = sub;
+        subcatContainer.appendChild(tag);
+      });
+    }
+    
+    // Display recipes
+    const grid = document.getElementById('recipe-grid');
+    const emojis = ['🍝', '🥗', '🍳', '🍰', '🥩', '🍗', '🐷', '🐟'];
+    
+    if (sampleRecipes.length > 0) {
+      sampleRecipes.forEach((recipe, i) => {
+        const card = document.createElement('a');
+        card.href = '#';
+        card.className = 'recipe-card';
+        card.innerHTML = `
+          <div class="recipe-image">${emojis[i % emojis.length]}</div>
+          <div class="recipe-content">
+            <div class="recipe-tags">
+              ${recipe.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+            </div>
+            <h3 class="recipe-title">${recipe.title}</h3>
+            <p class="recipe-desc">${recipe.desc}</p>
+            <div class="recipe-meta">
+              <span>⏱️ ${recipe.time}</span>
+              <span>👍 ${recipe.votes}</span>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    } else {
+      grid.innerHTML = `
+        <div class="empty-state" style="grid-column: 1/-1;">
+          <h3>No recipes yet</h3>
+          <p>Be the first to submit a recipe in this category!</p>
+          <a href="submit-recipe.html" style="color: #2a9d8f;">Submit a Recipe →</a>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
