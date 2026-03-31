@@ -56,9 +56,17 @@
     .hero {
       background: white;
       border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+    .hero-banner {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .hero-content {
       padding: 3rem 2rem;
       text-align: center;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
     }
     .hero h1 {
       font-size: 2.5rem;
@@ -130,6 +138,7 @@
       <div class="logo">🍳 CrowdSourced Cooking</div>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
         <li><a href="#recipes">Recipes</a></li>
         <li><a href="keto.html">Keto</a></li>
         <li><a href="submit-recipe.html">Submit Recipe</a></li>
@@ -140,9 +149,12 @@
   
   <main>
     <section class="hero">
-      <h1>Cook Together, Eat Better</h1>
-      <p>Join our community of home cooks sharing recipes, tips, and kitchen secrets. From comfort food to healthy keto meals — everyone's welcome.</p>
-      <a href="#recipes" class="cta-button">Browse Recipes</a>
+      <img src="2026-03-31-14-58-01-crowdsourced-cooking-banner-v3.png" alt="Community of cooks sharing recipe suggestions" class="hero-banner">
+      <div class="hero-content">
+        <h1>Cook Together, Eat Better</h1>
+        <p>Join our community of home cooks sharing recipes, tips, and kitchen secrets. From comfort food to healthy keto meals — everyone's welcome.</p>
+        <a href="#recipes" class="cta-button">Browse Recipes</a>
+      </div>
     </section>
     
     <section class="features">
