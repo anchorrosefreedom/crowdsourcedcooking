@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Sample Recipes - CrowdSourced Cooking</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; background: #f8f9fa; }
+    h1 { color: #264653; }
+    .status { padding: 20px; margin: 20px 0; border-radius: 8px; }
+    .success { background: #d4edda; color: #155724; }
+    .error { background: #f8d7da; color: #721c24; }
+    .progress { background: #fff3cd; color: #856404; padding: 15px; margin: 10px 0; border-radius: 4px; }
+    button { background: #2a9d8f; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 16px; cursor: pointer; }
+    button:hover { background: #21867a; }
+    button:disabled { background: #ccc; }
+    .recipe-list { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
+    .recipe-item { padding: 10px; border-bottom: 1px solid #eee; }
+  </style>
+</head>
+<body>
+  <h1>🍳 Adding Sample Recipes</h1>
+  <p>Click the button below to add sample recipes to each category.</p>
+  
+  <button id="addBtn" onclick="addRecipes()">Add Sample Recipes</button>
+  
+  <div id="status"></div>
+  <div id="progress"></div>
+  <div id="results"></div>
+  
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
+      authDomain: "crowdsourcedcooking.firebaseapp.com",
+      projectId: "crowdsourcedcooking",
+      storageBucket: "crowdsourcedcooking.firebasestorage.app",
+      messagingSenderId: "1025589287082",
+      appId: "1:1025589287082:web:15569e323aa2781ab858d3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    
+    // Sample recipes with generated images
+    const recipes = [
+      {
+        title: "Classic Bacon Cheeseburger",
+        category: "Main Dishes",
+        tags: ["Beef", "Main Dishes"],
+        prepTime: 15,
+        cookTime: 15,
+        servings: 4,
+        ingredients: "1 lb ground beef\n4 brioche buns\n4 slices cheddar cheese\n4 strips bacon\nLettuce, tomato, onion\nPickles\nSalt and pepper",
+        instructions: "1. Season beef with salt and pepper\n2. Form 4 patties\n3. Cook bacon until crispy\n4. Grill patties to desired doneness\n5. Add cheese in last minute\n6. Toast buns\n7. Assemble with toppings",
+        imageUrl: "https://crowdsourcedcooking.github.io/2026-03-31-16-45-01-beef-cheeseburger.png",
+        userId: "demo-user",
+        authorName: "Demo Chef"
+      },
+      {
+        title: "Crispy Fried Chicken Wings",
+        category: "Main Dishes",
+        tags: ["Chicken", "Main Dishes"],
+        prepTime: 20,
+        cookTime: 25,
+        servings: 4,
+        ingredients: "2 lbs chicken wings\n1 cup flour\n1 tsp paprika\n1 tsp garlic powder\nSalt and pepper\nVegetable oil for frying",
+        instructions: "1. Mix flour with seasonings\n2. Coat wings in flour mixture\n3. Heat oil to 350°F\n4. Fry wings 10-12 minutes until golden\n5. Rest on wire rack\n6. Serve with sauce of choice",
+        imageUrl: "https://crowdsourcedcooking.github.io/2026-03-31-16-45-02-chicken-wings.png",
+        userId: "demo-user",
+        authorName: "Demo Chef"
+      },
+      {
+        title: "Herb-Crusted Pork Chop",
+        category: "Main Dishes",
+        tags: ["Pork", "Main Dishes"],
+        prepTime: 10,
+        cookTime: 20,
+        servings: 2,
+        ingredients: "2 bone-in pork chops\n2 tbsp olive oil\n2 sprigs rosemary\n4 cloves garlic\nSalt and pepper\nCherry tomatoes\nAsparagus",
+        instructions: "1. Season pork chops generously\n2. Heat oil in cast iron\n3. Sear chops 4 min per side\n4. Add rosemary and garlic\n5. Roast at 400°F until done\n6. Rest 5 minutes before serving",
+        imageUrl: "https://crowdsourcedcooking.github.io/2026-03-31-16-45-03-pork-chop.png",
+        userId: "demo-user",
+        authorName: "Demo Chef"
+      },
+      {
+        title: "Grilled Salmon with Lemon",
+        category: "Main Dishes",
+        tags: ["Fish", "Main Dishes", "Keto"],
+        prepTime: 10,
+        cookTime: 15,
+        servings: 2,
+        ingredients: "2 salmon fillets\n2 lemons\nFresh dill\nSalt and pepper\nOlive oil\nAsparagus\nBaby potatoes",
+        instructions: "1. Season salmon with salt, pepper, olive oil\n2. Grill skin-side down 4 minutes\n3. Flip and cook 3 more minutes\n4. Add lemon slices and dill\n5. Serve with roasted vegetables",
+        imageUrl: "https://crowdsourcedcooking.github.io/2026-03-31-16-45-04-grilled-salmon.png",
+        userId: "demo-user",
+        authorName: "Demo Chef"
+      },
+      {
+        title: "Creamy Scrambled Eggs",
+        category: "Breakfasts",
+        tags: ["Breakfasts", "Keto"],
+        prepTime: 5,
+        cookTime: 10,
+        servings: 2,
+        ingredients: "6 large eggs\n2 tbsp butter\n1/4 cup shredded cheddar\nFresh chives\nSalt and pepper",
+        instructions: "1. Whisk eggs with salt and pepper\n2. Melt butter in non-stick pan over low heat\n3. Add eggs and stir slowly\n4. Remove from heat while still slightly wet\n5. Add cheese and chives\n6. Serve immediately",
+        imageUrl: "https://crowdsourcedcooking.github.io/2026-03-31-16-45-05-scrambled-eggs.png",
+        userId: "demo-user",
+        authorName: "Demo Chef"
+      }
+    ];
+    
+    window.addRecipes = async function() {
+      const btn = document.getElementById('addBtn');
+      const status = document.getElementById('status');
+      const progress = document.getElementById('progress');
+      const results = document.getElementById('results');
+      
+      btn.disabled = true;
+      status.className = 'status success';
+      status.innerHTML = 'Starting...';
+      results.innerHTML = '<div class="recipe-list"><h3>Recipes to add:</h3>' + 
+        recipes.map(r => `<div class="recipe-item">• ${r.title} (${r.category})</div>`).join('') + 
+        '</div>';
+      
+      let added = 0;
+      
+      for (let i = 0; i < recipes.length; i++) {
+        const recipe = recipes[i];
+        progress.innerHTML = `Adding: ${recipe.title}...`;
+        
+        try {
+          const docRef = await addDoc(collection(db, 'recipes'), {
+            ...recipe,
+            upvotes: Math.floor(Math.random() * 20) + 5,
+            downvotes: Math.floor(Math.random() * 5),
+            createdAt: serverTimestamp()
+          });
+          added++;
+          progress.innerHTML = `✅ Added: ${recipe.title}`;
+        } catch (err) {
+          progress.innerHTML = `❌ Error adding ${recipe.title}: ${err.message}`;
+        }
+      }
+      
+      status.innerHTML = `✅ Successfully added ${added} recipes to Firestore!`;
+      btn.disabled = false;
+    };
+  </script>
+</body>
+</html>
