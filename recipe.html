@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe - CrowdSourced Cooking</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8f9fa; min-height: 100vh; }
+    header { background: white; padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
+    nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a { color: #333; text-decoration: none; font-weight: 500; }
+    .nav-links a:hover { color: #2a9d8f; }
+    main { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    .breadcrumb { margin-bottom: 1.5rem; }
+    .breadcrumb a { color: #2a9d8f; text-decoration: none; }
+    .breadcrumb span { color: #666; }
+    .recipe-header { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 2rem; }
+    .recipe-image { width: 100%; height: 300px; background: linear-gradient(135deg, #e9f5f4 0%, #d4e8e5 100%); display: flex; align-items: center; justify-content: center; font-size: 5rem; }
+    .recipe-content { padding: 2rem; }
+    .recipe-title { font-size: 2rem; color: #264653; margin-bottom: 0.5rem; }
+    .recipe-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .tag { background: #e9f5f4; color: #2a9d8f; padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.85rem; font-weight: 500; }
+    .recipe-meta { display: flex; gap: 1.5rem; padding: 1rem 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee; margin: 1rem 0; }
+    .meta-item { display: flex; align-items: center; gap: 0.5rem; color: #666; }
+    .meta-item strong { color: #264653; }
+    .vote-buttons { display: flex; gap: 1rem; margin: 1.5rem 0; }
+    .vote-btn { display: flex; align-items: center; gap: 0.5rem; background: white; border: 2px solid #2a9d8f; color: #2a9d8f; padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+    .vote-btn:hover { background: #2a9d8f; color: white; }
+    .section { background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 2rem; }
+    .section h2 { font-size: 1.3rem; color: #264653; margin-bottom: 1rem; }
+    .ingredients-list { list-style: none; }
+    .ingredients-list li { padding: 0.75rem 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 0.75rem; }
+    .instructions ol { margin-left: 1.5rem; }
+    .instructions li { padding: 0.75rem 0; color: #444; }
+    .fork-btn { display: inline-block; background: #264653; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; margin-top: 1rem; }
+    .video-link { display: flex; align-items: center; gap: 0.5rem; background: #f0f0f0; padding: 0.75rem 1rem; border-radius: 8px; text-decoration: none; color: #333; margin-top: 1rem; }
+    .loading, .error { text-align: center; padding: 3rem; color: #666; }
+    .error { color: #e74c3c; }
+    footer { text-align: center; padding: 2rem; color: #666; background: white; margin-top: 3rem; }
+    @media (max-width: 768px) { .nav-links { display: none; } .recipe-meta { flex-wrap: wrap; } .recipe-title { font-size: 1.5rem; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="keto.html">Keto</a></li>
+        <li><a href="submit-recipe.html">Submit Recipe</a></li>
+        <li><a href="login.html" id="auth-link">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main>
+    <div class="breadcrumb">
+      <a href="index.html">← Home</a>
+      <span> / Recipe</span>
+    </div>
+    
+    <div id="recipe-container">
+      <div class="loading">Loading recipe...</div>
+    </div>
+  </main>
+  
+  <footer>
+    <p>© 2026 CrowdSourced Cooking — Made by cooks, for cooks</p>
+  </footer>
+  
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+    import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
+      authDomain: "crowdsourcedcooking.firebaseapp.com",
+      projectId: "crowdsourcedcooking",
+      storageBucket: "crowdsourcedcooking.firebasestorage.app",
+      messagingSenderId: "1025589287082",
+      appId: "1:1025589287082:web:15569e323aa2781ab858d3"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const recipeId = urlParams.get('id');
+    
+    const container = document.getElementById('recipe-container');
+    
+    const emojiMap = {
+      'beef': '🥩', 'chicken': '🍗', 'pork': '🐷', 'fish': '🐟',
+      'keto': '🥑', 'carnivore': '🥩', 'main-dishes': '🍝',
+      'side-dishes': '🥗', 'breakfasts': '🍳', 'desserts': '🍰',
+      'breads': '🍞', 'drinks': '🥤'
+    };
+    
+    function getEmoji(tags) {
+      for (const tag of tags || []) {
+        if (emojiMap[tag.toLowerCase()]) return emojiMap[tag.toLowerCase()];
+      }
+      return '🍽️';
+    }
+    
+    async function loadRecipe() {
+      if (!recipeId) {
+        container.innerHTML = '<div class="error">No recipe specified. <a href="categories.html">Browse categories</a></div>';
+        return;
+      }
+      
+      try {
+        const recipeSnap = await getDoc(doc(db, 'recipes', recipeId));
+        
+        if (!recipeSnap.exists()) {
+          container.innerHTML = '<div class="error">Recipe not found. <a href="categories.html">Browse categories</a></div>';
+          return;
+        }
+        
+        const recipe = recipeSnap.data();
+        
+        container.innerHTML = `
+          <div class="recipe-header">
+            <div class="recipe-image">${getEmoji(recipe.tags)}</div>
+            <div class="recipe-content">
+              <h1 class="recipe-title">${recipe.title}</h1>
+              <div class="recipe-tags">
+                ${(recipe.tags || []).map(t => `<span class="tag">${t}</span>`).join('')}
+              </div>
+              <div class="recipe-meta">
+                <div class="meta-item">⏱️ <strong>${recipe.time || 'N/A'}</strong></div>
+                <div class="meta-item">🍽️ <strong>${recipe.servings || 'N/A'} servings</strong></div>
+                <div class="meta-item">👍 <strong id="vote-count">${recipe.upvotes || 0}</strong> votes</div>
+              </div>
+              <div class="vote-buttons">
+                <button class="vote-btn" onclick="alert('Thanks for voting!')">👍 Upvote</button>
+              </div>
+              ${recipe.videoUrl ? `<a href="${recipe.videoUrl}" target="_blank" class="video-link">🎬 Watch Video</a>` : ''}
+            </div>
+          </div>
+          
+          <div class="section">
+            <h2>📝 Ingredients</h2>
+            <ul class="ingredients-list">
+              ${(recipe.ingredients || []).map(ing => `<li><input type="checkbox"> ${ing}</li>`).join('') || '<li>No ingredients listed</li>'}
+            </ul>
+          </div>
+          
+          <div class="section">
+            <h2>👨‍🍳 Instructions</h2>
+            <ol class="instructions">
+              ${(recipe.instructions || []).map((step, i) => `<li>${step}</li>`).join('') || '<li>No instructions listed</li>'}
+            </ol>
+          </div>
+          
+          <div class="section">
+            <h2>🍴 Fork This Recipe</h2>
+            <p>Make it your own!</p>
+            <a href="submit-recipe.html?fork=${recipeId}" class="fork-btn">🍴 Fork Recipe</a>
+          </div>
+        `;
+        
+      } catch (error) {
+        console.error('Error loading recipe:', error);
+        container.innerHTML = '<div class="error">Error loading recipe. Please try again.</div>';
+      }
+    }
+    
+    loadRecipe();
+  </script>
+</body>
+</html>
