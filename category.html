@@ -262,7 +262,7 @@
     if (sampleRecipes.length > 0) {
       sampleRecipes.forEach((recipe, i) => {
         const card = document.createElement('a');
-        card.href = '#';
+        card.href = 'recipe.html?id=' + doc.id;
         card.className = 'recipe-card';
         card.innerHTML = `
           <div class="recipe-image">${emojis[i % emojis.length]}</div>
