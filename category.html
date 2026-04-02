@@ -299,7 +299,7 @@
         // Fetch all recipes and filter client-side for case-insensitive tag matching
         const q = query(collection(db, 'recipes'));
         const snapshot = await getDocs(q);
-        const recipes = [];
+        let recipes = [];
         
         snapshot.forEach(doc => {
           const data = doc.data();
