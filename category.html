@@ -177,7 +177,7 @@
     <nav>
       <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
       <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html">Recipes</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="categories.html">Categories</a></li>
         <li><a href="keto.html">Keto</a></li>
@@ -206,7 +206,22 @@
     <p>© 2026 CrowdSourced Cooking — Made by cooks, for cooks</p>
   </footer>
   
-  <script>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+    import { getFirestore, collection, query, where, getDocs, orderBy } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
+      authDomain: "crowdsourcedcooking.firebaseapp.com",
+      projectId: "crowdsourcedcooking",
+      storageBucket: "crowdsourcedcooking.firebasestorage.app",
+      messagingSenderId: "1025589287082",
+      appId: "1:1025589287082:web:15569e323aa2781ab858d3"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    
     // Category definitions with emojis and subcategories
     const categories = {
       'keto': { title: '🥑 Keto Recipes', emoji: '🥑', subcats: ['Main Dishes', 'Breakfasts', 'Side Dishes'] },
@@ -226,69 +241,103 @@
     // Get category from URL
     const urlParams = new URLSearchParams(window.location.search);
     const cat = urlParams.get('cat') || 'main-dishes';
-    
-    // Sample recipes (will be replaced with Firestore data)
-    const sampleRecipes = [
-      { title: 'Keto Cheeseburger Pie', tags: ['Keto', 'Carnivore'], desc: 'A delicious, satisfying cheeseburger pie with zero carbs.', time: '45 min', votes: 24 },
-      { title: 'Garlic Butter Steak', tags: ['Beef', 'Keto'], desc: 'Juicy steak with garlic butter sauce.', time: '20 min', votes: 45 },
-      { title: 'Chicken Parmesan', tags: ['Chicken', 'Main Dish'], desc: 'Classic breaded chicken with marinara and cheese.', time: '40 min', votes: 32 },
-      { title: 'Bacon Egg Cups', tags: ['Breakfast', 'Keto'], desc: 'Crispy bacon cups filled with egg.', time: '15 min', votes: 28 },
-      { title: 'Cauliflower Mac & Cheese', tags: ['Keto', 'Side Dish'], desc: 'Low-carb twist on a comfort food classic.', time: '30 min', votes: 19 },
-      { title: 'Carnivore Cheesecake Fluff', tags: ['Carnivore', 'Dessert'], desc: 'Light and airy cheesecake dessert.', time: '10 min', votes: 37 },
-      { title: 'Keto Magic Cookies', tags: ['Keto', 'Dessert'], desc: 'Flourless cookies with only 1.5g net carbs.', time: '25 min', votes: 41 },
-      { title: 'Grilled Salmon', tags: ['Fish', 'Keto'], desc: 'Fresh salmon with lemon and herbs.', time: '15 min', votes: 33 }
-    ];
+    const subcat = urlParams.get('sub');
     
     const categoryData = categories[cat] || { title: 'Recipes', emoji: '🍽️', subcats: [] };
     
-    document.getElementById('category-title').textContent = categoryData.title;
+    document.getElementById('category-title').textContent = subcat ? `${subcat} ${categoryData.title}` : categoryData.title;
     
     // Add subcategory tags
     const subcatContainer = document.getElementById('subcategories');
     if (categoryData.subcats.length > 0) {
       categoryData.subcats.forEach(sub => {
         const tag = document.createElement('a');
-        tag.className = 'subcat-tag';
+        tag.className = 'subcat-tag' + (sub === subcat ? ' active' : '');
         tag.href = `category.html?cat=${cat}&sub=${encodeURIComponent(sub)}`;
         tag.textContent = sub;
         subcatContainer.appendChild(tag);
       });
     }
     
-    // Display recipes
-    const grid = document.getElementById('recipe-grid');
-    const emojis = ['🍝', '🥗', '🍳', '🍰', '🥩', '🍗', '🐷', '🐟'];
+    // Emoji map
+    const emojiMap = {
+      'beef': '🥩', 'chicken': '🍗', 'pork': '🐷', 'fish': '🐟',
+      'keto': '🥑', 'carnivore': '🥩', 'main-dishes': '🍝',
+      'side-dishes': '🥗', 'breakfasts': '🍳', 'desserts': '🍰',
+      'breads': '🍞', 'drinks': '🥤'
+    };
     
-    if (sampleRecipes.length > 0) {
-      sampleRecipes.forEach((recipe, i) => {
-        const card = document.createElement('a');
-        card.href = 'recipe.html?id=' + doc.id;
-        card.className = 'recipe-card';
-        card.innerHTML = `
-          <div class="recipe-image">${emojis[i % emojis.length]}</div>
-          <div class="recipe-content">
-            <div class="recipe-tags">
-              ${recipe.tags.map(t => `<span class="tag">${t}</span>`).join('')}
-            </div>
-            <h3 class="recipe-title">${recipe.title}</h3>
-            <p class="recipe-desc">${recipe.desc}</p>
-            <div class="recipe-meta">
-              <span>⏱️ ${recipe.time}</span>
-              <span>👍 ${recipe.votes}</span>
-            </div>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-    } else {
-      grid.innerHTML = `
-        <div class="empty-state" style="grid-column: 1/-1;">
-          <h3>No recipes yet</h3>
-          <p>Be the first to submit a recipe in this category!</p>
-          <a href="submit-recipe.html" style="color: #2a9d8f;">Submit a Recipe →</a>
-        </div>
-      `;
+    function getEmoji(tags) {
+      for (const tag of tags || []) {
+        if (emojiMap[tag.toLowerCase()]) return emojiMap[tag.toLowerCase()];
+      }
+      return '🍽️';
     }
+    
+    // Display recipes from Firestore
+    const grid = document.getElementById('recipe-grid');
+    
+    async function loadRecipes() {
+      try {
+        let q;
+        
+        // Filter by category tag
+        if (cat && cat !== 'main-dishes') {
+          q = query(collection(db, 'recipes'), where('tags', 'array-contains', cat));
+        } else {
+          q = query(collection(db, 'recipes'), orderBy('upvotes', 'desc'));
+        }
+        
+        const snapshot = await getDocs(q);
+        const recipes = [];
+        
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          // Filter by subcategory if specified
+          if (subcat && !data.tags.includes(subcat)) return;
+          recipes.push({ id: doc.id, ...data });
+        });
+        
+        // Sort by upvotes
+        recipes.sort((a, b) => (b.upvotes || 0) - (a.upvotes || 0));
+        
+        if (recipes.length > 0) {
+          recipes.forEach((recipe, i) => {
+            const card = document.createElement('a');
+            card.href = 'recipe.html?id=' + recipe.id;
+            card.className = 'recipe-card';
+            card.innerHTML = `
+              <div class="recipe-image">${getEmoji(recipe.tags)}</div>
+              <div class="recipe-content">
+                <div class="recipe-tags">
+                  ${(recipe.tags || []).slice(0, 3).map(t => `<span class="tag">${t}</span>`).join('')}
+                </div>
+                <h3 class="recipe-title">${recipe.title}</h3>
+                <p class="recipe-desc">${recipe.description || ''}</p>
+                <div class="recipe-meta">
+                  <span>⏱️ ${recipe.time || ''}</span>
+                  <span>👍 ${recipe.upvotes || 0}</span>
+                </div>
+              </div>
+            `;
+            grid.appendChild(card);
+          });
+        } else {
+          grid.innerHTML = `
+            <div class="empty-state" style="grid-column: 1/-1;">
+              <h3>No recipes yet</h3>
+              <p>Be the first to submit a recipe in this category!</p>
+              <a href="submit-recipe.html" style="color: #2a9d8f;">Submit a Recipe →</a>
+            </div>
+          `;
+        }
+      } catch (error) {
+        console.error('Error loading recipes:', error);
+        grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><h3>Error loading recipes</h3><p>Please try again later.</p></div>';
+      }
+    }
+    
+    loadRecipes();
   </script>
 </body>
 </html>
