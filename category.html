@@ -336,7 +336,7 @@
         }
       } catch (error) {
         console.error('Error loading recipes:', error);
-        grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><h3>Error loading recipes</h3><p>Please try again later.</p></div>';
+        grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><h3>Error loading recipes</h3><p>' + error.message + '</p></div>';
       }
     }
     
