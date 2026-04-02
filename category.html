@@ -46,6 +46,11 @@
     .nav-links a:hover {
       color: #2a9d8f;
     }
+    .nav-links a.active {
+      color: #2a9d8f;
+      border-bottom: 2px solid #2a9d8f;
+      padding-bottom: 4px;
+    }
     main {
       max-width: 1200px;
       margin: 0 auto;
@@ -179,7 +184,7 @@
       <ul class="nav-links">
         <li><a href="index.html">Recipes</a></li>
         <li><a href="about.html">About</a></li>
-        <li><a href="categories.html">Categories</a></li>
+        <li><a href="categories.html" class="active">Categories</a></li>
         <li><a href="keto.html">Keto</a></li>
         <li><a href="submit-recipe.html">Submit Recipe</a></li>
         <li><a href="login.html" id="auth-link">Login</a></li>
@@ -279,20 +284,18 @@
     
     async function loadRecipes() {
       try {
-        let q;
-        
-        // Filter by category tag
-        if (cat && cat !== 'main-dishes') {
-          q = query(collection(db, 'recipes'), where('tags', 'array-contains', cat));
-        } else {
-          q = query(collection(db, 'recipes'), orderBy('upvotes', 'desc'));
-        }
-        
+        // Fetch all recipes and filter client-side for case-insensitive tag matching
+        const q = query(collection(db, 'recipes'));
         const snapshot = await getDocs(q);
         const recipes = [];
         
         snapshot.forEach(doc => {
           const data = doc.data();
+          const recipeTags = (data.tags || []).map(t => t.toLowerCase());
+          const catLower = cat.toLowerCase();
+          
+          // Filter by category tag (case-insensitive)
+          if (cat && cat !== 'main-dishes' && !recipeTags.includes(catLower)) return;
           // Filter by subcategory if specified
           if (subcat && !data.tags.includes(subcat)) return;
           recipes.push({ id: doc.id, ...data });
