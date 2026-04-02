@@ -41,7 +41,17 @@
     .loading, .error { text-align: center; padding: 3rem; color: #666; }
     .error { color: #e74c3c; }
     footer { text-align: center; padding: 2rem; color: #666; background: white; margin-top: 3rem; }
-    @media (max-width: 768px) { .nav-links { display: none; } .recipe-meta { flex-wrap: wrap; } .recipe-title { font-size: 1.5rem; } }
+    @media (max-width: 768px) { .nav-links { 
+        display: flex; 
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 0.75rem;
+      }
+      .nav-links a {
+        white-space: nowrap;
+        font-size: 0.85rem;
+        padding: 0.4rem 0.6rem;
+      } .recipe-meta { flex-wrap: wrap; } .recipe-title { font-size: 1.5rem; } }
   </style>
 </head>
 <body>
