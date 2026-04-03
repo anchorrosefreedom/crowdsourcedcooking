@@ -35,6 +35,12 @@
     .preview-image { max-width: 100%; max-height: 200px; border-radius: 10px; margin-top: 15px; display: none; }
     .file-required-note { font-size: 12px; color: #c0392b; margin-top: 5px; }
     .file-optional-note { font-size: 12px; color: #27ae60; margin-top: 5px; }
+    .tags-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+    .tag-checkbox { display: flex; align-items: center; gap: 6px; padding: 8px 14px; background: #f0f0f0; border-radius: 20px; cursor: pointer; transition: background 0.2s; }
+    .tag-checkbox:hover { background: #e0e0e0; }
+    .tag-checkbox input { display: none; }
+    .tag-checkbox:has(input:checked) { background: #2a9d8f; color: white; }
+    .tag-checkbox span { font-size: 14px; }
   </style>
 </head>
 <body>
@@ -86,6 +92,47 @@
               <option value="Drinks">Drinks</option>
             </select>
           </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Diet Tags (select all that apply)</label>
+          <div class="tags-container" id="tags-container">
+            <label class="tag-checkbox">
+              <input type="checkbox" name="tags" value="keto">
+              <span>🥑 Keto</span>
+            </label>
+            <label class="tag-checkbox">
+              <input type="checkbox" name="tags" value="carnivore">
+              <span>🥩 Carnivore</span>
+            </label>
+            <label class="tag-checkbox">
+              <input type="checkbox" name="tags" value="vegetarian">
+              <span>🥬 Vegetarian</span>
+            </label>
+            <label class="tag-checkbox">
+              <input type="checkbox" name="tags" value="gluten-free">
+              <span>🌾 Gluten Free</span>
+            </label>
+            <label class="tag-checkbox">
+              <input type="checkbox" name="tags" value="dairy-free">
+              <span>🥛 Dairy Free</span>
+            </label>
+            <label class="tag-checkbox">
+              <input type="checkbox" name="tags" value="low-carb">
+              <span>📉 Low Carb</span>
+            </label>
+            <label class="tag-checkbox">
+              <input type="checkbox" name="tags" value="high-protein">
+              <span>💪 High Protein</span>
+            </label>
+            <label class="tag-checkbox">
+              <input type="checkbox" name="tags" value="quick">
+              <span>⚡ Quick & Easy</span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="form-row">
           <div class="form-group">
             <label>Prep Time (minutes)</label>
             <input type="number" id="prepTime" placeholder="15" min="0">
@@ -296,6 +343,7 @@
           authorName: currentUser.displayName || currentUser.email.split('@')[0],
           imageUrl: imageUrl,
           videoUrl: document.getElementById('videoUrl').value || null,
+          tags: Array.from(document.querySelectorAll('input[name="tags"]:checked')).map(cb => cb.value),
           upvotes: 0,
           downvotes: 0,
           createdAt: serverTimestamp()
