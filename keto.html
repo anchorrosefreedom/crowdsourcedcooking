@@ -15,7 +15,7 @@
     main { max-width: 1000px; margin: 0 auto; padding: 2rem; }
     .page-title { background: white; border-radius: 16px; padding: 2rem; text-align: center; margin-bottom: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .page-title h1 { font-size: 2rem; color: #264653; }
-    .diet-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .diet-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
     .diet-tile { background: white; border-radius: 12px; padding: 1.5rem; text-align: center; cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.06); transition: transform 0.2s, box-shadow 0.2s; }
     .diet-tile:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
     .diet-tile h2 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #264653; }
@@ -77,6 +77,10 @@
       <div class="diet-tile" onclick="toggleDiet('vegetarian')">
         <h2>🥬 Vegetarian</h2>
         <p>Plant-based, meat-free</p>
+      </div>
+      <div class="diet-tile" onclick="toggleDiet('glutenfree')">
+        <h2>🌾 Gluten Free</h2>
+        <p>No gluten, no wheat</p>
       </div>
     </div>
     
@@ -259,6 +263,66 @@
         <p><strong>B12:</strong> Consider supplementation or fortified foods</p>
         <p><strong>Iron:</strong> Pair vitamin C with iron-rich foods for absorption</p>
         <p><strong>Omega-3:</strong> Include flax, chia, or walnuts</p>
+      </div>
+    </div>
+    
+    <!-- GLUTEN FREE SECTION -->
+    <div id="glutenfree" class="diet-section">
+      <div class="section-card">
+        <h2>🌾 What is Gluten Free?</h2>
+        <p>A gluten-free diet eliminates gluten, a protein found in wheat, barley, rye, and triticale. It's essential for people with celiac disease, gluten sensitivity, or wheat allergies, but many choose it for other health reasons.</p>
+      </div>
+      
+      <div class="section-card">
+        <h2>⚡ Gluten Free Key Benefits</h2>
+        <ul>
+          <li>🔒 Reduced inflammation — eliminates trigger for celiac and sensitivity</li>
+          <li>🩸 Improved gut health — allows intestinal healing</li>
+          <li>⚖️ Weight management — focus on whole, unprocessed foods</li>
+          <li>🧠 Increased energy — reduced fatigue from gluten reactions</li>
+          <li>💊 Better nutrient absorption — healing gut lining</li>
+        </ul>
+      </div>
+      
+      <div class="section-card">
+        <h2>📊 Gluten Free Statistics</h2>
+        <div class="stats-grid">
+          <div class="stat-box"><div class="number">1%</div><div class="label">Celiac Disease</div></div>
+          <div class="stat-box"><div class="number">6%</div><div class="label">Gluten Sensitive</div></div>
+          <div class="stat-box"><div class="number">Growing</div><div class="label">Market Trend</div></div>
+        </div>
+      </div>
+      
+      <div class="section-card">
+        <h2>🍽️ What to Eat Gluten Free</h2>
+        <h3>🥩 Proteins</h3>
+        <div class="food-grid">
+          <div class="food-item">Beef</div><div class="food-item">Chicken</div><div class="food-item">Pork</div>
+          <div class="food-item">Fish</div><div class="food-item">Eggs</div><div class="food-item">Turkey</div>
+        </div>
+        <h3>🥦 Vegetables & Fruits</h3>
+        <div class="food-grid">
+          <div class="food-item">All Vegetables</div><div class="food-item">All Fruits</div>
+          <div class="food-item">Potatoes</div><div class="food-item">Sweet Potatoes</div>
+        </div>
+        <h3>🌾 GF Grains & Starches</h3>
+        <div class="food-grid">
+          <div class="food-item">Rice</div><div class="food-item">Quinoa</div><div class="food-item">Oats (GF)</div>
+          <div class="food-item">Buckwheat</div><div class="food-item">Corn</div><div class="food-item">Tapioca</div>
+        </div>
+        <h3>❌ Avoid (Contains Gluten)</h3>
+        <div class="food-grid">
+          <div class="food-item avoid">Wheat</div><div class="food-item avoid">Barley</div><div class="food-item avoid">Rye</div>
+          <div class="food-item avoid">Bread</div><div class="food-item avoid">Pasta</div><div class="food-item avoid">Beer</div>
+        </div>
+      </div>
+      
+      <div class="section-card">
+        <h2>📏 Gluten Free Tips</h2>
+        <p><strong>Read labels:</strong> Look for "GF" certification</p>
+        <p><strong>Watch cross-contamination:</strong> Use separate utensils</p>
+        <p><strong>Focus on whole foods:</strong> Fruits, vegetables, lean meats</p>
+        <p><strong>Explore alternatives:</strong> Almond flour, coconut flour, GF oats</p>
       </div>
     </div>
   </main>
