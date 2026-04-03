@@ -41,6 +41,7 @@
     .tag-checkbox input { display: none; }
     .tag-checkbox:has(input:checked) { background: #2a9d8f; color: white; }
     .tag-checkbox span { font-size: 14px; }
+    .ingredient-tag { background: #e9f5f4; }
   </style>
 </head>
 <body>
@@ -130,6 +131,155 @@
               <span>⚡ Quick & Easy</span>
             </label>
           </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Ingredient Tags</label>
+          <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Select common ingredients or add your own. Custom tags must be capitalized correctly (e.g., "Garlic" not "garlic" or "GARLIC").</p>
+          <div class="tags-container" id="ingredient-tags">
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Beef">
+              <span>🥩 Beef</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Chicken">
+              <span>🍗 Chicken</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Pork">
+              <span>🐷 Pork</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Lamb">
+              <span>🐑 Lamb</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Fish">
+              <span>🐟 Fish</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Salmon">
+              <span>🍣 Salmon</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Shrimp">
+              <span>🦐 Shrimp</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Shellfish">
+              <span>🦪 Shellfish</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Tuna">
+              <span>🐟 Tuna</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Cabbage">
+              <span>🥬 Cabbage</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Lettuce">
+              <span>🥗 Lettuce</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Spinach">
+              <span>🥬 Spinach</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Kale">
+              <span>🥬 Kale</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Broccoli">
+              <span>🥦 Broccoli</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Cauliflower">
+              <span>🥦 Cauliflower</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Carrots">
+              <span>🥕 Carrots</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Onions">
+              <span>🧅 Onions</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Garlic">
+              <span>🧄 Garlic</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Leeks">
+              <span>🧅 Leeks</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Bell Peppers">
+              <span>🫑 Bell Peppers</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Mushrooms">
+              <span>🍄 Mushrooms</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Zucchini">
+              <span>🥒 Zucchini</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Tomatoes">
+              <span>🍅 Tomatoes</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Potatoes">
+              <span>🥔 Potatoes</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Eggs">
+              <span>🥚 Eggs</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Cheese">
+              <span>🧀 Cheese</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Butter">
+              <span>🧈 Butter</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Cream">
+              <span>🥛 Cream</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Bacon">
+              <span>🥓 Bacon</span>
+            </label>
+            <label class="tag-checkbox ingredient-tag">
+              <input type="checkbox" name="ingredient-tags" value="Sausage">
+              <span>🌭 Sausage</span>
+            </label>
+          </div>
+          <div style="margin-top: 15px; display: flex; gap: 10px; align-items: center;">
+            <select id="tag-emoji" style="padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; width: 60px;">
+              <option value="">🍽️</option>
+              <option value="🥩">🥩</option>
+              <option value="🍗">🍗</option>
+              <option value="🐷">🐷</option>
+              <option value="🐟">🐟</option>
+              <option value="🦐">🦐</option>
+              <option value="🥬">🥬</option>
+              <option value="🧄">🧄</option>
+              <option value="🧅">🧅</option>
+              <option value="🥦">🥦</option>
+              <option value="🥕">🥕</option>
+              <option value="🍄">🍄</option>
+              <option value="🧀">🧀</option>
+              <option value="🥚">🥚</option>
+              <option value="🥓">🥓</option>
+            </select>
+            <input type="text" id="custom-tag" placeholder="Add custom ingredient (e.g., Dill)" style="padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; flex: 1; max-width: 250px;">
+            <button type="button" onclick="addCustomTag()" style="padding: 10px 20px; background: #2a9d8f; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">Add</button>
+          </div>
+          <p id="tag-error" style="color: #c0392b; font-size: 12px; margin-top: 8px; display: none;"></p>
         </div>
         
         <div class="form-row">
@@ -254,6 +404,49 @@
       signOut(auth);
     };
 
+    // Custom tag validation and addition
+    window.addCustomTag = function() {
+      const input = document.getElementById('custom-tag');
+      const emojiSelect = document.getElementById('tag-emoji');
+      const errorEl = document.getElementById('tag-error');
+      const tagValue = input.value.trim();
+      const emoji = emojiSelect.value || '🍽️';
+      
+      errorEl.style.display = 'none';
+      
+      if (!tagValue) {
+        errorEl.textContent = 'Please enter an ingredient';
+        errorEl.style.display = 'block';
+        return;
+      }
+      
+      // Check format: First letter capitalized, rest lowercase
+      if (tagValue[0] !== tagValue[0].toUpperCase() || tagValue.slice(1) !== tagValue.slice(1).toLowerCase()) {
+        errorEl.textContent = 'Must be capitalized correctly (e.g., "Garlic" not "garlic" or "GARLIC")';
+        errorEl.style.display = 'block';
+        return;
+      }
+      
+      // Check if already exists
+      const existingCheckboxes = document.querySelectorAll('input[name="ingredient-tags"]');
+      for (let cb of existingCheckboxes) {
+        if (cb.value === tagValue) {
+          errorEl.textContent = 'This ingredient is already in the list';
+          errorEl.style.display = 'block';
+          return;
+        }
+      }
+      
+      // Add the new tag
+      const container = document.getElementById('ingredient-tags');
+      const label = document.createElement('label');
+      label.className = 'tag-checkbox ingredient-tag';
+      label.innerHTML = `<input type="checkbox" name="ingredient-tags" value="${tagValue}" checked><span>${emoji} ${tagValue}</span>`;
+      container.appendChild(label);
+      
+      input.value = '';
+    };
+
     // File upload handling
     const fileInput = document.getElementById('recipe-image');
     const fileUpload = document.getElementById('file-upload');
@@ -344,6 +537,7 @@
           imageUrl: imageUrl,
           videoUrl: document.getElementById('videoUrl').value || null,
           tags: Array.from(document.querySelectorAll('input[name="tags"]:checked')).map(cb => cb.value),
+          ingredientTags: Array.from(document.querySelectorAll('input[name="ingredient-tags"]:checked')).map(cb => cb.value),
           upvotes: 0,
           downvotes: 0,
           createdAt: serverTimestamp()
