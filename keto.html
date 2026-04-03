@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Keto Guide - CrowdSourced Cooking</title>
+  <title>Diets Guide - CrowdSourced Cooking</title>
   <style>
     * {
       margin: 0;
@@ -43,10 +43,8 @@
       font-weight: 500;
       transition: color 0.2s;
     }
-    .nav-links a:hover {
-    }
-    .nav-links a.active {
-    }
+    .nav-links a:hover { }
+    .nav-links a.active { }
     main {
       max-width: 1000px;
       margin: 0 auto;
@@ -63,6 +61,34 @@
     .page-title h1 {
       font-size: 2rem;
       color: #264653;
+    }
+    .diet-tiles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .diet-tile {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .diet-tile:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    .diet-tile h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .diet-tile p {
+      color: #666;
+      font-size: 0.9rem;
     }
     .section-card {
       background: white;
@@ -149,6 +175,7 @@
         padding: 0.2rem 0.25rem;
       }
       .stats-grid { grid-template-columns: 1fr; }
+      .diet-tiles { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -169,16 +196,33 @@
   
   <main>
     <div class="page-title">
-      <h1>🥑 What is Keto?</h1>
+      <h1>🥗 Choose Your Diet</h1>
+      <p>Explore different dietary lifestyles and find what works for you</p>
     </div>
     
-    <div class="section-card">
-      <h2>Understanding the Ketogenic Diet</h2>
+    <div class="diet-tiles">
+      <a href="#keto" class="diet-tile">
+        <h2>🥑 Keto</h2>
+        <p>Low-carb, high-fat</p>
+      </a>
+      <a href="#carnivore" class="diet-tile">
+        <h2>🥩 Carnivore</h2>
+        <p>All-meat, animal-based</p>
+      </a>
+      <a href="#vegetarian" class="diet-tile">
+        <h2>🥬 Vegetarian</h2>
+        <p>Plant-based, meat-free</p>
+      </a>
+    </div>
+    
+    <!-- KETO SECTION -->
+    <div id="keto" class="section-card">
+      <h2>🥑 What is Keto?</h2>
       <p>The ketogenic diet is a low-carb, high-fat eating plan that puts your body into a metabolic state called ketosis. When this happens, your body becomes incredibly efficient at burning fat for energy instead of carbohydrates.</p>
     </div>
     
     <div class="section-card">
-      <h2>⚡ Key Benefits</h2>
+      <h2>⚡ Keto Key Benefits</h2>
       <ul>
         <li>🔥 Weight loss — fat becomes the primary fuel source</li>
         <li>🧠 Improved mental clarity — stable blood sugar means fewer crashes</li>
@@ -255,6 +299,181 @@
       <p><strong>Daily Net Carbs:</strong> 20-50g</p>
       <p><strong>Protein:</strong> 0.8-1g per pound of body weight</p>
       <p><strong>Fats:</strong> Eat until satisfied — no need to count calories!</p>
+    </div>
+    
+    <!-- CARNIVORE SECTION -->
+    <div id="carnivore" class="section-card">
+      <h2>🥩 What is Carnivore?</h2>
+      <p>The carnivore diet is an all-meat eating plan based on the premise that humans evolved eating animal products. It eliminates all plant foods, focusing exclusively on meat, fish, eggs, and other animal-based foods.</p>
+    </div>
+    
+    <div class="section-card">
+      <h2>⚡ Carnivore Key Benefits</h2>
+      <ul>
+        <li>🔥 Simplified eating — no meal planning or calorie counting</li>
+        <li>🧠 Mental clarity — consistent energy from protein and fat</li>
+        <li>💪 Muscle building — complete amino acid profile</li>
+        <li>🔒 Reduced inflammation — elimination of plant toxins and lectins</li>
+        <li>⏰ Auto-regulation — hunger signals become clear and simple</li>
+      </ul>
+    </div>
+    
+    <div class="section-card">
+      <h2>📊 Carnivore Statistics</h2>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="number">100%</div>
+          <div class="label">Animal Products</div>
+        </div>
+        <div class="stat-box">
+          <div class="number">0%</div>
+          <div class="label">Plant Foods</div>
+        </div>
+        <div class="stat-box">
+          <div class="number">High</div>
+          <div class="label">Protein/Fat</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section-card">
+      <h2>🍽️ What to Eat on Carnivore</h2>
+      
+      <h3>🥩 All Meats</h3>
+      <div class="food-grid">
+        <div class="food-item">Beef</div>
+        <div class="food-item">Ground Beef</div>
+        <div class="food-item">Steak</div>
+        <div class="food-item">Pork</div>
+        <div class="food-item">Bacon</div>
+        <div class="food-item">Lamb</div>
+        <div class="food-item">Venison</div>
+        <div class="food-item">Chicken</div>
+      </div>
+      
+      <h3>🐟 Seafood</h3>
+      <div class="food-grid">
+        <div class="food-item">Salmon</div>
+        <div class="food-item">Tuna</div>
+        <div class="food-item">Sardines</div>
+        <div class="food-item">Mackerel</div>
+        <div class="food-item">Shrimp</div>
+        <div class="food-item">Lobster</div>
+      </div>
+      
+      <h3>🥚 Animal Products</h3>
+      <div class="food-grid">
+        <div class="food-item">Eggs</div>
+        <div class="food-item">Butter</div>
+        <div class="food-item">Cheese</div>
+        <div class="food-item">Heavy Cream</div>
+        <div class="food-item">Bone Marrow</div>
+        <div class="food-item">Lard</div>
+      </div>
+      
+      <h3>❌ Avoid</h3>
+      <div class="food-grid">
+        <div class="food-item avoid">All Vegetables</div>
+        <div class="food-item avoid">All Fruits</div>
+        <div class="food-item avoid">Grains</div>
+        <div class="food-item avoid">Legumes</div>
+        <div class="food-item avoid">Nuts</div>
+        <div class="food-item avoid">Seeds</div>
+      </div>
+    </div>
+    
+    <div class="section-card">
+      <h2>📏 Carnivore Guidelines</h2>
+      <p><strong>Eat:</strong> When hungry, stop when satisfied</p>
+      <p><strong>Protein:</strong> 2-4oz per pound of body weight initially</p>
+      <p><strong>Fat:</strong> Let fat be 50-70% of calories</p>
+      <p><strong>Electrolytes:</strong> Focus on sodium, potassium, magnesium</p>
+    </div>
+    
+    <!-- VEGETARIAN SECTION -->
+    <div id="vegetarian" class="section-card">
+      <h2>🥬 What is Vegetarian?</h2>
+      <p>A vegetarian diet excludes meat, fish, and poultry. It focuses on plant-based foods including fruits, vegetables, grains, legumes, nuts, and seeds. Many vegetarians also include dairy products and eggs.</p>
+    </div>
+    
+    <div class="section-card">
+      <h2>⚡ Vegetarian Key Benefits</h2>
+      <ul>
+        <li>🌱 Environmental impact — lower carbon footprint</li>
+        <li>❤️ Heart health — reduced risk of heart disease</li>
+        <li>⚖️ Weight management — typically lower calorie density</li>
+        <li>🔬 Reduced cancer risk — high fiber and antioxidants</li>
+        <li>💊 Longevity — linked to longer lifespan in many studies</li>
+      </ul>
+    </div>
+    
+    <div class="section-card">
+      <h2>📊 Vegetarian Statistics</h2>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="number">100%</div>
+          <div class="label">Plant-Based</div>
+        </div>
+        <div class="stat-box">
+          <div class="number">0%</div>
+          <div class="label">Meat</div>
+        </div>
+        <div class="stat-box">
+          <div class="number">High</div>
+          <div class="label">Fiber</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section-card">
+      <h2>🍽️ What to Eat as Vegetarian</h2>
+      
+      <h3>🥦 Vegetables</h3>
+      <div class="food-grid">
+        <div class="food-item">Leafy Greens</div>
+        <div class="food-item">Broccoli</div>
+        <div class="food-item">Carrots</div>
+        <div class="food-item">Tomatoes</div>
+        <div class="food-item">Peppers</div>
+        <div class="food-item">Zucchini</div>
+      </div>
+      
+      <h3>🌾 Grains & Legumes</h3>
+      <div class="food-grid">
+        <div class="food-item">Quinoa</div>
+        <div class="food-item">Rice</div>
+        <div class="food-item">Beans</div>
+        <div class="food-item">Lentils</div>
+        <div class="food-item">Chickpeas</div>
+        <div class="food-item">Oats</div>
+      </div>
+      
+      <h3>🥜 Nuts & Seeds</h3>
+      <div class="food-grid">
+        <div class="food-item">Almonds</div>
+        <div class="food-item">Walnuts</div>
+        <div class="food-item">Chia Seeds</div>
+        <div class="food-item">Flax Seeds</div>
+        <div class="food-item">Peanut Butter</div>
+        <div class="food-item">Tofu</div>
+      </div>
+      
+      <h3>❌ Avoid</h3>
+      <div class="food-grid">
+        <div class="food-item avoid">Beef</div>
+        <div class="food-item avoid">Chicken</div>
+        <div class="food-item avoid">Pork</div>
+        <div class="food-item avoid">Fish</div>
+        <div class="food-item avoid">Seafood</div>
+      </div>
+    </div>
+    
+    <div class="section-card">
+      <h2>📏 Vegetarian Nutrition Tips</h2>
+      <p><strong>Protein:</strong> Combine legumes with grains for complete proteins</p>
+      <p><strong>B12:</strong> Consider supplementation or fortified foods</p>
+      <p><strong>Iron:</strong> Pair vitamin C with iron-rich foods for absorption</p>
+      <p><strong>Omega-3:</strong> Include flax, chia, or walnuts</p>
     </div>
   </main>
   
