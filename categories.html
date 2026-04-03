@@ -316,4 +316,33 @@
     <p>© 2026 CrowdSourced Cooking — Made by cooks, for cooks</p>
   </footer>
 </body>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+    import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
+      authDomain: "crowdsourcedcooking.firebaseapp.com",
+      projectId: "crowdsourcedcooking",
+      storageBucket: "crowdsourcedcooking.firebasestorage.app",
+      messagingSenderId: "1025589287082",
+      appId: "1:1025589287082:web:15569e323aa2781ab858d3"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    
+    onAuthStateChanged(auth, user => {
+      const authLink = document.getElementById('auth-link');
+      if (user) {
+        authLink.href = 'logout.html';
+        authLink.textContent = 'Log Off';
+      } else {
+        authLink.href = 'login.html';
+        authLink.textContent = 'Login';
+      }
+    });
+  </script>
+</body>
 </html>

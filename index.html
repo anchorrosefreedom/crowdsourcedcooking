@@ -227,6 +227,7 @@
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
     import { getFirestore, collection, query, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
     
     const firebaseConfig = {
       apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
@@ -239,6 +240,19 @@
     
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
+    
+    // Update nav based on auth state
+    onAuthStateChanged(auth, user => {
+      const authLink = document.getElementById('auth-link');
+      if (user) {
+        authLink.href = 'logout.html';
+        authLink.textContent = 'Log Off';
+      } else {
+        authLink.href = 'login.html';
+        authLink.textContent = 'Login';
+      }
+    });
     
     const emojiMap = {
       'beef': '🥩', 'chicken': '🍗', 'pork': '🐷', 'fish': '🐟',
