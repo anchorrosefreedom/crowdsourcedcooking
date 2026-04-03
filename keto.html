@@ -77,6 +77,7 @@
       color: inherit;
       box-shadow: 0 2px 12px rgba(0,0,0,0.06);
       transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
     }
     .diet-tile:hover {
       transform: translateY(-4px);
@@ -89,6 +90,12 @@
     .diet-tile p {
       color: #666;
       font-size: 0.9rem;
+    }
+    .diet-content {
+      display: none;
+    }
+    .diet-content.active {
+      display: block;
     }
     .section-card {
       background: white;
@@ -201,22 +208,21 @@
     </div>
     
     <div class="diet-tiles">
-      <a href="#keto" class="diet-tile">
+      <div class="diet-tile" onclick="toggleDiet('keto')">
         <h2>🥑 Keto</h2>
         <p>Low-carb, high-fat</p>
-      </a>
-      <a href="#carnivore" class="diet-tile">
+      </div>
+      <div class="diet-tile" onclick="toggleDiet('carnivore')">
         <h2>🥩 Carnivore</h2>
         <p>All-meat, animal-based</p>
-      </a>
-      <a href="#vegetarian" class="diet-tile">
+      </div>
+      <div class="diet-tile" onclick="toggleDiet('vegetarian')">
         <h2>🥬 Vegetarian</h2>
         <p>Plant-based, meat-free</p>
-      </a>
+      </div>
     </div>
     
-    <!-- KETO SECTION -->
-    <div id="keto" class="section-card">
+    <div id="keto" class="diet-content section-card">
       <h2>🥑 What is Keto?</h2>
       <p>The ketogenic diet is a low-carb, high-fat eating plan that puts your body into a metabolic state called ketosis. When this happens, your body becomes incredibly efficient at burning fat for energy instead of carbohydrates.</p>
     </div>
@@ -302,7 +308,7 @@
     </div>
     
     <!-- CARNIVORE SECTION -->
-    <div id="carnivore" class="section-card">
+    <div id="carnivore" class="diet-content section-card">
       <h2>🥩 What is Carnivore?</h2>
       <p>The carnivore diet is an all-meat eating plan based on the premise that humans evolved eating animal products. It eliminates all plant foods, focusing exclusively on meat, fish, eggs, and other animal-based foods.</p>
     </div>
@@ -391,7 +397,7 @@
     </div>
     
     <!-- VEGETARIAN SECTION -->
-    <div id="vegetarian" class="section-card">
+    <div id="vegetarian" class="diet-content section-card">
       <h2>🥬 What is Vegetarian?</h2>
       <p>A vegetarian diet excludes meat, fish, and poultry. It focuses on plant-based foods including fruits, vegetables, grains, legumes, nuts, and seeds. Many vegetarians also include dairy products and eggs.</p>
     </div>
@@ -480,5 +486,23 @@
   <footer>
     <p>© 2026 CrowdSourced Cooking — Made by cooks, for cooks</p>
   </footer>
+  
+  <script>
+    function toggleDiet(dietId) {
+      var content = document.getElementById(dietId);
+      var allContents = document.querySelectorAll('.diet-content');
+      
+      // Hide all sections first
+      allContents.forEach(function(el) {
+        el.classList.remove('active');
+      });
+      
+      // Toggle the clicked section
+      if (content) {
+        content.classList.add('active');
+        content.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  </script>
 </body>
 </html>
