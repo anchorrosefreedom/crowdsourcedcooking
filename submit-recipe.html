@@ -163,13 +163,13 @@
     let selectedFile = null;
     let isFork = false;
 
-    // Check if this is a fork (editing existing recipe)
+    // Check if this is a MiMO (Make it My Own - forking existing recipe)
     const urlParams = new URLSearchParams(window.location.search);
-    const originalRecipeId = urlParams.get('fork');
+    const originalRecipeId = urlParams.get('mimo');
     if (originalRecipeId) {
       isFork = true;
-      document.querySelector('h1').textContent = '🍳 Fork a Recipe';
-      document.querySelector('.subtitle').textContent = 'Modify this recipe and make it your own!';
+      document.querySelector('h1').textContent = '🔀 MiMO - Make it My Own';
+      document.querySelector('.subtitle').textContent = 'Tweak this recipe and make it your own!';
       document.getElementById('file-note').textContent = 'Optional - keep original image if empty';
       document.getElementById('file-note').className = 'file-optional-note';
     }
