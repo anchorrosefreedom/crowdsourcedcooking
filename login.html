@@ -6,8 +6,8 @@
   <title>Login - CrowdSourced Cooking</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-    .container { background: white; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 100%; max-width: 420px; padding: 40px; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 0; }
+    .container { background: white; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 100%; max-width: 420px; padding: 40px; margin-top: 2rem; }
     h1 { color: #264653; margin-bottom: 10px; font-size: 28px; text-align: center; }
     .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
     .tabs { display: flex; margin-bottom: 30px; border-bottom: 2px solid #eee; }
@@ -36,14 +36,21 @@
   </style>
 </head>
 <body>
+  <header>
+    <nav style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.08);">
+      <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
+      <ul style="display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0;">
+        <li><a href="index.html" style="color: #333; text-decoration: none; font-weight: 500;">Home</a></li>
+        <li><a href="about.html" style="color: #333; text-decoration: none; font-weight: 500;">About</a></li>
+        <li><a href="categories.html" style="color: #333; text-decoration: none; font-weight: 500;">Recipes</a></li>
+        <li><a href="submit-recipe.html" style="color: #333; text-decoration: none; font-weight: 500;">Submit Recipe</a></li>
+        <li><a href="keto.html" style="color: #333; text-decoration: none; font-weight: 500;">Diets</a></li>
+        <li><a href="login.html" id="auth-link" style="color: #333; text-decoration: none; font-weight: 500;">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+  
   <div class="container">
-    <div class="nav-bar" id="nav-bar">
-      <a href="index.html">Home</a> |
-      <a href="about.html">About</a> |
-      <a href="categories.html">Recipes</a> |
-      <a href="keto.html">Diets</a> |
-      <a href="submit-recipe.html">Submit Recipe</a>
-    </div>
     <h1>🍳 CrowdSourced Cooking</h1>
     <p class="subtitle">Join our community of recipe creators</p>
     
