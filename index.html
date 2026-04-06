@@ -191,7 +191,7 @@
       </div>
     </section>
     
-    <h2 class="section-title">🍽️ Popular Recipes</h2>
+    <h2 class="section-title">🍽️ Latest</h2>
     <section class="features" id="recipe-grid">
       <div class="feature-card">
         <h2>Loading recipes...</h2>
@@ -279,7 +279,7 @@
     
     async function loadRecipes() {
       try {
-        const q = query(collection(db, 'recipes'));
+        const q = query(collection(db, 'recipes'), orderBy('createdAt', 'desc'), limit(4));
         const snapshot = await getDocs(q);
         const grid = document.getElementById('recipe-grid');
         
@@ -287,14 +287,6 @@
           grid.innerHTML = '<div class="feature-card"><h2>No recipes yet</h2><p>Be the first to contribute!</p></div>';
           return;
         }
-        
-        // Collect and sort by upvotes
-        let recipes = [];
-        snapshot.forEach(doc => {
-          recipes.push({ id: doc.id, ...doc.data() });
-        });
-        recipes.sort((a, b) => (b.upvotes || 0) - (a.upvotes || 0));
-        recipes = recipes.slice(0, 6);
         
         let html = '';
         snapshot.forEach(doc => {
