@@ -67,56 +67,157 @@
     .page-title p {
       color: #666;
     }
-    .category-section {
-      margin-bottom: 2.5rem;
+
+    /* Search and Filters */
+    .search-filter-section {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
     }
-    .category-section h2 {
-      font-size: 1.5rem;
-      color: #264653;
+    .search-bar {
+      position: relative;
       margin-bottom: 1rem;
+    }
+    .search-bar input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      font-size: 1rem;
+      border: 2px solid #e9f5f4;
+      border-radius: 10px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #f8f9fa;
+    }
+    .search-bar input:focus {
+      outline: none;
+      border-color: #2a9d8f;
+      box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.15);
+      background: white;
+    }
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+    }
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .filter-group {
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
-    .category-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1rem;
-    }
-    .category-card {
-      background: white;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-      text-decoration: none;
-      color: inherit;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .category-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-    }
-    .category-card h3 {
-      font-size: 1.2rem;
+    .filter-group label {
+      font-weight: 600;
       color: #264653;
-      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
     }
-    .category-card p {
+    .chips {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .chip {
+      background: #f8f9fa;
+      border: 1px solid #e9f5f4;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #333;
+    }
+    .chip:hover {
+      background: #e9f5f4;
+      border-color: #2a9d8f;
+    }
+    .chip.active {
+      background: #2a9d8f;
+      color: white;
+      border-color: #2a9d8f;
+    }
+    .results-info {
+      margin-bottom: 1rem;
       color: #666;
       font-size: 0.9rem;
     }
-    .subcategories {
-      display: flex;
-      gap: 0.25rem;
-      flex-wrap: wrap;
-      margin-top: 0.75rem;
+
+    /* Recipe Grid */
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
     }
-    .subcat-tag {
+    .recipe-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .recipe-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    .recipe-image {
+      width: 100%;
+      height: 180px;
+      background: linear-gradient(135deg, #e9f5f4 0%, #d4e8e5 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+    .recipe-content {
+      padding: 1.25rem;
+    }
+    .recipe-tags {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .tag {
       background: #e9f5f4;
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      font-size: 0.65rem;
+      color: #2a9d8f;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
       font-weight: 500;
+    }
+    .recipe-title {
+      font-size: 1.1rem;
+      color: #264653;
+      margin-bottom: 0.5rem;
+    }
+    .recipe-desc {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+    }
+    .recipe-meta {
+      display: flex;
+      gap: 1rem;
+      color: #888;
+      font-size: 0.85rem;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #666;
+      background: white;
+      border-radius: 12px;
+    }
+    .empty-state h3 {
+      color: #264653;
+      margin-bottom: 0.5rem;
     }
     footer {
       text-align: center;
@@ -141,8 +242,10 @@
         font-size: 0.65rem;
         padding: 0.2rem 0.25rem;
       }
-      .category-grid { grid-template-columns: 1fr; }
+      .recipe-grid { grid-template-columns: 1fr; }
       .page-title h1 { font-size: 1.5rem; }
+      .filter-chips { flex-direction: column; }
+      .filter-group { flex-wrap: wrap; }
     }
   </style>
 </head>
@@ -164,164 +267,70 @@
   <main>
     <div class="page-title">
       <h1>🍽️ Browse Recipes</h1>
-      <p>Find the perfect recipe by category</p>
+      <p>Find the perfect recipe</p>
     </div>
     
-    <div class="category-section">
-    <div class="category-section">
-      <h2>🍽️ Meal Types</h2>
-      <div class="category-grid">
-        <a href="category.html?cat=main-dishes" class="category-card">
-          <h3>🍝 Main Dishes</h3>
-          <p>Center-of-the-plate entrees</p>
-          <div class="subcategories">
-            <span class="subcat-tag">Beef</span>
-            <span class="subcat-tag">Chicken</span>
-            <span class="subcat-tag">Pork</span>
-            <span class="subcat-tag">Fish</span>
+    <!-- Search and Filters -->
+    <div class="search-filter-section">
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="recipe-search" placeholder="Search recipes by name or ingredients...">
+      </div>
+      
+      <div class="filter-chips">
+        <div class="filter-group">
+          <label>Diet:</label>
+          <div class="chips" id="diet-filters">
+            <button class="chip active" data-filter="diet" data-value="all">All</button>
+            <button class="chip" data-filter="diet" data-value="keto">🥑 Keto</button>
+            <button class="chip" data-filter="diet" data-value="carnivore">🥩 Carnivore</button>
+            <button class="chip" data-filter="diet" data-value="vegetarian">🥬 Vegetarian</button>
           </div>
-        </a>
-        <a href="category.html?cat=side-dishes" class="category-card">
-          <h3>🥗 Side Dishes</h3>
-          <p>Perfect accompaniments</p>
-          <div class="subcategories">
-            <span class="subcat-tag">Vegetables</span>
-            <span class="subcat-tag">Salads</span>
-            <span class="subcat-tag">Starches</span>
+        </div>
+        <div class="filter-group">
+          <label>Meal:</label>
+          <div class="chips" id="meal-filters">
+            <button class="chip active" data-filter="meal" data-value="all">All</button>
+            <button class="chip" data-filter="meal" data-value="Breakfast">🍳 Breakfast</button>
+            <button class="chip" data-filter="meal" data-value="Lunch">🥪 Lunch</button>
+            <button class="chip" data-filter="meal" data-value="Dinner">🍲 Dinner</button>
+            <button class="chip" data-filter="meal" data-value="Snack">🍿 Snack</button>
           </div>
-        </a>
-        <a href="category.html?cat=dinner" class="category-card">
-          <h3>🍲 Dinner</h3>
-          <p>Evening meal ideas</p>
-          <div class="subcategories">
-            <span class="subcat-tag">Beef</span>
-            <span class="subcat-tag">Chicken</span>
-            <span class="subcat-tag">Pork</span>
-            <span class="subcat-tag">Fish</span>
+        </div>
+        <div class="filter-group">
+          <label>Time:</label>
+          <div class="chips" id="time-filters">
+            <button class="chip active" data-filter="time" data-value="all">All</button>
+            <button class="chip" data-filter="time" data-value="quick">⚡ Quick (&lt;30m)</button>
+            <button class="chip" data-filter="time" data-value="medium">⏱️ Medium</button>
+            <button class="chip" data-filter="time" data-value="long">🐢 Long</button>
           </div>
-        </a>
-        <a href="category.html?cat=lunch" class="category-card">
-          <h3>🥪 Lunch</h3>
-          <p>Midday meals</p>
-          <div class="subcategories">
-            <span class="subcat-tag">Sandwiches</span>
-            <span class="subcat-tag">Salads</span>
-            <span class="subcat-tag">Soups</span>
-          </div>
-        </a>
-        <a href="category.html?cat=breakfasts" class="category-card">
-          <h3>🍳 Breakfast</h3>
-          <p>Morning meals and brunch</p>
-          <div class="subcategories">
-            <span class="subcat-tag">Eggs</span>
-            <span class="subcat-tag">Pancakes</span>
-            <span class="subcat-tag">Meats</span>
-          </div>
-        </a>
+        </div>
       </div>
     </div>
     
-    <div class="category-section">
-      <h2>🥩 Proteins</h2>
-      <div class="category-grid">
-        <a href="category.html?cat=beef" class="category-card">
-          <h3>🥩 Beef</h3>
-          <p>Classic beef recipes for every meal</p>
-          <div class="subcategories">
-            <span class="subcat-tag">Main Dishes</span>
-            <span class="subcat-tag">Breakfasts</span>
-            <span class="subcat-tag">Side Dishes</span>
-          </div>
-        </a>
-        <a href="category.html?cat=chicken" class="category-card">
-          <h3>🍗 Chicken</h3>
-          <p>Versatile chicken recipes</p>
-          <div class="subcategories">
-            <span class="subcat-tag">Main Dishes</span>
-            <span class="subcat-tag">Breakfasts</span>
-            <span class="subcat-tag">Side Dishes</span>
-          </div>
-        </a>
-        <a href="category.html?cat=pork" class="category-card">
-          <h3>🐷 Pork</h3>
-          <p>Pork chops, bacon, ribs, and more</p>
-          <div class="subcategories">
-            <span class="subcat-tag">Main Dishes</span>
-            <span class="subcat-tag">Breakfasts</span>
-            <span class="subcat-tag">Side Dishes</span>
-          </div>
-        </a>
-        <a href="category.html?cat=fish" class="category-card">
-          <h3>🐟 Fish & Seafood</h3>
-          <p>Fresh fish and seafood recipes</p>
-          <div class="subcategories">
-            <span class="subcat-tag">Main Dishes</span>
-            <span class="subcat-tag">Breakfasts</span>
-            <span class="subcat-tag">Side Dishes</span>
-          </div>
-        </a>
-      </div>
+    <!-- Results count -->
+    <div class="results-info">
+      <span id="results-count">Loading recipes...</span>
     </div>
     
-    <div class="category-section">
-      <h2>🍰 More Categories</h2>
-      <div class="category-grid">
-        <a href="category.html?cat=desserts" class="category-card">
-          <h3>🍰 Desserts</h3>
-          <p>Sweet treats and confections</p>
-        </a>
-        <a href="category.html?cat=breads" class="category-card">
-          <h3>🍞 Breads</h3>
-          <p>Homemade breads and baked goods</p>
-        </a>
-        <a href="category.html?cat=drinks" class="category-card">
-          <h3>🥤 Drinks</h3>
-          <p>Beverages, smoothies, and cocktails</p>
-        </a>
-      </div>
+    <div class="recipe-grid" id="recipe-grid">
+      <!-- Recipes loaded via JS -->
     </div>
     
-    <div class="category-section">
-      <h2>🥑 Diet Lifestyles</h2>
-      <div class="category-grid">
-        <a href="category.html?cat=keto" class="category-card">
-          <h3>🥑 Keto</h3>
-          <p>Low-carb, high-fat recipes for the ketogenic lifestyle</p>
-          <div class="subcategories">
-            <span class="subcat-tag">Main Dishes</span>
-            <span class="subcat-tag">Breakfasts</span>
-            <span class="subcat-tag">Side Dishes</span>
-          </div>
-        </a>
-        <a href="category.html?cat=vegetarian" class="category-card">
-          <h3>🥬 Vegetarian</h3>
-          <p>Meat-free recipes for a plant-based diet</p>
-          <div class="subcategories">
-            <span class="subcat-tag">Main Dishes</span>
-            <span class="subcat-tag">Breakfasts</span>
-            <span class="subcat-tag">Side Dishes</span>
-          </div>
-        </a>
-        <a href="category.html?cat=carnivore" class="category-card">
-          <h3>🥩 Carnivore</h3>
-          <p>All-meat, animal-based recipes</p>
-          <div class="subcategories">
-            <span class="subcat-tag">Main Dishes</span>
-            <span class="subcat-tag">Breakfasts</span>
-            <span class="subcat-tag">Side Dishes</span>
-          </div>
-        </a>
-      </div>
+    <div class="empty-state" id="no-results" style="display: none;">
+      <h3>No recipes found</h3>
+      <p>Try adjusting your search or filters</p>
     </div>
   </main>
   
   <footer>
     <p>© 2026 CrowdSourced Cooking — Made by cooks, for cooks</p>
   </footer>
-</body>
-
+  
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+    import { getFirestore, collection, query, getDocs, orderBy } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
     import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
     
     const firebaseConfig = {
@@ -334,8 +343,180 @@
     };
     
     const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
     const auth = getAuth(app);
     
+    // All recipes from Firestore
+    let allRecipes = [];
+    
+    // Current filter state
+    const filters = {
+      search: '',
+      diet: 'all',
+      meal: 'all',
+      time: 'all'
+    };
+    
+    // Emoji map for recipe cards
+    const emojiMap = {
+      'beef': '🥩', 'chicken': '🍗', 'pork': '🐷', 'fish': '🐟',
+      'keto': '🥑', 'carnivore': '🥩', 'vegetarian': '🥬',
+      'main-dishes': '🍝', 'side-dishes': '🥗', 'breakfasts': '🍳',
+      'desserts': '🍰', 'breads': '🍞', 'drinks': '🥤'
+    };
+    
+    function getEmoji(tags) {
+      for (const tag of tags || []) {
+        if (emojiMap[tag.toLowerCase()]) return emojiMap[tag.toLowerCase()];
+      }
+      return '🍽️';
+    }
+    
+    // Parse time string to minutes
+    function parseTime(timeStr) {
+      if (!timeStr) return null;
+      const str = timeStr.toLowerCase();
+      // Handle formats like "30 min", "1 hour", "1h 30m", etc.
+      let minutes = 0;
+      const hourMatch = str.match(/(\d+)\s*h/);
+      const minMatch = str.match(/(\d+)\s*m/);
+      if (hourMatch) minutes += parseInt(hourMatch[1]) * 60;
+      if (minMatch) minutes += parseInt(minMatch[1]);
+      // Handle just a number
+      if (!hourMatch && !minMatch) {
+        const num = parseInt(str);
+        if (!isNaN(num)) minutes = num;
+      }
+      return minutes || null;
+    }
+    
+    // Filter recipes based on current filters
+    function filterRecipes() {
+      return allRecipes.filter(recipe => {
+        // Search filter
+        if (filters.search) {
+          const searchLower = filters.search.toLowerCase();
+          const titleMatch = (recipe.title || '').toLowerCase().includes(searchLower);
+          const descMatch = (recipe.description || '').toLowerCase().includes(searchLower);
+          const ingredientsMatch = (recipe.ingredients || []).some(ing => 
+            (ing.name || '').toLowerCase().includes(searchLower)
+          );
+          const tagsMatch = (recipe.tags || []).some(tag => 
+            tag.toLowerCase().includes(searchLower)
+          );
+          if (!titleMatch && !descMatch && !ingredientsMatch && !tagsMatch) return false;
+        }
+        
+        // Diet filter
+        if (filters.diet !== 'all') {
+          const recipeTags = (recipe.tags || []).map(t => t.toLowerCase());
+          if (!recipeTags.includes(filters.diet.toLowerCase())) return false;
+        }
+        
+        // Meal type filter
+        if (filters.meal !== 'all') {
+          const recipeTags = recipe.tags || [];
+          if (!recipeTags.includes(filters.meal)) return false;
+        }
+        
+        // Time filter
+        if (filters.time !== 'all') {
+          const minutes = parseTime(recipe.time);
+          if (minutes === null) return false;
+          if (filters.time === 'quick' && minutes >= 30) return false;
+          if (filters.time === 'medium' && (minutes < 30 || minutes > 60)) return false;
+          if (filters.time === 'long' && minutes <= 60) return false;
+        }
+        
+        return true;
+      });
+    }
+    
+    // Render recipe cards
+    function renderRecipes() {
+      const grid = document.getElementById('recipe-grid');
+      const noResults = document.getElementById('no-results');
+      const countEl = document.getElementById('results-count');
+      
+      const filtered = filterRecipes();
+      
+      countEl.textContent = filtered.length === 0 ? 'No recipes found' : 
+        `Showing ${filtered.length} recipe${filtered.length !== 1 ? 's' : ''}`;
+      
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        noResults.style.display = 'block';
+        return;
+      }
+      
+      noResults.style.display = 'none';
+      grid.innerHTML = '';
+      
+      filtered.forEach(recipe => {
+        const card = document.createElement('a');
+        card.href = 'recipe.html?id=' + recipe.id;
+        card.className = 'recipe-card';
+        card.innerHTML = `
+          <div class="recipe-image">${getEmoji(recipe.tags)}</div>
+          <div class="recipe-content">
+            <div class="recipe-tags">
+              ${(recipe.tags || []).slice(0, 3).map(t => `<span class="tag">${t}</span>`).join('')}
+            </div>
+            <h3 class="recipe-title">${recipe.title}</h3>
+            <p class="recipe-desc">${recipe.description || ''}</p>
+            <div class="recipe-meta">
+              <span>⏱️ ${recipe.time || 'N/A'}</span>
+              <span>👍 ${recipe.upvotes || 0}</span>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+    
+    // Load recipes from Firestore
+    async function loadRecipes() {
+      try {
+        const q = query(collection(db, 'recipes'), orderBy('upvotes', 'desc'));
+        const snapshot = await getDocs(q);
+        
+        allRecipes = [];
+        snapshot.forEach(doc => {
+          allRecipes.push({ id: doc.id, ...doc.data() });
+        });
+        
+        renderRecipes();
+      } catch (error) {
+        console.error('Error loading recipes:', error);
+        document.getElementById('results-count').textContent = 'Error loading recipes';
+      }
+    }
+    
+    // Search input handler
+    const searchInput = document.getElementById('recipe-search');
+    searchInput.addEventListener('input', (e) => {
+      filters.search = e.target.value;
+      renderRecipes();
+    });
+    
+    // Filter chip handlers
+    document.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', (e) => {
+        const filterType = e.target.dataset.filter;
+        const filterValue = e.target.dataset.value;
+        
+        // Update active state in the same group
+        const group = e.target.closest('.chips');
+        group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        e.target.classList.add('active');
+        
+        // Update filter state
+        filters[filterType] = filterValue;
+        renderRecipes();
+      });
+    });
+    
+    // Auth state handler
     onAuthStateChanged(auth, user => {
       const authLink = document.getElementById('auth-link');
       if (user) {
@@ -355,6 +536,9 @@
         link.classList.add('active');
       }
     });
+    
+    // Initialize
+    loadRecipes();
   </script>
 </body>
 </html>
