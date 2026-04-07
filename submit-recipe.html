@@ -407,7 +407,7 @@
     
     // Check if just logged in, redirect to submit-recipe
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('redirect') === 'submit-recipe') {
+    if (urlParams.get('redirect') === 'submit-recipe.html') {
       window.history.replaceState({}, document.title, 'submit-recipe.html');
     }
 
