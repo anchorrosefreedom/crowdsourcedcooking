@@ -227,7 +227,7 @@
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
     import { getFirestore, collection, query, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
-    import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+    import { getAuth, onAuthStateChanged, setPersistence, browserSessionPersistence } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
     
     const firebaseConfig = {
       apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
@@ -241,6 +241,29 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
+    
+    // Force session persistence explicitly
+    setPersistence(auth, browserSessionPersistence)
+      .then(() => console.log('Auth persistence set to session'))
+      .catch(err => console.log('Persistence error:', err.message));
+    
+    // Update nav immediately if user is already logged in
+    const updateNavAuthUI = (user) => {
+      const authLink = document.getElementById('auth-link');
+      if (user) {
+        authLink.href = 'logout.html';
+        authLink.textContent = 'Log Off';
+      } else {
+        authLink.href = 'login.html';
+        authLink.textContent = 'Login';
+      }
+    };
+    
+    // Check current auth state IMMEDIATELY
+    if (auth.currentUser) {
+      console.log('User already logged in:', auth.currentUser.email);
+      updateNavAuthUI(auth.currentUser);
+    }
     
     // Update nav based on auth state
     onAuthStateChanged(auth, user => {
