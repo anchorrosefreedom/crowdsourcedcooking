@@ -137,7 +137,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const targetPage = urlParams.get('redirect') || 'submit-recipe.html';
 
-    // Handle redirect result (for Google sign-in)
+    // Handle redirect result (for Google sign-in) with better error handling
     getRedirectResult(auth)
       .then((result) => {
         if (result && result.user) {
@@ -147,7 +147,16 @@
         }
       })
       .catch((err) => {
-        console.log('Redirect error:', err.message);
+        // Handle "missing initial state" error - redirect to target page directly
+        // This can happen if sessionStorage was cleared or unavailable
+        console.log('Redirect result error:', err.message);
+        if (err.message.includes('missing initial state')) {
+          // Check if user is actually already logged in (maybe from cookie/session)
+          if (auth.currentUser) {
+            window.location.href = targetPage;
+          }
+          // Otherwise, show normal login form - user can try again
+        }
       });
 
     window.login = function() {
