@@ -113,7 +113,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithRedirect, GoogleAuthProvider, signOut, onAuthStateChanged, getRedirectResult} from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithRedirect, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, getRedirectResult} from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
@@ -170,10 +170,33 @@
         .catch(err => { errorEl.textContent = err.message; errorEl.style.display = 'block'; });
     };
     
-    window.loginGoogle = function() {
+    window.loginGoogle = async function() {
       // Store the intended destination before redirect
       sessionStorage.setItem('returnTo', targetPage);
-      signInWithRedirect(auth, googleProvider);
+      
+      try {
+        // Use popup instead of redirect for better browser compatibility
+        const result = await signInWithPopup(auth, googleProvider);
+        // User logged in successfully, redirect
+        const returnTo = sessionStorage.getItem('returnTo') || targetPage;
+        sessionStorage.removeItem('returnTo');
+        window.location.href = returnTo;
+      } catch (err) {
+        // Handle specific errors
+        if (err.code === 'auth/popup-closed-by-user') {
+          // User closed the popup - do nothing
+          console.log('Login popup was closed by user');
+        } else if (err.code === 'auth/unauthorized-domain') {
+          const errorEl = document.getElementById('login-error');
+          errorEl.textContent = 'This domain is not authorized for OAuth. Please contact the site administrator.';
+          errorEl.style.display = 'block';
+        } else {
+          console.error('Login error:', err);
+          const errorEl = document.getElementById('login-error');
+          errorEl.textContent = err.message;
+          errorEl.style.display = 'block';
+        }
+      }
     };
 
     window.logout = function() {
