@@ -60,7 +60,8 @@
   </footer>
   
   <script type="module">
-    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
     
     const firebaseConfig = {
       apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
@@ -74,14 +75,19 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     
+    // Immediately update nav to show Login (since we're logging out)
+    const authLink = document.getElementById('auth-link');
+    authLink.href = 'login.html';
+    authLink.textContent = 'Login';
+    
     // Sign out the user
     signOut(auth).then(() => {
-      // Successfully signed out
+      console.log('Successfully signed out');
     }).catch((error) => {
       console.error('Error signing out:', error);
     });
     
-    // Update nav based on auth state
+    // Also listen for auth changes (for safety)
     onAuthStateChanged(auth, user => {
       const authLink = document.getElementById('auth-link');
       if (user) {
@@ -102,6 +108,5 @@
       }
     });
   </script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
 </body>
 </html>

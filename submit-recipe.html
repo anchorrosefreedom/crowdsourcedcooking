@@ -366,33 +366,10 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-
-    // ====== IMMEDIATE AUTH CHECK (fixes race condition) ======
-    if (auth.currentUser) {
-      currentUser = auth.currentUser;
-      document.getElementById('login-required').style.display = 'none';
-      document.getElementById('recipe-form').style.display = 'block';
-      document.getElementById('user-info').innerHTML = `Logged in as: <span>${currentUser.displayName || currentUser.email}</span> | <a href="#" onclick="logout()">Logout</a>`;
-      document.getElementById('userId').value = currentUser.uid;
-    }
-    // ====== END IMMEDIATE AUTH CHECK ======
-
-    // Handle redirect result from Google login
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result && result.user) {
-          // User redirected back after login, refresh to update auth state
-          window.location.reload();
-        }
-      })
-      .catch((err) => {
-        console.log('Redirect error:', err.message);
-      });
-
     const db = getFirestore(app);
     const storage = getStorage(app);
     const functions = getFunctions(app);
-    
+
     // Make importRecipe available globally for the import button
     window.firebaseImports = {
       importRecipe: httpsCallable(functions, 'importRecipe')
@@ -413,17 +390,39 @@
       document.getElementById('file-note').className = 'file-optional-note';
     }
 
-    
-    // Check if just logged in, redirect to submit-recipe
-    const urlParams = new URLSearchParams(window.location.search);
+    // Clear redirect param if present
     if (urlParams.get('redirect') === 'submit-recipe.html') {
       window.history.replaceState({}, document.title, 'submit-recipe.html');
     }
 
-    // ====== ASYNC AUTH LISTENER ======
-    onAuthStateChanged(auth, user => {
+    // ====== UNIFIED AUTH HANDLING ======
+    // Handle redirect result from Google login FIRST
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result && result.user) {
+          console.log('Redirect login successful:', result.user.email);
+        }
+      })
+      .catch((err) => {
+        console.log('Redirect error:', err.message);
+      });
+
+    // Update UI based on auth state
+    function updateAuthUI(user) {
+      currentUser = user;
+      
+      // Update nav
+      const authLink = document.getElementById('auth-link');
       if (user) {
-        currentUser = user;
+        authLink.href = 'logout.html';
+        authLink.textContent = 'Log Off';
+      } else {
+        authLink.href = 'login.html?redirect=submit-recipe.html';
+        authLink.textContent = 'Login';
+      }
+      
+      // Update page content
+      if (user) {
         document.getElementById('login-required').style.display = 'none';
         document.getElementById('recipe-form').style.display = 'block';
         document.getElementById('user-info').innerHTML = `Logged in as: <span>${user.displayName || user.email}</span> | <a href="#" onclick="logout()">Logout</a>`;
@@ -432,7 +431,22 @@
         document.getElementById('login-required').style.display = 'block';
         document.getElementById('recipe-form').style.display = 'none';
       }
+    }
+
+    // Listen for auth state changes
+    onAuthStateChanged(auth, (user) => {
+      console.log('Auth state changed:', user ? user.email : 'logged out');
+      updateAuthUI(user);
     });
+
+    // Logout function
+    window.logout = function() {
+      signOut(auth).then(() => {
+        window.location.href = 'logout.html';
+      }).catch(err => {
+        console.error('Logout error:', err);
+      });
+    };
 
     // Set active nav link based on current page
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
@@ -442,10 +456,6 @@
         link.classList.add('active');
       }
     });
-
-    window.logout = function() {
-      signOut(auth);
-    };
 
     // Import recipe from URL
     window.importFromUrl = async function() {
@@ -683,43 +693,6 @@
         errorEl.style.display = 'block';
         btn.disabled = false;
         btn.textContent = 'Submit Recipe';
-      }
-    });
-  </script>
-  
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
-      authDomain: "crowdsourcedcooking.firebaseapp.com",
-      projectId: "crowdsourcedcooking",
-      storageBucket: "crowdsourcedcooking.firebasestorage.app",
-      messagingSenderId: "1025589287082",
-      appId: "1:1025589287082:web:15569e323aa2781ab858d3"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    
-    onAuthStateChanged(auth, user => {
-      const authLink = document.getElementById('auth-link');
-      if (user) {
-        authLink.href = 'logout.html';
-        authLink.textContent = 'Log Off';
-      } else {
-        authLink.href = 'login.html';
-        authLink.textContent = 'Login';
-      }
-    });
-
-    // Set active nav link based on current page
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      const href = link.getAttribute('href');
-      if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-        link.classList.add('active');
       }
     });
   </script>
