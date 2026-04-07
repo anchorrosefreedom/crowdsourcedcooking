@@ -128,7 +128,7 @@
     const auth = getAuth(app);
     const googleProvider = new GoogleAuthProvider();
 
-    // Parse the target from URL params (set by submit-recipe.html or other pages)
+    // Get target from URL param or default to submit-recipe
     const urlParams = new URLSearchParams(window.location.search);
     const targetPage = urlParams.get('redirect') || 'submit-recipe.html';
 
@@ -232,6 +232,23 @@
     });
 
     // Auth state listener - handles both initial check and subsequent changes
+    // First check: if user is already logged in when arriving at login page, redirect immediately
+    (function initialAuthCheck() {
+      const currentPage = window.location.pathname.split('/').pop();
+      if (currentPage === 'login.html' || currentPage === '') {
+        // Check auth state immediately (not just via listener)
+        const unsubscribe = onAuthStateChanged(auth, user => {
+          if (user) {
+            // User already logged in - redirect to target
+            const returnTo = sessionStorage.getItem('returnTo') || targetPage;
+            sessionStorage.removeItem('returnTo');
+            window.location.href = returnTo;
+          }
+          unsubscribe(); // Stop listening after first check
+        });
+      }
+    })();
+
     onAuthStateChanged(auth, user => {
       const forms = document.querySelectorAll('.tabs-content > div');
       const userInfo = document.getElementById('user-info');
