@@ -128,26 +128,31 @@
     const auth = getAuth(app);
     const googleProvider = new GoogleAuthProvider();
 
+    // Parse the target from URL params (set by submit-recipe.html or other pages)
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetPage = urlParams.get('redirect') || 'submit-recipe.html';
+
     // Handle redirect result (for Google sign-in)
     getRedirectResult(auth)
       .then((result) => {
         if (result && result.user) {
-          const returnTo = sessionStorage.getItem('returnTo') || 'index.html'; sessionStorage.removeItem('returnTo'); window.location.href = returnTo;
+          const returnTo = sessionStorage.getItem('returnTo') || targetPage;
+          sessionStorage.removeItem('returnTo');
+          window.location.href = returnTo;
         }
       })
       .catch((err) => {
         console.log('Redirect error:', err.message);
       });
 
-
-
     window.login = function() {
       const email = document.getElementById('login-email').value;
       const password = document.getElementById('login-password').value;
       const errorEl = document.getElementById('login-error');
+      const returnTo = sessionStorage.getItem('returnTo') || targetPage;
       
       signInWithEmailAndPassword(auth, email, password)
-        .then(() => { window.location.href = 'index.html'; })
+        .then(() => { window.location.href = returnTo; })
         .catch(err => { errorEl.textContent = err.message; errorEl.style.display = 'block'; });
     };
 
@@ -156,16 +161,19 @@
       const email = document.getElementById('register-email').value;
       const password = document.getElementById('register-password').value;
       const errorEl = document.getElementById('register-error');
+      const returnTo = sessionStorage.getItem('returnTo') || targetPage;
       
       if (!name) { errorEl.textContent = 'Please enter your name'; errorEl.style.display = 'block'; return; }
       
       createUserWithEmailAndPassword(auth, email, password)
-        .then(() => { window.location.href = 'index.html'; })
+        .then(() => { window.location.href = returnTo; })
         .catch(err => { errorEl.textContent = err.message; errorEl.style.display = 'block'; });
     };
-
+    
     window.loginGoogle = function() {
-      sessionStorage.setItem('returnTo', document.referrer || 'submit-recipe.html'); signInWithRedirect(auth, googleProvider);
+      // Store the intended destination before redirect
+      sessionStorage.setItem('returnTo', targetPage);
+      signInWithRedirect(auth, googleProvider);
     };
 
     window.logout = function() {
@@ -182,25 +190,39 @@
       });
     });
 
-    // Auth state listener
+    // Auth state listener - handles both initial check and subsequent changes
     onAuthStateChanged(auth, user => {
       const forms = document.querySelectorAll('.tabs-content > div');
       const userInfo = document.getElementById('user-info');
       
-      
       if (user) {
+        // User is logged in
+        
+        // Check if this is an immediate redirect (user already logged in when arriving at login page)
+        const isInitialLoad = !sessionStorage.getItem('loginFormShown');
+        
+        if (isInitialLoad) {
+          // User was already logged in, redirect to intended destination
+          const returnTo = targetPage;
+          window.location.href = returnTo;
+          return;
+        }
+        
+        // Otherwise show user info (they just logged in)
         forms.forEach(f => f.style.display = 'none');
         document.querySelector('.tabs').style.display = 'none';
         userInfo.classList.add('show');
         
         document.getElementById('user-name').textContent = `Welcome, ${user.displayName || user.email}!`;
         document.getElementById('user-email').textContent = user.email;
-        document.getElementById('user-avatar').textContent = user.photoURL ? '� foto' : (user.displayName ? user.displayName[0].toUpperCase() : '👤');
+        document.getElementById('user-avatar').textContent = user.photoURL ? '📸' : (user.displayName ? user.displayName[0].toUpperCase() : '👤');
       } else {
+        // User is not logged in - mark that form was shown so we don't redirect on subsequent checks
+        sessionStorage.setItem('loginFormShown', 'true');
+        
         forms.forEach(f => f.style.display = '');
         document.querySelector('.tabs').style.display = 'flex';
         userInfo.classList.remove('show');
-        
       }
     });
   </script>
