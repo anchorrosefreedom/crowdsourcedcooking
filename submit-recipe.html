@@ -367,7 +367,16 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    
+    // ====== IMMEDIATE AUTH CHECK (fixes race condition) ======
+    if (auth.currentUser) {
+      currentUser = auth.currentUser;
+      document.getElementById('login-required').style.display = 'none';
+      document.getElementById('recipe-form').style.display = 'block';
+      document.getElementById('user-info').innerHTML = `Logged in as: <span>${currentUser.displayName || currentUser.email}</span> | <a href="#" onclick="logout()">Logout</a>`;
+      document.getElementById('userId').value = currentUser.uid;
+    }
+    // ====== END IMMEDIATE AUTH CHECK ======
+
     // Handle redirect result from Google login
     getRedirectResult(auth)
       .then((result) => {
@@ -411,7 +420,8 @@
       window.history.replaceState({}, document.title, 'submit-recipe.html');
     }
 
-onAuthStateChanged(auth, user => {
+    // ====== ASYNC AUTH LISTENER ======
+    onAuthStateChanged(auth, user => {
       if (user) {
         currentUser = user;
         document.getElementById('login-required').style.display = 'none';
