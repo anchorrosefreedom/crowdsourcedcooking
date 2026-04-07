@@ -170,9 +170,17 @@
         .catch(err => { errorEl.textContent = err.message; errorEl.style.display = 'block'; });
     };
     
+    let loginInProgress = false;
+    
     window.loginGoogle = async function() {
+      if (loginInProgress) {
+        console.log('Login already in progress');
+        return;
+      }
+      
       // Store the intended destination before redirect
       sessionStorage.setItem('returnTo', targetPage);
+      loginInProgress = true;
       
       try {
         // Use popup instead of redirect for better browser compatibility
@@ -182,20 +190,27 @@
         sessionStorage.removeItem('returnTo');
         window.location.href = returnTo;
       } catch (err) {
-        // Handle specific errors
+        // Handle specific errors - show on page
+        console.error('Google login error:', err.code, err.message);
+        
+        let errorMessage = err.message;
+        
+        // Provide more helpful messages for common errors
         if (err.code === 'auth/popup-closed-by-user') {
-          // User closed the popup - do nothing
-          console.log('Login popup was closed by user');
+          errorMessage = 'Login was cancelled. Please try again.';
         } else if (err.code === 'auth/unauthorized-domain') {
-          const errorEl = document.getElementById('login-error');
-          errorEl.textContent = 'This domain is not authorized for OAuth. Please contact the site administrator.';
-          errorEl.style.display = 'block';
-        } else {
-          console.error('Login error:', err);
-          const errorEl = document.getElementById('login-error');
-          errorEl.textContent = err.message;
-          errorEl.style.display = 'block';
+          errorMessage = 'This domain is not authorized for Google login. Please contact the site administrator.';
+        } else if (err.code === 'auth/operation-not-allowed') {
+          errorMessage = 'Google login is not enabled. Please contact the site administrator.';
+        } else if (err.code === 'auth/network-request-failed') {
+          errorMessage = 'Network error. Please check your internet connection and try again.';
         }
+        
+        const errorEl = document.getElementById('login-error');
+        errorEl.textContent = errorMessage;
+        errorEl.style.display = 'block';
+      } finally {
+        loginInProgress = false;
       }
     };
 
