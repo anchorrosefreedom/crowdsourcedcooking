@@ -194,19 +194,25 @@
         window.location.href = returnTo;
       } catch (err) {
         // Handle specific errors - show on page
-        console.error('Google login error:', err.code, err.message);
+        console.error('Google login error:', err.code, err.message, 'Error string:', String(err));
         
         let errorMessage = err.message;
+        const errorStr = String(err);
         
-        // Provide more helpful messages for common errors
-        if (err.code === 'auth/popup-closed-by-user') {
-          errorMessage = 'Login was cancelled. Please try again.';
-        } else if (err.code === 'auth/popup-blocked') {
-          // Popup was blocked - automatically fall back to redirect
+        // Check if error involves popup (popup-blocked or popup-closed)
+        const isPopupError = err.code === 'auth/popup-blocked' || 
+                            err.code === 'auth/popup-closed-by-user' ||
+                            errorStr.includes('popup-blocked') ||
+                            errorStr.includes('popup-closed');
+        
+        // If popup error, try redirect fallback automatically
+        if (isPopupError) {
+          console.log('Popup error detected, falling back to redirect...');
           try {
             await signInWithRedirect(auth, googleProvider);
             return; // Redirect will handle the rest
           } catch (redirectErr) {
+            console.error('Redirect fallback also failed:', redirectErr);
             errorMessage = 'Could not open login popup. Please allow popups for this site.';
           }
         } else if (err.code === 'auth/unauthorized-domain') {
@@ -215,6 +221,8 @@
           errorMessage = 'Google login is not enabled. Please contact the site administrator.';
         } else if (err.code === 'auth/network-request-failed') {
           errorMessage = 'Network error. Please check your internet connection and try again.';
+        } else if (err.code === 'auth/popup-closed-by-user') {
+          errorMessage = 'Login was cancelled. Please try again.';
         }
         
         const errorEl = document.getElementById('login-error');
