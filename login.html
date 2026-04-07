@@ -180,6 +180,9 @@
       
       // Store the intended destination before redirect
       sessionStorage.setItem('returnTo', targetPage);
+      // CRITICAL: Mark form as shown BEFORE starting auth to prevent premature redirect
+      // when onAuthStateChanged fires during the popup flow
+      sessionStorage.setItem('loginFormShown', 'true');
       loginInProgress = true;
       
       try {
