@@ -236,7 +236,14 @@
     (function initialAuthCheck() {
       const currentPage = window.location.pathname.split('/').pop();
       if (currentPage === 'login.html' || currentPage === '') {
-        // Check auth state immediately (not just via listener)
+        // First check auth.currentUser (synchronous if already initialized)
+        if (auth.currentUser) {
+          const returnTo = sessionStorage.getItem('returnTo') || targetPage;
+          sessionStorage.removeItem('returnTo');
+          window.location.href = returnTo;
+          return;
+        }
+        // If not yet initialized, wait for onAuthStateChanged
         const unsubscribe = onAuthStateChanged(auth, user => {
           if (user) {
             // User already logged in - redirect to target
