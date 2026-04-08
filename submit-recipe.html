@@ -558,7 +558,15 @@ async function importRecipe() {
     }
   } catch (error) {
     console.error('Import error:', error);
-    statusEl.textContent = 'Failed to import: ' + (error.message || 'Unknown error');
+    let errorMsg = 'Failed to import. ';
+    if (error.response?.status === 402 || error.response?.status === 403) {
+      errorMsg += 'This site may be blocking imports. Try a different recipe URL.';
+    } else if (error.code === '/functions/unavailable') {
+      errorMsg += 'Import service is unavailable. Please try again later.';
+    } else {
+      errorMsg += 'Please check the URL and try again.';
+    }
+    statusEl.textContent = errorMsg;
     statusEl.style.color = '#e53e3e';
   } finally {
     importBtn.disabled = false;
