@@ -17,15 +17,38 @@
     .subtitle { color: #666; margin-bottom: 2rem; }
     .form-group { margin-bottom: 1.5rem; }
     label { display: block; margin-bottom: 0.5rem; color: #333; font-weight: 500; }
-    input, textarea, select { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; }
+    input[type="text"], input[type="url"], textarea, select { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; }
     textarea { min-height: 100px; }
     button { background: #e53e3e; color: white; border: none; padding: 1rem 2rem; border-radius: 4px; font-size: 1rem; cursor: pointer; }
     button:hover { background: #c53030; }
+    button:disabled { background: #ccc; cursor: not-allowed; }
     .login-prompt { text-align: center; padding: 3rem; }
     .login-prompt a { display: inline-block; background: #e53e3e; color: white; padding: 1rem 2rem; border-radius: 4px; text-decoration: none; }
     .user-info { text-align: right; margin-bottom: 1rem; padding: 0.5rem; background: #f0f0f0; border-radius: 4px; }
     .error { color: #e53e3e; padding: 1rem; background: #fed7d7; border-radius: 4px; margin-bottom: 1rem; display: none; }
     .loading { text-align: center; padding: 3rem; color: #666; }
+    
+    /* Image upload styles */
+    .image-upload-area {
+      border: 2px dashed #ddd;
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .image-upload-area:hover { border-color: #e53e3e; background: #fff5f5; }
+    .image-upload-area.has-image { border-color: #38a169; background: #f0fff4; }
+    .image-upload-area input[type="file"] { display: none; }
+    .image-preview { max-width: 100%; max-height: 300px; border-radius: 8px; margin-top: 1rem; display: none; }
+    .image-preview.show { display: block; }
+    .upload-icon { font-size: 3rem; color: #999; }
+    .upload-text { color: #666; margin-top: 0.5rem; }
+    .remove-image { color: #e53e3e; cursor: pointer; margin-top: 0.5rem; display: inline-block; }
+    .upload-progress { margin-top: 1rem; display: none; }
+    .upload-progress.show { display: block; }
+    .progress-bar { height: 8px; background: #e0e0e0; border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; background: #e53e3e; width: 0%; transition: width 0.3s; }
   </style>
 </head>
 <body>
@@ -65,9 +88,34 @@
       <div class="error" id="error"></div>
       
       <form id="submit-recipe">
+        <!-- Image Upload - Required -->
+        <div class="form-group">
+          <label>Recipe Photo * (required)</label>
+          <div class="image-upload-area" id="image-upload-area" onclick="document.getElementById('image-input').click()">
+            <div class="upload-icon">📷</div>
+            <div class="upload-text">Click to upload a photo</div>
+            <div style="font-size: 0.85rem; color: #999; margin-top: 0.5rem;">Recommended: 1200x800px or larger</div>
+            <input type="file" id="image-input" accept="image/*" required>
+          </div>
+          <img id="image-preview" class="image-preview" alt="Recipe preview">
+          <span class="remove-image" id="remove-image" style="display: none;" onclick="removeImage(event)">Remove image</span>
+          
+          <div class="upload-progress" id="upload-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div id="upload-status" style="margin-top: 0.5rem; color: #666; font-size: 0.9rem;">Uploading...</div>
+          </div>
+        </div>
+        
         <div class="form-group">
           <label>Recipe Title *</label>
-          <input type="text" id="title" required>
+          <input type="text" id="title" required placeholder="e.g., Grandma's Apple Pie">
+        </div>
+        
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="description" placeholder="Brief description of your recipe..." style="min-height: 60px;"></textarea>
         </div>
         
         <div class="form-group">
@@ -85,25 +133,45 @@
         </div>
         
         <div class="form-group">
+          <label>Prep Time (minutes)</label>
+          <input type="text" id="prepTime" placeholder="e.g., 15">
+        </div>
+        
+        <div class="form-group">
+          <label>Cook Time (minutes)</label>
+          <input type="text" id="cookTime" placeholder="e.g., 30">
+        </div>
+        
+        <div class="form-group">
+          <label>Servings</label>
+          <input type="text" id="servings" placeholder="e.g., 4">
+        </div>
+        
+        <div class="form-group">
           <label>Ingredients *</label>
-          <textarea id="ingredients" placeholder="List your ingredients..." required></textarea>
+          <textarea id="ingredients" placeholder="List your ingredients, one per line..." required></textarea>
         </div>
         
         <div class="form-group">
           <label>Instructions *</label>
-          <textarea id="instructions" placeholder="How to prepare..." required></textarea>
+          <textarea id="instructions" placeholder="How to prepare your recipe..." required></textarea>
         </div>
         
-        <button type="submit">Submit Recipe</button>
+        <div class="form-group">
+          <label>Source URL (optional)</label>
+          <input type="url" id="sourceUrl" placeholder="https://...">
+        </div>
+        
+        <button type="submit" id="submit-btn">Submit Recipe</button>
       </form>
     </div>
   </div>
 
-  <!-- Firebase Auth -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
@@ -117,17 +185,87 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+    const storage = getStorage(app);
     
     let currentUser = null;
+    let uploadedImageUrl = null;
+
+    // Handle image selection
+    document.getElementById('image-input').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      // Show preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        document.getElementById('image-preview').src = e.target.result;
+        document.getElementById('image-preview').classList.add('show');
+        document.getElementById('image-upload-area').classList.add('has-image');
+        document.querySelector('.upload-text').textContent = file.name;
+        document.getElementById('remove-image').style.display = 'inline-block';
+      };
+      reader.readAsDataURL(file);
+      
+      // Upload image
+      await uploadImage(file);
+    });
+
+    // Upload image to Firebase Storage
+    async function uploadImage(file) {
+      const progressEl = document.getElementById('upload-progress');
+      const progressFill = document.getElementById('progress-fill');
+      const statusEl = document.getElementById('upload-status');
+      
+      progressEl.classList.add('show');
+      statusEl.textContent = 'Uploading image...';
+      
+      // Create unique filename
+      const timestamp = Date.now();
+      const filename = `${timestamp}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+      const storageRef = ref(storage, `recipes/${filename}`);
+      
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      
+      return new Promise((resolve, reject) => {
+        uploadTask.on('state_changed', 
+          (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            progressFill.style.width = progress + '%';
+            statusEl.textContent = `Uploading... ${Math.round(progress)}%`;
+          },
+          (error) => {
+            console.error('Upload error:', error);
+            statusEl.textContent = 'Upload failed: ' + error.message;
+            reject(error);
+          },
+          async () => {
+            // Upload complete
+            uploadedImageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+            statusEl.textContent = 'Image uploaded!';
+            resolve(uploadedImageUrl);
+          }
+        );
+      });
+    }
+
+    // Remove image
+    window.removeImage = function(e) {
+      e.stopPropagation();
+      document.getElementById('image-input').value = '';
+      document.getElementById('image-preview').classList.remove('show');
+      document.getElementById('image-upload-area').classList.remove('has-image');
+      document.querySelector('.upload-text').textContent = 'Click to upload a photo';
+      document.getElementById('remove-image').style.display = 'none';
+      document.getElementById('upload-progress').classList.remove('show');
+      document.getElementById('progress-fill').style.width = '0%';
+      uploadedImageUrl = null;
+    };
 
     // Show the appropriate UI based on auth state
     function updateUI(user) {
-      console.log('Auth state:', user ? 'logged in' : 'logged out');
-      
       document.getElementById('loading').style.display = 'none';
       
       if (user) {
-        // User is logged in - show form
         currentUser = user;
         document.getElementById('login-required').style.display = 'none';
         document.getElementById('recipe-form').style.display = 'block';
@@ -135,7 +273,6 @@
         document.getElementById('auth-link').textContent = 'Log Off';
         document.getElementById('auth-link').href = 'logout.html';
       } else {
-        // User not logged in - show login prompt
         currentUser = null;
         document.getElementById('login-required').style.display = 'block';
         document.getElementById('recipe-form').style.display = 'none';
@@ -144,24 +281,15 @@
       }
     }
 
-    // Initial state - show loading
+    // Initial state
     document.getElementById('loading').style.display = 'block';
     document.getElementById('login-required').style.display = 'none';
     document.getElementById('recipe-form').style.display = 'none';
 
-    // Listen for auth changes - this is THE way to know auth state
+    // Auth listener
     onAuthStateChanged(auth, (user) => {
-      console.log('onAuthStateChanged fired:', user ? user.email : 'none');
       updateUI(user);
     });
-
-    // Also try direct check after a moment
-    setTimeout(() => {
-      console.log('Direct check - currentUser:', auth.currentUser ? auth.currentUser.email : 'none');
-      if (auth.currentUser && !currentUser) {
-        updateUI(auth.currentUser);
-      }
-    }, 500);
 
     // Handle form submission
     document.getElementById('submit-recipe').addEventListener('submit', async (e) => {
@@ -172,30 +300,51 @@
         return;
       }
       
+      if (!uploadedImageUrl) {
+        alert('Please upload a recipe photo');
+        return;
+      }
+      
       const errorEl = document.getElementById('error');
+      const submitBtn = document.getElementById('submit-btn');
       errorEl.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
       
       try {
-        await addDoc(collection(db, 'recipes'), {
+        const recipeData = {
           title: document.getElementById('title').value,
+          description: document.getElementById('description').value,
           category: document.getElementById('category').value,
+          prepTime: document.getElementById('prepTime').value,
+          cookTime: document.getElementById('cookTime').value,
+          servings: document.getElementById('servings').value,
           ingredients: document.getElementById('ingredients').value,
           instructions: document.getElementById('instructions').value,
+          sourceUrl: document.getElementById('sourceUrl').value,
+          imageUrl: uploadedImageUrl,
           authorId: currentUser.uid,
           authorEmail: currentUser.email,
           authorName: currentUser.displayName || currentUser.email.split('@')[0],
           createdAt: serverTimestamp()
-        });
+        };
+        
+        await addDoc(collection(db, 'recipes'), recipeData);
         
         alert('Recipe submitted successfully!');
         document.getElementById('submit-recipe').reset();
+        
+        // Reset image
+        window.removeImage({ stopPropagation: () => {} });
+        
       } catch (err) {
         errorEl.textContent = 'Error: ' + err.message;
         errorEl.style.display = 'block';
       }
+      
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Recipe';
     });
-
-    console.log('Script loaded, waiting for auth...');
   </script>
 </body>
 </html>
