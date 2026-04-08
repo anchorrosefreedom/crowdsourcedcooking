@@ -113,66 +113,81 @@
           <input type="url" id="sourceUrl" placeholder="Link to original recipe if you adapted this">
         </div>
         
-        <!-- Tags -->
+        <!-- Tags - Dropdowns -->
         <div class="form-group">
-          <label>Tags (select all that apply)</label>
-          <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
-            <div style="margin-bottom: 1rem;">
-              <strong>Proteins:</strong><br>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Beef"> Beef</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Chicken"> Chicken</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Pork"> Pork</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Fish"> Fish</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Seafood"> Seafood</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Lamb"> Lamb</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Turkey"> Turkey</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Bacon"> Bacon</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Eggs"> Eggs</label>
-            </div>
-            <div style="margin-bottom: 1rem;">
-              <strong>Vegetables:</strong><br>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Leafy Greens"> Leafy Greens</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Broccoli"> Broccoli</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Cauliflower"> Cauliflower</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Zucchini"> Zucchini</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Asparagus"> Asparagus</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Peppers"> Peppers</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Onions"> Onions</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Tomatoes"> Tomatoes</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Mushrooms"> Mushrooms</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Cabbage"> Cabbage</label>
-            </div>
-            <div style="margin-bottom: 1rem;">
-              <strong>Nuts/Seeds:</strong><br>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Almonds"> Almonds</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Walnuts"> Walnuts</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Pecans"> Pecans</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Macadamia"> Macadamia</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Chia Seeds"> Chia Seeds</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Flax Seeds"> Flax Seeds</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Sunflower Seeds"> Sunflower Seeds</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Peanuts"> Peanuts</label>
-            </div>
-            <div style="margin-bottom: 1rem;">
-              <strong>Flours:</strong><br>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Almond Flour"> Almond Flour</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Coconut Flour"> Coconut Flour</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Oat Flour"> Oat Flour</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Cassava Flour"> Cassava Flour</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Flax Meal"> Flax Meal</label>
+          <label>Tags (hold Ctrl/Cmd to select multiple)</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+              <label style="font-weight: 500; font-size: 0.9rem;">Proteins</label>
+              <select id="tags-proteins" multiple style="height: 100px;">
+                <option value="Beef">Beef</option>
+                <option value="Chicken">Chicken</option>
+                <option value="Pork">Pork</option>
+                <option value="Fish">Fish</option>
+                <option value="Seafood">Seafood</option>
+                <option value="Lamb">Lamb</option>
+                <option value="Turkey">Turkey</option>
+                <option value="Bacon">Bacon</option>
+                <option value="Eggs">Eggs</option>
+              </select>
             </div>
             <div>
-              <strong>Other:</strong><br>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Cheese"> Cheese</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Butter"> Butter</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Cream Cheese"> Cream Cheese</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Heavy Cream"> Heavy Cream</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Sour Cream"> Sour Cream</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Coconut Cream"> Coconut Cream</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Avocado"> Avocado</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Olive Oil"> Olive Oil</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Bone Broth"> Bone Broth</label>
-              <label style="font-weight: normal;"><input type="checkbox" name="tags" value="Nut Butter"> Nut Butter</label>
+              <label style="font-weight: 500; font-size: 0.9rem;">Vegetables</label>
+              <select id="tags-vegetables" multiple style="height: 100px;">
+                <option value="Leafy Greens">Leafy Greens</option>
+                <option value="Broccoli">Broccoli</option>
+                <option value="Cauliflower">Cauliflower</option>
+                <option value="Zucchini">Zucchini</option>
+                <option value="Asparagus">Asparagus</option>
+                <option value="Peppers">Peppers</option>
+                <option value="Onions">Onions</option>
+                <option value="Tomatoes">Tomatoes</option>
+                <option value="Mushrooms">Mushrooms</option>
+                <option value="Cabbage">Cabbage</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-weight: 500; font-size: 0.9rem;">Nuts/Seeds</label>
+              <select id="tags-nuts" multiple style="height: 100px;">
+                <option value="Almonds">Almonds</option>
+                <option value="Walnuts">Walnuts</option>
+                <option value="Pecans">Pecans</option>
+                <option value="Macadamia">Macadamia</option>
+                <option value="Chia Seeds">Chia Seeds</option>
+                <option value="Flax Seeds">Flax Seeds</option>
+                <option value="Sunflower Seeds">Sunflower Seeds</option>
+                <option value="Peanuts">Peanuts</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-weight: 500; font-size: 0.9rem;">Flours</label>
+              <select id="tags-flours" multiple style="height: 100px;">
+                <option value="Almond Flour">Almond Flour</option>
+                <option value="Coconut Flour">Coconut Flour</option>
+                <option value="Oat Flour">Oat Flour</option>
+                <option value="Cassava Flour">Cassava Flour</option>
+                <option value="Flax Meal">Flax Meal</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-weight: 500; font-size: 0.9rem;">Dairy/Fats</label>
+              <select id="tags-dairy" multiple style="height: 100px;">
+                <option value="Cheese">Cheese</option>
+                <option value="Butter">Butter</option>
+                <option value="Cream Cheese">Cream Cheese</option>
+                <option value="Heavy Cream">Heavy Cream</option>
+                <option value="Sour Cream">Sour Cream</option>
+                <option value="Coconut Cream">Coconut Cream</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-weight: 500; font-size: 0.9rem;">Other</label>
+              <select id="tags-other" multiple style="height: 100px;">
+                <option value="Avocado">Avocado</option>
+                <option value="Olive Oil">Olive Oil</option>
+                <option value="Bone Broth">Bone Broth</option>
+                <option value="Nut Butter">Nut Butter</option>
+              </select>
             </div>
           </div>
         </div>
@@ -376,10 +391,14 @@
       submitBtn.textContent = 'Submitting...';
       
       try {
-        // Collect selected tags
+        // Collect selected tags from all dropdowns
         const selectedTags = [];
-        document.querySelectorAll('input[name="tags"]:checked').forEach(cb => {
-          selectedTags.push(cb.value);
+        const dropdowns = ['tags-proteins', 'tags-vegetables', 'tags-nuts', 'tags-flours', 'tags-dairy', 'tags-other'];
+        dropdowns.forEach(id => {
+          const select = document.getElementById(id);
+          Array.from(select.selectedOptions).forEach(opt => {
+            selectedTags.push(opt.value);
+          });
         });
         
         const recipeData = {
