@@ -328,6 +328,10 @@
       currentUser = user;
       
       if (user) {
+        if (authLink) {
+          authLink.href = 'logout.html';
+          authLink.textContent = 'Log Off';
+        }
         authLink.href = 'logout.html';
         authLink.textContent = 'Log Off';
         // Show new post button for any logged-in user (could restrict to admin later)
