@@ -138,7 +138,11 @@
         
         <div class="form-group">
           <label>Original Recipe URL (optional)</label>
-          <input type="url" id="sourceUrl" placeholder="Link to original recipe if you adapted this">
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="url" id="sourceUrl" placeholder="Link to original recipe if you adapted this" style="flex: 1;">
+            <button type="button" id="import-btn" onclick="importRecipe()" style="padding: 0.75rem 1rem; white-space: nowrap;">Import Recipe</button>
+          </div>
+          <div id="import-status" style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;"></div>
         </div>
         
         <div class="form-group">
@@ -295,6 +299,7 @@
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
     import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-storage.js";
+    import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-functions.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
@@ -309,6 +314,7 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     const storage = getStorage(app);
+    const functions = getFunctions(app);
     
     let currentUser = null;
     let uploadedImageUrl = null;
@@ -479,6 +485,68 @@
       submitBtn.textContent = 'Submit Recipe';
     });
   
+    
+// Import recipe from URL
+async function importRecipe() {
+  const urlInput = document.getElementById('sourceUrl');
+  const url = urlInput.value.trim();
+  const statusEl = document.getElementById('import-status');
+  const importBtn = document.getElementById('import-btn');
+  
+  if (!url) {
+    statusEl.textContent = 'Please enter a URL first';
+    statusEl.style.color = '#e53e3e';
+    return;
+  }
+  
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    statusEl.textContent = 'Please enter a valid URL starting with http:// or https://';
+    statusEl.style.color = '#e53e3e';
+    return;
+  }
+  
+  try {
+    statusEl.textContent = 'Importing recipe...';
+    statusEl.style.color = '#666';
+    importBtn.disabled = true;
+    
+    const functions = getFunctions(app);
+    const importRecipe = httpsCallable(functions, 'importRecipe');
+    const result = await importRecipe({ url });
+    
+    if (result.data.success && result.data.recipe) {
+      const recipe = result.data.recipe;
+      
+      // Populate form fields
+      if (recipe.title) document.getElementById('title').value = recipe.title;
+      if (recipe.description) document.getElementById('description').value = recipe.description;
+      if (recipe.prepTime) document.getElementById('prepTime').value = recipe.prepTime;
+      if (recipe.cookTime) document.getElementById('cookTime').value = recipe.cookTime;
+      if (recipe.servings) document.getElementById('servings').value = recipe.servings;
+      if (recipe.ingredients && recipe.ingredients.length) {
+        document.getElementById('ingredients').value = recipe.ingredients.join('\n');
+      }
+      if (recipe.instructions) document.getElementById('instructions').value = recipe.instructions;
+      
+      // Set image if available
+      if (recipe.image) {
+        document.getElementById('imported-image-url').value = recipe.image;
+        statusEl.textContent = 'Recipe imported! Image will be loaded if you provide one.';
+      }
+      
+      statusEl.textContent = 'Recipe imported successfully! Review and edit as needed.';
+      statusEl.style.color = '#2a9d8f';
+    }
+  } catch (error) {
+    console.error('Import error:', error);
+    statusEl.textContent = 'Failed to import: ' + (error.message || 'Unknown error');
+    statusEl.style.color = '#e53e3e';
+  } finally {
+    importBtn.disabled = false;
+  }
+}
+
+
     // Set active nav link based on current page
     let currentPage = window.location.pathname.split('/').pop() || 'index.html';
     // Handle Firebase hosting which removes .html extension
