@@ -429,8 +429,12 @@
         return;
       }
       
-      if (!uploadedImageUrl) {
-        alert('Please upload a recipe photo');
+      // Use imported image if available, otherwise require upload
+      const importedImageUrl = document.getElementById('imported-image-url')?.value;
+      const finalImageUrl = uploadedImageUrl || importedImageUrl;
+      
+      if (!finalImageUrl) {
+        alert('Please upload a recipe photo or import from URL');
         return;
       }
       
@@ -460,7 +464,7 @@
           ingredients: document.getElementById('ingredients').value,
           instructions: document.getElementById('instructions').value,
           sourceUrl: document.getElementById('sourceUrl').value,
-          imageUrl: uploadedImageUrl,
+          imageUrl: finalImageUrl,
           tags: selectedTags,
           authorId: currentUser.uid,
           authorEmail: currentUser.email,
@@ -531,7 +535,17 @@ async function importRecipe() {
       // Set image if available
       if (recipe.image) {
         document.getElementById('imported-image-url').value = recipe.image;
-        statusEl.textContent = 'Recipe imported! Image will be loaded if you provide one.';
+        // Display the imported image in preview
+        const preview = document.getElementById('image-preview');
+        const removeBtn = document.getElementById('remove-image');
+        if (preview) {
+          preview.src = recipe.image;
+          preview.classList.add('show');
+        }
+        if (removeBtn) {
+          removeBtn.style.display = 'inline-block';
+        }
+        statusEl.textContent = 'Recipe and image imported! Review and edit as needed.';
       }
       
       statusEl.textContent = 'Recipe imported successfully! Review and edit as needed.';
