@@ -391,10 +391,13 @@
       submitBtn.textContent = 'Submitting...';
       
       try {
-        // Collect selected tags from checkboxes
+        // Collect selected tags from all dropdown categories
         const selectedTags = [];
-        document.querySelectorAll('input[name="tags"]:checked').forEach(cb => {
-          selectedTags.push(cb.value);
+        const categories = ['proteins', 'vegetables', 'nuts', 'flours', 'dairy', 'other'];
+        categories.forEach(cat => {
+          document.querySelectorAll('input[name="tags-' + cat + '"]:checked').forEach(cb => {
+            selectedTags.push(cb.value);
+          });
         });
         
         const recipeData = {
