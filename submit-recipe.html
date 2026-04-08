@@ -406,13 +406,22 @@
     // Use onAuthStateChanged - this is the reliable way to detect auth state in Firebase
     // It fires when Firebase has fully restored the session
     
-    function handleAuthState(user) {
-      console.log('Auth state detected:', user ? user.email : 'none');
-      updateAuthUI(user);
+    // Also check currentUser directly as backup (in case onAuthStateChanged hasn't fired yet)
+    function checkAuthState() {
+      const user = auth.currentUser;
+      console.log('Direct currentUser check:', user ? user.email : 'none');
+      if (user) {
+        updateAuthUI(user);
+      }
+      // Also set up the listener for future changes
+      onAuthStateChanged(auth, (user) => {
+        console.log('Auth state changed:', user ? user.email : 'logged out');
+        updateAuthUI(user);
+      });
     }
     
-    // Register the listener - this will fire when auth state is determined
-    const unsubscribe = onAuthStateChanged(auth, handleAuthState);
+    // Initialize auth check
+    checkAuthState();
 
     // Update UI based on auth state
     function updateAuthUI(user) {
@@ -439,12 +448,6 @@
         document.getElementById('recipe-form').style.display = 'none';
       }
     }
-
-    // Listen for auth state changes
-    onAuthStateChanged(auth, (user) => {
-      console.log('Auth state changed:', user ? user.email : 'logged out');
-      updateAuthUI(user);
-    });
 
     // Logout function
     window.logout = function() {
