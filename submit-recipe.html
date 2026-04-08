@@ -402,16 +402,18 @@
     }
 
     // ====== UNIFIED AUTH HANDLING ======
-    // Handle redirect result from Google login FIRST
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result && result.user) {
-          console.log('Redirect login successful:', result.user.email);
-        }
-      })
-      .catch((err) => {
-        console.log('Redirect error:', err.message);
-      });
+    // Handle redirect result from Google login with delay to let Firebase initialize
+    setTimeout(() => {
+      getRedirectResult(auth)
+        .then((result) => {
+          if (result && result.user) {
+            console.log('Redirect login successful:', result.user.email);
+          }
+        })
+        .catch((err) => {
+          console.log('Redirect error (ignored):', err.message);
+        });
+    }, 100);
 
     // Check current auth state IMMEDIATELY (before waiting for onAuthStateChanged)
     // This is critical - if user is already logged in, auth.currentUser is available right away

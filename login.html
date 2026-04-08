@@ -137,11 +137,15 @@
     const urlParams = new URLSearchParams(window.location.search);
     const targetPage = urlParams.get('redirect') || 'submit-recipe.html';
 
-    // Skip getRedirectResult if user is already logged in (avoids "missing initial state" error)
-    // Just redirect to target - no need to process a redirect result
-    if (auth.currentUser) {
-      window.location.href = targetPage;
-    } else {
+    // Check if user is already logged in AFTER Firebase fully initializes
+    // Use setTimeout to allow Firebase auth state to restore from cookie/session
+    setTimeout(() => {
+      if (auth.currentUser) {
+        // User is already logged in, redirect to target
+        window.location.href = targetPage;
+        return;
+      }
+      
       // Handle redirect result (for Google sign-in) with robust error handling
       getRedirectResult(auth)
         .then((result) => {
@@ -155,7 +159,7 @@
           // Ignore "missing initial state" error - user can login normally
           console.log('Redirect result error (ignored):', err.message);
         });
-    }
+    }, 100); // Small delay to let Firebase initialize
 
     window.login = function() {
       const email = document.getElementById('login-email').value;
