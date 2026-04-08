@@ -60,7 +60,7 @@
         <li><a href="submit-recipe.html" style="color: #333; text-decoration: none; font-weight: 500;">Submit Recipe</a></li>
         <li><a href="keto.html" style="color: #333; text-decoration: none; font-weight: 500;">Diets</a></li>
         <li><a href="blog.html" style="color: #333; text-decoration: none; font-weight: 500;">Blog</a></li>
-        <li><a href="login.html" id="auth-link" style="color: #333; text-decoration: none; font-weight: 500;">Login</a></li>
+        <li><a href="login.html?redirect=submit-recipe.html" id="auth-link" style="color: #333; text-decoration: none; font-weight: 500;">Login</a></li>
       </ul>
     </nav>
   </header>
@@ -403,21 +403,23 @@
     }
 
     // ====== AUTH HANDLING ======
-    // Use onAuthStateChanged - this is the reliable way to detect auth state in Firebase
-    // It fires when Firebase has fully restored the session
+    // Wait for auth to fully initialize before checking
     
-    // Also check currentUser directly as backup (in case onAuthStateChanged hasn't fired yet)
     function checkAuthState() {
-      const user = auth.currentUser;
-      console.log('Direct currentUser check:', user ? user.email : 'none');
-      if (user) {
+      // Use onAuthStateChanged - it fires when Firebase auth is ready
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        console.log('Auth state:', user ? user.email : 'not logged in');
         updateAuthUI(user);
-      }
-      // Also set up the listener for future changes
-      onAuthStateChanged(auth, (user) => {
-        console.log('Auth state changed:', user ? user.email : 'logged out');
-        updateAuthUI(user);
+        unsubscribe(); // Only run once
       });
+      
+      // Also check immediately in case session is already restored
+      setTimeout(() => {
+        if (auth.currentUser && !currentUser) {
+          console.log('Immediate auth check found user:', auth.currentUser.email);
+          updateAuthUI(auth.currentUser);
+        }
+      }, 100);
     }
     
     // Initialize auth check
