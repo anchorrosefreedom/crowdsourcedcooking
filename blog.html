@@ -332,13 +332,13 @@
           authLink.href = 'logout.html';
           authLink.textContent = 'Log Off';
         }
-        authLink.href = 'logout.html';
-        authLink.textContent = 'Log Off';
         // Show new post button for any logged-in user (could restrict to admin later)
         newPostLink.style.display = 'inline-block';
       } else {
-        authLink.href = 'login.html';
-        authLink.textContent = 'Login';
+        if (authLink) {
+          authLink.href = 'login.html';
+          authLink.textContent = 'Login';
+        }
         newPostLink.style.display = 'none';
       }
       
