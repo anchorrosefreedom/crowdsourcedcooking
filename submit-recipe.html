@@ -403,16 +403,16 @@
     }
 
     // ====== AUTH HANDLING ======
-    // Wait for Firebase to fully restore session before checking
-    setTimeout(() => {
-      console.log('Auth check - currentUser:', auth.currentUser);
-      if (auth.currentUser) {
-        console.log('User logged in:', auth.currentUser.email);
-        updateAuthUI(auth.currentUser);
-      } else {
-        console.log('No user, waiting for onAuthStateChanged');
-      }
-    }, 500);
+    // Use onAuthStateChanged - this is the reliable way to detect auth state in Firebase
+    // It fires when Firebase has fully restored the session
+    
+    function handleAuthState(user) {
+      console.log('Auth state detected:', user ? user.email : 'none');
+      updateAuthUI(user);
+    }
+    
+    // Register the listener - this will fire when auth state is determined
+    const unsubscribe = onAuthStateChanged(auth, handleAuthState);
 
     // Update UI based on auth state
     function updateAuthUI(user) {

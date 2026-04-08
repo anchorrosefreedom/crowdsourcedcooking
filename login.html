@@ -138,29 +138,28 @@
     const urlParams = new URLSearchParams(window.location.search);
     const targetPage = urlParams.get('redirect') || 'submit-recipe.html';
 
-    // Check if user is already logged in AFTER Firebase fully initializes
-    // Use setTimeout to allow Firebase auth state to restore from cookie/session
-    setTimeout(() => {
-      if (auth.currentUser) {
-        // User is already logged in, redirect to target
+    // Use onAuthStateChanged to reliably detect auth state
+    // This fires when Firebase has fully restored the session from cookies
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is logged in - redirect to target
         window.location.href = targetPage;
-        return;
       }
-      
-      // Handle redirect result (for Google sign-in) with robust error handling
-      getRedirectResult(auth)
-        .then((result) => {
-          if (result && result.user) {
-            const returnTo = sessionStorage.getItem('returnTo') || targetPage;
-            sessionStorage.removeItem('returnTo');
-            window.location.href = returnTo;
-          }
-        })
-        .catch((err) => {
-          // Ignore "missing initial state" error - user can login normally
-          console.log('Redirect result error (ignored):', err.message);
-        });
-    }, 500); // Longer delay to let Firebase fully restore session
+      // If no user, show the login form (do nothing)
+    });
+    
+    // Handle redirect result (for Google sign-in) as backup
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result && result.user) {
+          const returnTo = sessionStorage.getItem('returnTo') || targetPage;
+          sessionStorage.removeItem('returnTo');
+          window.location.href = returnTo;
+        }
+      })
+      .catch((err) => {
+        console.log('Redirect result error (ignored):', err.message);
+      }); // Longer delay to let Firebase fully restore session
 
     window.login = function() {
       const email = document.getElementById('login-email').value;
