@@ -559,8 +559,8 @@ async function importRecipe() {
   } catch (error) {
     console.error('Import error:', error);
     let errorMsg = 'Failed to import. ';
-    if (error.response?.status === 402 || error.response?.status === 403) {
-      errorMsg += 'This site may be blocking imports. Try a different recipe URL.';
+    if (error.response?.status === 402 || error.response?.status === 403 || error.response?.status === 404) {
+      errorMsg += 'This site blocks automated imports. Try a different recipe URL (e.g., smaller blogs).';
     } else if (error.code === '/functions/unavailable') {
       errorMsg += 'Import service is unavailable. Please try again later.';
     } else {
