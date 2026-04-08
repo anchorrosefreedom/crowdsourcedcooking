@@ -228,7 +228,7 @@
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
     import { getFirestore, collection, query, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
-    import { getAuth, onAuthStateChanged, setPersistence, local } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
+    import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
     
     const firebaseConfig = {
       apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
@@ -244,10 +244,16 @@
     const auth = getAuth(app);
     
     // Force session persistence explicitly
-    setPersistence(auth, local)
+    setPersistence(auth, browserLocalPersistence)
       .then(() => console.log('Auth persistence set to session'))
       .catch(err => console.log('Persistence error:', err.message));
     
+    // Custom session management - works with our REST API login
+    function getSession() {
+      const session = localStorage.getItem('firebase-session');
+      return session ? JSON.parse(session) : null;
+    }
+
     // Update nav immediately if user is already logged in
     const updateNavAuthUI = (user) => {
       const authLink = document.getElementById('auth-link');
@@ -259,16 +265,29 @@
         authLink.textContent = 'Login';
       }
     };
-    
-    // Check current auth state IMMEDIATELY
-    if (auth.currentUser) {
-      console.log('User already logged in:', auth.currentUser.email);
-      updateNavAuthUI(auth.currentUser);
+
+    // Initialize and check auth state using localStorage
+    const session = getSession();
+    if (session && session.idToken) {
+      console.log('User already logged in:', session.email);
+      updateNavAuthUI({ email: session.email });
+    } else {
+      console.log('No active session, showing login');
+      updateNavAuthUI(null);
     }
-    
-    // Update nav based on auth state
-    onAuthStateChanged(auth, user => {
-      updateNavAuthUI(user);
+
+    // Listen for storage events (from other tabs/windows)
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'firebase-session') {
+        const newSession = e.newValue ? JSON.parse(e.newValue) : null;
+        if (newSession) {
+          console.log('User logged in via another tab:', newSession.email);
+          updateNavAuthUI({ email: newSession.email });
+        } else {
+          console.log('User logged out via another tab');
+          updateNavAuthUI(null);
+        }
+      }
     });
     
     // Set active nav link based on current page

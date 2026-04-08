@@ -128,8 +128,8 @@
     const db = getFirestore(app);
     
     // Set session persistence to local so user stays logged in
-    import { setPersistence, local } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
-    setPersistence(auth, 'local');
+    import { setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
+    setPersistence(auth, browserLocalPersistence);
     
     let currentUser = null;
 

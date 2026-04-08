@@ -3,67 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Logged Off - CrowdSourced Cooking</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8f9fa; min-height: 100vh; }
-    header { background: white; padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
-    nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
-    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
-    .nav-links a { color: #333; text-decoration: none; font-weight: 500; transition: color 0.2s; }
-    .nav-links a:hover { color: #2a9d8f; }
-    .nav-links a.active { color: #2a9d8f; }
-    main { max-width: 600px; margin: 0 auto; padding: 3rem 2rem; text-align: center; }
-    .logout-card { background: white; border-radius: 16px; padding: 3rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-    .logout-icon { font-size: 4rem; margin-bottom: 1rem; }
-    h1 { color: #264653; margin-bottom: 1rem; }
-    p { color: #666; margin-bottom: 2rem; font-size: 1.1rem; }
-    .cta-button { display: inline-block; background: #2a9d8f; color: white; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 600; margin: 0 0.5rem; }
-    .cta-button:hover { background: #21867a; }
-    .secondary-button { background: #264653; }
-    footer { text-align: center; padding: 2rem; color: #666; background: white; margin-top: 3rem; }
-    @media (max-width: 768px) {
-      .nav-links { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 0.25rem; }
-      .nav-links a { white-space: nowrap; font-size: 0.65rem; }
-    }
-  </style>
+  <title>Logging out...</title>
 </head>
 <body>
-  <header>
-    <nav>
-      <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="categories.html">Recipes</a></li>
-        <li><a href="submit-recipe.html">Submit Recipe</a></li>
-        <li><a href="keto.html">Diets</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="login.html" id="auth-link">Login</a></li>
-      </ul>
-    </nav>
-  </header>
-  
-  <main>
-    <div class="logout-card">
-      <div class="logout-icon">👋</div>
-      <h1>You've Been Logged Off</h1>
-      <p>You have successfully signed out of your account. We hope to see you again soon!</p>
-      <div>
-        <a href="index.html" class="cta-button">🏠 Home</a>
-        <a href="login.html" class="cta-button secondary-button">🔐 Login</a>
-      </div>
-    </div>
-  </main>
-  
-  <footer>
-    <p>© 2026 CrowdSourced Cooking — Made by cooks, for cooks</p>
-  </footer>
-  
+  <p>Logging out...</p>
+
   <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
-    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
-    
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+
     const firebaseConfig = {
       apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
       authDomain: "crowdsourcedcooking.firebaseapp.com",
@@ -72,41 +20,21 @@
       messagingSenderId: "1025589287082",
       appId: "1:1025589287082:web:15569e323aa2781ab858d3"
     };
-    
+
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     
-    // Immediately update nav to show Login (since we're logging out)
-    const authLink = document.getElementById('auth-link');
-    authLink.href = 'login.html';
-    authLink.textContent = 'Login';
-    
-    // Sign out the user
+    // Sign out from Firebase AND clear any local storage
     signOut(auth).then(() => {
-      console.log('Successfully signed out');
-    }).catch((error) => {
-      console.error('Error signing out:', error);
-    });
-    
-    // Also listen for auth changes (for safety)
-    onAuthStateChanged(auth, user => {
-      const authLink = document.getElementById('auth-link');
-      if (user) {
-        authLink.href = 'logout.html';
-        authLink.textContent = 'Log Off';
-      } else {
-        authLink.href = 'login.html';
-        authLink.textContent = 'Login';
-      }
-    });
-
-    // Set active nav link based on current page
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      const href = link.getAttribute('href');
-      if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-        link.classList.add('active');
-      }
+      // Also clear any legacy localStorage session
+      localStorage.removeItem('firebase-session');
+      // Redirect to home
+      window.location.href = 'index.html';
+    }).catch((err) => {
+      console.log('Sign out error:', err);
+      // Even if error, try to redirect
+      localStorage.removeItem('firebase-session');
+      window.location.href = 'index.html';
     });
   </script>
 </body>

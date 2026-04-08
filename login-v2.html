@@ -22,9 +22,6 @@
     .btn-primary:hover { background: #c53030; }
     .error { color: #e53e3e; font-size: 0.875rem; margin-bottom: 1rem; text-align: center; display: none; }
     .error.show { display: block; }
-    .success { color: #38a169; font-size: 0.875rem; margin-bottom: 1rem; text-align: center; display: none; }
-    .success.show { display: block; }
-    .loading { opacity: 0.6; pointer-events: none; }
   </style>
 </head>
 <body>
@@ -37,7 +34,6 @@
     </div>
     
     <div id="error" class="error"></div>
-    <div id="success" class="success"></div>
     
     <button class="btn-google" id="googleBtn">Continue with Google</button>
     
@@ -56,7 +52,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+    import { getAuth, signInWithRedirect, getRedirectResult, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, setPersistence, browserLocalPersistence, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
@@ -69,20 +65,35 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    
-    // Set persistence to local so user stays logged in
-    setPersistence(auth, browserLocalPersistence);
-    
-    // Get redirect target
-    const urlParams = new URLSearchParams(window.location.search);
-    const targetPage = urlParams.get('redirect') || 'index.html';
+    const provider = new GoogleAuthProvider();
 
-    // Listen for auth state changes - if already logged in, redirect
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        window.location.href = targetPage;
-      }
-    });
+    // CRITICAL: Set persistence BEFORE any sign-in operations
+    // This ensures the session persists across page loads
+    let authReady = false;
+    setPersistence(auth, browserLocalPersistence)
+      .then(() => {
+        console.log('Auth persistence set to browserLocalPersistence');
+        authReady = true;
+        
+        // Check if user is already logged in
+        if (auth.currentUser) {
+          console.log('User already logged in:', auth.currentUser.email);
+          window.location.href = 'index.html';
+          return;
+        }
+        
+        // Listen for auth state changes
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            console.log('User logged in via auth state:', user.email);
+            window.location.href = 'index.html';
+          }
+        });
+      })
+      .catch(err => {
+        console.error('Persistence error:', err.message);
+        authReady = true;
+      });
 
     // Tab switching
     document.querySelectorAll('.tab').forEach(tab => {
@@ -91,7 +102,7 @@
         document.querySelectorAll('.form-section').forEach(f => f.classList.remove('active'));
         tab.classList.add('active');
         document.getElementById(tab.dataset.tab + 'Form').classList.add('active');
-        hideMessages();
+        hideError();
       });
     });
 
@@ -99,32 +110,39 @@
       const el = document.getElementById('error');
       el.textContent = msg;
       el.classList.add('show');
-      document.getElementById('success').classList.remove('show');
     }
 
-    function showSuccess(msg) {
-      const el = document.getElementById('success');
-      el.textContent = msg;
-      el.classList.add('show');
+    function hideError() {
       document.getElementById('error').classList.remove('show');
     }
 
-    function hideMessages() {
-      document.getElementById('error').classList.remove('show');
-      document.getElementById('success').classList.remove('show');
-    }
-
-    function setLoading(loading) {
-      const container = document.querySelector('.container');
-      if (loading) {
-        container.classList.add('loading');
-      } else {
-        container.classList.remove('loading');
+    // Google Login
+    document.getElementById('googleBtn').addEventListener('click', () => {
+      if (!authReady) {
+        showError('Please wait, authenticating...');
+        return;
       }
-    }
+      console.log('Starting Google signInWithRedirect...');
+      signInWithRedirect(auth, provider);
+    });
 
-    // Email/Password Login
-    document.getElementById('loginBtn').addEventListener('click', async () => {
+    // Check for redirect result (when returning from Google)
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result && result.user) {
+          console.log('Login successful via redirect:', result.user.email);
+          window.location.href = 'index.html';
+        }
+      })
+      .catch((err) => {
+        console.error('Redirect error:', err.code, err.message);
+        if (err.code !== 'auth/no-auth-event') {
+          showError(err.message);
+        }
+      });
+
+    // Email Login
+    document.getElementById('loginBtn').addEventListener('click', () => {
       const email = document.getElementById('loginEmail').value;
       const password = document.getElementById('loginPassword').value;
       
@@ -133,22 +151,13 @@
         return;
       }
       
-      setLoading(true);
-      hideMessages();
-      
-      try {
-        const result = await signInWithEmailAndPassword(auth, email, password);
-        showSuccess('Login successful! Redirecting...');
-        setTimeout(() => window.location.href = targetPage, 500);
-      } catch (err) {
-        showError(err.message);
-      }
-      
-      setLoading(false);
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => window.location.href = 'index.html')
+        .catch(err => showError(err.message));
     });
 
-    // Email/Password Register
-    document.getElementById('registerBtn').addEventListener('click', async () => {
+    // Email Register
+    document.getElementById('registerBtn').addEventListener('click', () => {
       const email = document.getElementById('registerEmail').value;
       const password = document.getElementById('registerPassword').value;
       
@@ -157,42 +166,10 @@
         return;
       }
       
-      if (password.length < 6) {
-        showError('Password must be at least 6 characters');
-        return;
-      }
-      
-      setLoading(true);
-      hideMessages();
-      
-      try {
-        const result = await createUserWithEmailAndPassword(auth, email, password);
-        showSuccess('Account created! Redirecting...');
-        setTimeout(() => window.location.href = targetPage, 500);
-      } catch (err) {
-        showError(err.message);
-      }
-      
-      setLoading(false);
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(() => window.location.href = 'index.html')
+        .catch(err => showError(err.message));
     });
-
-    // Google Login
-    document.getElementById('googleBtn').addEventListener('click', async () => {
-      const provider = new GoogleAuthProvider();
-      try {
-        const result = await signInWithPopup(auth, provider);
-        showSuccess('Login successful! Redirecting...');
-        setTimeout(() => window.location.href = targetPage, 500);
-      } catch (err) {
-        if (err.code === 'auth/popup-blocked') {
-          showError('Popup was blocked. Please allow popups for this site.');
-        } else {
-          showError(err.message);
-        }
-      }
-    });
-
-    console.log('Login page loaded');
   </script>
 </body>
 </html>

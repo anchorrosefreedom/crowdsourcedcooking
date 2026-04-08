@@ -8,7 +8,22 @@
       "node_modules/**",
       ".git/**"
     ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      }
+    ],
     "rewrites": [
+      {
+        "source": "/login.html",
+        "destination": "/login.html"
+      },
       {
         "source": "**",
         "destination": "/index.html"
