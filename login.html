@@ -50,11 +50,10 @@
     </div>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
-  
-  <script>
-    // Firebase config
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+    import { getAuth, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, setPersistence, local } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+
     const firebaseConfig = {
       apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
       authDomain: "crowdsourcedcooking.firebaseapp.com",
@@ -64,9 +63,16 @@
       appId: "1:1025589287082:web:15569e323aa2781ab858d3"
     };
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    // Set local persistence for consistent auth state across pages
+    setPersistence(auth, local)
+      .then(() => {
+        console.log('Auth persistence set to local');
+      })
+      .catch(err => console.error('Persistence error:', err.message));
 
     // Tab switching
     document.querySelectorAll('.tab').forEach(tab => {
@@ -97,9 +103,8 @@
 
     // Google Login
     document.getElementById('googleBtn').addEventListener('click', () => {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider)
-        .then(redirect)
+      signInWithPopup(auth, provider)
+        .then(() => redirect())
         .catch(err => showError(err.message));
     });
 
@@ -113,8 +118,8 @@
         return;
       }
       
-      auth.signInWithEmailAndPassword(email, password)
-        .then(redirect)
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => redirect())
         .catch(err => showError(err.message));
     });
 
@@ -128,8 +133,8 @@
         return;
       }
       
-      auth.createUserWithEmailAndPassword(email, password)
-        .then(redirect)
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(() => redirect())
         .catch(err => showError(err.message));
     });
   </script>
