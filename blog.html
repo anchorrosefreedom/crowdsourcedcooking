@@ -111,7 +111,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut, setPersistence } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
     import { getFirestore, collection, getDocs, doc, getDoc, query, orderBy, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -128,7 +128,6 @@
     const db = getFirestore(app);
     
     // Set session persistence to local so user stays logged in
-    import { setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
     setPersistence(auth, browserLocalPersistence);
     
     let currentUser = null;
