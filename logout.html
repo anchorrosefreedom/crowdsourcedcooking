@@ -2,38 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Logging out...</title>
 </head>
 <body>
   <p>Logging out...</p>
-
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
     import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
 
-    const firebaseConfig = {
+    const app = initializeApp({
       apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
       authDomain: "crowdsourcedcooking.firebaseapp.com",
-      projectId: "crowdsourcedcooking",
-      storageBucket: "crowdsourcedcooking.firebasestorage.app",
-      messagingSenderId: "1025589287082",
-      appId: "1:1025589287082:web:15569e323aa2781ab858d3"
-    };
-
-    const app = initializeApp(firebaseConfig);
+      projectId: "crowdsourcedcooking"
+    });
     const auth = getAuth(app);
     
-    // Sign out from Firebase AND clear any local storage
     signOut(auth).then(() => {
-      // Also clear any legacy localStorage session
-      localStorage.removeItem('firebase-session');
-      // Redirect to home
       window.location.href = 'index.html';
-    }).catch((err) => {
-      console.log('Sign out error:', err);
-      // Even if error, try to redirect
-      localStorage.removeItem('firebase-session');
+    }).catch(() => {
       window.location.href = 'index.html';
     });
   </script>

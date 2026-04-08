@@ -70,6 +70,10 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     
+    // Get redirect target FIRST
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetPage = urlParams.get('redirect') || 'index.html';
+    
     // Set persistence to local so user stays logged in
     setPersistence(auth, browserLocalPersistence).then(() => {
       // After persistence is set, check if user is already logged in
@@ -77,12 +81,8 @@
         window.location.href = targetPage;
       }
     }).catch(err => console.log('Persistence error:', err));
-    
-    // Get redirect target
-    const urlParams = new URLSearchParams(window.location.search);
-    const targetPage = urlParams.get('redirect') || 'index.html';
 
-    // Also listen for auth state changes as backup (for after login)
+    // Listen for auth state changes - if logged in, redirect
     onAuthStateChanged(auth, (user) => {
       if (user) {
         window.location.href = targetPage;
@@ -143,13 +143,12 @@
       
       try {
         const result = await signInWithEmailAndPassword(auth, email, password);
-        showSuccess('Login successful! Redirecting...');
-        setTimeout(() => window.location.href = targetPage, 500);
+        // Direct redirect - no delay
+        window.location.href = targetPage;
       } catch (err) {
         showError(err.message);
+        setLoading(false);
       }
-      
-      setLoading(false);
     });
 
     // Email/Password Register
@@ -171,9 +170,7 @@
       hideMessages();
       
       try {
-        const result = await createUserWithEmailAndPassword(auth, email, password);
-        showSuccess('Account created! Redirecting...');
-        setTimeout(() => window.location.href = targetPage, 500);
+        window.location.href = targetPage;
       } catch (err) {
         showError(err.message);
       }
@@ -185,9 +182,7 @@
     document.getElementById('googleBtn').addEventListener('click', async () => {
       const provider = new GoogleAuthProvider();
       try {
-        const result = await signInWithPopup(auth, provider);
-        showSuccess('Login successful! Redirecting...');
-        setTimeout(() => window.location.href = targetPage, 500);
+        window.location.href = targetPage;
       } catch (err) {
         if (err.code === 'auth/popup-blocked') {
           showError('Popup was blocked. Please allow popups for this site.');
