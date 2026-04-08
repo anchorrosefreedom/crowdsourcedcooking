@@ -186,6 +186,10 @@
       } catch (err) {
         if (err.code === 'auth/popup-blocked') {
           showError('Popup was blocked. Please allow popups for this site.');
+        } else if (err.code === 'auth/unauthorized-domain') {
+          showError('Google login not configured. Please use email/password, or ask the admin to enable Google Sign-In in Firebase Console.');
+        } else if (err.code === 'auth/api-key-not-valid') {
+          showError('Google login not configured. Please use email/password, or ask the admin to enable Google Sign-In in Firebase Console.');
         } else {
           showError(err.message);
         }
