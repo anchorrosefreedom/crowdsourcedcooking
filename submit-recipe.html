@@ -49,6 +49,18 @@
     .upload-progress.show { display: block; }
     .progress-bar { height: 8px; background: #e0e0e0; border-radius: 4px; overflow: hidden; }
     .progress-fill { height: 100%; background: #e53e3e; width: 0%; transition: width 0.3s; }
+    
+    /* Tag checkboxes - pill style */
+    input[name="tags"] { display: none; }
+    input[name="tags"] + span { 
+      background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem; display: inline-block; transition: all 0.2s;
+    }
+    input[name="tags"]:checked + span { 
+      background: #e53e3e; color: white; border-color: #e53e3e; 
+    }
+    label:has(input[name="tags"]:checked) { 
+      background: #e53e3e !important; color: white !important; border-color: #e53e3e !important; 
+    }
   </style>
 </head>
 <body>
@@ -113,81 +125,69 @@
           <input type="url" id="sourceUrl" placeholder="Link to original recipe if you adapted this">
         </div>
         
-        <!-- Tags - Dropdowns -->
+        <!-- Tags - Checkboxes (Mobile Friendly) -->
         <div class="form-group">
-          <label>Tags (hold Ctrl/Cmd to select multiple)</label>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-            <div>
-              <label style="font-weight: 500; font-size: 0.9rem;">Proteins</label>
-              <select id="tags-proteins" multiple style="height: 100px;">
-                <option value="Beef">Beef</option>
-                <option value="Chicken">Chicken</option>
-                <option value="Pork">Pork</option>
-                <option value="Fish">Fish</option>
-                <option value="Seafood">Seafood</option>
-                <option value="Lamb">Lamb</option>
-                <option value="Turkey">Turkey</option>
-                <option value="Bacon">Bacon</option>
-                <option value="Eggs">Eggs</option>
-              </select>
+          <label>Tags</label>
+          <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+            <div style="margin-bottom: 0.75rem;"><strong>Proteins:</strong></div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Beef" style="position:absolute;opacity:0;"><span>Beef</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Chicken" style="position:absolute;opacity:0;"><span>Chicken</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Pork" style="position:absolute;opacity:0;"><span>Pork</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Fish" style="position:absolute;opacity:0;"><span>Fish</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Seafood" style="position:absolute;opacity:0;"><span>Seafood</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Lamb" style="position:absolute;opacity:0;"><span>Lamb</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Turkey" style="position:absolute;opacity:0;"><span>Turkey</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Bacon" style="position:absolute;opacity:0;"><span>Bacon</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Eggs" style="position:absolute;opacity:0;"><span>Eggs</span></label>
             </div>
-            <div>
-              <label style="font-weight: 500; font-size: 0.9rem;">Vegetables</label>
-              <select id="tags-vegetables" multiple style="height: 100px;">
-                <option value="Leafy Greens">Leafy Greens</option>
-                <option value="Broccoli">Broccoli</option>
-                <option value="Cauliflower">Cauliflower</option>
-                <option value="Zucchini">Zucchini</option>
-                <option value="Asparagus">Asparagus</option>
-                <option value="Peppers">Peppers</option>
-                <option value="Onions">Onions</option>
-                <option value="Tomatoes">Tomatoes</option>
-                <option value="Mushrooms">Mushrooms</option>
-                <option value="Cabbage">Cabbage</option>
-              </select>
+            <div style="margin-bottom: 0.75rem;"><strong>Vegetables:</strong></div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Leafy Greens" style="position:absolute;opacity:0;"><span>Leafy Greens</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Broccoli" style="position:absolute;opacity:0;"><span>Broccoli</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Cauliflower" style="position:absolute;opacity:0;"><span>Cauliflower</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Zucchini" style="position:absolute;opacity:0;"><span>Zucchini</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Asparagus" style="position:absolute;opacity:0;"><span>Asparagus</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Peppers" style="position:absolute;opacity:0;"><span>Peppers</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Onions" style="position:absolute;opacity:0;"><span>Onions</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Tomatoes" style="position:absolute;opacity:0;"><span>Tomatoes</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Mushrooms" style="position:absolute;opacity:0;"><span>Mushrooms</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Cabbage" style="position:absolute;opacity:0;"><span>Cabbage</span></label>
             </div>
-            <div>
-              <label style="font-weight: 500; font-size: 0.9rem;">Nuts/Seeds</label>
-              <select id="tags-nuts" multiple style="height: 100px;">
-                <option value="Almonds">Almonds</option>
-                <option value="Walnuts">Walnuts</option>
-                <option value="Pecans">Pecans</option>
-                <option value="Macadamia">Macadamia</option>
-                <option value="Chia Seeds">Chia Seeds</option>
-                <option value="Flax Seeds">Flax Seeds</option>
-                <option value="Sunflower Seeds">Sunflower Seeds</option>
-                <option value="Peanuts">Peanuts</option>
-              </select>
+            <div style="margin-bottom: 0.75rem;"><strong>Nuts/Seeds:</strong></div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Almonds" style="position:absolute;opacity:0;"><span>Almonds</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Walnuts" style="position:absolute;opacity:0;"><span>Walnuts</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Pecans" style="position:absolute;opacity:0;"><span>Pecans</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Macadamia" style="position:absolute;opacity:0;"><span>Macadamia</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Chia Seeds" style="position:absolute;opacity:0;"><span>Chia Seeds</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Flax Seeds" style="position:absolute;opacity:0;"><span>Flax Seeds</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Sunflower Seeds" style="position:absolute;opacity:0;"><span>Sunflower Seeds</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Peanuts" style="position:absolute;opacity:0;"><span>Peanuts</span></label>
             </div>
-            <div>
-              <label style="font-weight: 500; font-size: 0.9rem;">Flours</label>
-              <select id="tags-flours" multiple style="height: 100px;">
-                <option value="Almond Flour">Almond Flour</option>
-                <option value="Coconut Flour">Coconut Flour</option>
-                <option value="Oat Flour">Oat Flour</option>
-                <option value="Cassava Flour">Cassava Flour</option>
-                <option value="Flax Meal">Flax Meal</option>
-              </select>
+            <div style="margin-bottom: 0.75rem;"><strong>Flours:</strong></div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Almond Flour" style="position:absolute;opacity:0;"><span>Almond Flour</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Coconut Flour" style="position:absolute;opacity:0;"><span>Coconut Flour</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Oat Flour" style="position:absolute;opacity:0;"><span>Oat Flour</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Cassava Flour" style="position:absolute;opacity:0;"><span>Cassava Flour</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Flax Meal" style="position:absolute;opacity:0;"><span>Flax Meal</span></label>
             </div>
-            <div>
-              <label style="font-weight: 500; font-size: 0.9rem;">Dairy/Fats</label>
-              <select id="tags-dairy" multiple style="height: 100px;">
-                <option value="Cheese">Cheese</option>
-                <option value="Butter">Butter</option>
-                <option value="Cream Cheese">Cream Cheese</option>
-                <option value="Heavy Cream">Heavy Cream</option>
-                <option value="Sour Cream">Sour Cream</option>
-                <option value="Coconut Cream">Coconut Cream</option>
-              </select>
+            <div style="margin-bottom: 0.75rem;"><strong>Dairy/Fats:</strong></div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Cheese" style="position:absolute;opacity:0;"><span>Cheese</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Butter" style="position:absolute;opacity:0;"><span>Butter</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Cream Cheese" style="position:absolute;opacity:0;"><span>Cream Cheese</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Heavy Cream" style="position:absolute;opacity:0;"><span>Heavy Cream</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Sour Cream" style="position:absolute;opacity:0;"><span>Sour Cream</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Coconut Cream" style="position:absolute;opacity:0;"><span>Coconut Cream</span></label>
             </div>
-            <div>
-              <label style="font-weight: 500; font-size: 0.9rem;">Other</label>
-              <select id="tags-other" multiple style="height: 100px;">
-                <option value="Avocado">Avocado</option>
-                <option value="Olive Oil">Olive Oil</option>
-                <option value="Bone Broth">Bone Broth</option>
-                <option value="Nut Butter">Nut Butter</option>
-              </select>
+            <div style="margin-bottom: 0.75rem;"><strong>Other:</strong></div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Avocado" style="position:absolute;opacity:0;"><span>Avocado</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Olive Oil" style="position:absolute;opacity:0;"><span>Olive Oil</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Bone Broth" style="position:absolute;opacity:0;"><span>Bone Broth</span></label>
+              <label style="background: white; padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid #ddd; cursor: pointer; font-size: 0.9rem;"><input type="checkbox" name="tags" value="Nut Butter" style="position:absolute;opacity:0;"><span>Nut Butter</span></label>
             </div>
           </div>
         </div>
@@ -391,14 +391,10 @@
       submitBtn.textContent = 'Submitting...';
       
       try {
-        // Collect selected tags from all dropdowns
+        // Collect selected tags from checkboxes
         const selectedTags = [];
-        const dropdowns = ['tags-proteins', 'tags-vegetables', 'tags-nuts', 'tags-flours', 'tags-dairy', 'tags-other'];
-        dropdowns.forEach(id => {
-          const select = document.getElementById(id);
-          Array.from(select.selectedOptions).forEach(opt => {
-            selectedTags.push(opt.value);
-          });
+        document.querySelectorAll('input[name="tags"]:checked').forEach(cb => {
+          selectedTags.push(cb.value);
         });
         
         const recipeData = {
