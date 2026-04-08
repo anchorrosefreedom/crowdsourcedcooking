@@ -268,14 +268,7 @@
     
     // Update nav based on auth state
     onAuthStateChanged(auth, user => {
-      const authLink = document.getElementById('auth-link');
-      if (user) {
-        authLink.href = 'logout.html';
-        authLink.textContent = 'Log Off';
-      } else {
-        authLink.href = 'login.html';
-        authLink.textContent = 'Login';
-      }
+      updateNavAuthUI(user);
     });
     
     // Set active nav link based on current page

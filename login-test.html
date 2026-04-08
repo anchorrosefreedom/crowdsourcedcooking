@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - CrowdSourced Cooking</title>
+  <style>
+    .nav-links a.active {
+      color: #2a9d8f;
+      border-bottom: 2px solid #2a9d8f;
+      padding-bottom: 4px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 0; }
+    .container { background: white; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 100%; max-width: 420px; padding: 40px; margin-top: 2rem; }
+    h1 { color: #264653; margin-bottom: 10px; font-size: 28px; text-align: center; }
+    .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
+    .tabs { display: flex; margin-bottom: 30px; border-bottom: 2px solid #eee; }
+    .tab { flex: 1; padding: 15px; text-align: center; cursor: pointer; color: #666; font-weight: 600; transition: all 0.3s; }
+    .tab.active { color: #2a9d8f; border-bottom: 2px solid #2a9d8f; margin-bottom: -2px; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 8px; color: #333; font-weight: 500; }
+    input { width: 100%; padding: 14px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 16px; transition: border-color 0.3s; }
+    input:focus { outline: none; border-color: #2a9d8f; }
+    .btn { width: 100%; padding: 16px; background: #2a9d8f; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s, background 0.2s; margin-bottom: 15px; }
+    .btn:hover { transform: translateY(-2px); background: #21867a; }
+    .btn-google { background: #264653; }
+    .divider { text-align: center; color: #999; margin: 20px 0; position: relative; }
+    .divider::before { content: ''; position: absolute; left: 0; top: 50%; width: 100%; height: 1px; background: #eee; }
+    .divider span { background: white; padding: 0 15px; position: relative; }
+    .user-info { display: none; text-align: center; padding: 20px; }
+    .user-info.show { display: block; }
+    .nav-bar { margin-bottom: 20px; text-align: center; }
+    .nav-bar a { color: #2a9d8f; text-decoration: none; margin: 0 10px; font-weight: 500; }
+    .nav-bar a:hover { text-decoration: underline; }
+    .avatar { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 15px; background: #2a9d8f; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; }
+    .btn-logout { background: #c0392b; }
+    .error { color: #dc3545; font-size: 14px; margin-top: 10px; display: none; }
+    .tabs-content > div { display: none; }
+    .tabs-content > div.active { display: block; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.08);">
+      <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
+      <ul class="nav-links" style="display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0;">
+        <li><a href="index.html" style="color: #333; text-decoration: none; font-weight: 500;">Home</a></li>
+        <li><a href="about.html" style="color: #333; text-decoration: none; font-weight: 500;">About</a></li>
+        <li><a href="categories.html" style="color: #333; text-decoration: none; font-weight: 500;">Recipes</a></li>
+        <li><a href="submit-recipe.html" style="color: #333; text-decoration: none; font-weight: 500;">Submit Recipe</a></li>
+        <li><a href="keto.html" style="color: #333; text-decoration: none; font-weight: 500;">Diets</a></li>
+        <li><a href="blog.html" style="color: #333; text-decoration: none; font-weight: 500;">Blog</a></li>
+        <li><a href="login.html" id="auth-link" style="color: #333; text-decoration: none; font-weight: 500;">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <div class="container">
+    <h1>🍳 CrowdSourced Cooking</h1>
+    <p class="subtitle">Join our community of recipe creators</p>
+    
+    <div class="tabs">
+      <div class="tab active" data-tab="login">Login</div>
+      <div class="tab" data-tab="register">Register</div>
+    </div>
+    
+    <div class="tabs-content">
+      <!-- Login Form -->
+      <div id="login-form" class="active">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="login-email" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="login-password" placeholder="••••••••">
+        </div>
+        <button class="btn" onclick="login()">Login</button>
+        <div class="divider"><span>or</span></div>
+        <button class="btn btn-google" onclick="loginGoogle()">Continue with Google</button>
+        <p class="error" id="login-error"></p>
+      </div>
+      
+      <!-- Register Form -->
+      <div id="register-form">
+        <div class="form-group">
+          <label>Display Name</label>
+          <input type="text" id="register-name" placeholder="Your name">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="register-email" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="register-password" placeholder="••••••••">
+        </div>
+        <button class="btn" onclick="register()">Create Account</button>
+        <div class="divider"><span>or</span></div>
+        <button class="btn btn-google" onclick="loginGoogle()">Continue with Google</button>
+        <p class="error" id="register-error"></p>
+      </div>
+    </div>
+    
+    <!-- Logged In User Info -->
+    <div class="user-info" id="user-info">
+      <div class="avatar" id="user-avatar">👤</div>
+      <h2 id="user-name">Welcome!</h2>
+      <p id="user-email" style="color: #666; margin: 10px 0;"></p>
+      <button class="btn btn-logout" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <script type="module">
+    // DEBUG: Log that script started loading
+    console.log('LOGIN SCRIPT: Starting to load...');
+    
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithRedirect, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, getRedirectResult, setPersistence } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+
+    console.log('LOGIN SCRIPT: Firebase imports successful');
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
+      authDomain: "crowdsourcedcooking.firebaseapp.com",
+      projectId: "crowdsourcedcooking",
+      storageBucket: "crowdsourcedcooking.firebasestorage.app",
+      messagingSenderId: "1025589287082",
+      appId: "1:1025589287082:web:15569e323aa2781ab858d3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    
+    const googleProvider = new GoogleAuthProvider();
+
+    // Get target from URL param or default to submit-recipe
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetPage = urlParams.get('redirect') || 'submit-recipe.html';
+
+    // Use onAuthStateChanged to reliably detect auth state
+    // This fires when Firebase has fully restored the session from cookies
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is logged in - redirect to target
+        window.location.href = targetPage;
+      }
+      // If no user, show the login form (do nothing)
+    });
+    
+    // Handle redirect result (for Google sign-in) as backup
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result && result.user) {
+          const returnTo = sessionStorage.getItem('returnTo') || targetPage;
+          sessionStorage.removeItem('returnTo');
+          window.location.href = returnTo;
+        }
+      })
+      .catch((err) => {
+        console.log('Redirect result error (ignored):', err.message);
+      }); // Longer delay to let Firebase fully restore session
+
+    window.login = function() {
+      console.log('LOGIN: login() function called');
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const errorEl = document.getElementById('login-error');
+      const returnTo = sessionStorage.getItem('returnTo') || targetPage;
+      
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => { window.location.href = returnTo; })
+        .catch(err => { errorEl.textContent = err.message; errorEl.style.display = 'block'; });
+    };
+
+    window.register = function() {
+      console.log('LOGIN: register() function called');
+      const name = document.getElementById('register-name').value;
+      const email = document.getElementById('register-email').value;
+      const password = document.getElementById('register-password').value;
+      const errorEl = document.getElementById('register-error');
+      const returnTo = sessionStorage.getItem('returnTo') || targetPage;
+      
+      if (!name) { errorEl.textContent = 'Please enter your name'; errorEl.style.display = 'block'; return; }
+      
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(() => { window.location.href = returnTo; })
+        .catch(err => { errorEl.textContent = err.message; errorEl.style.display = 'block'; });
+    };
+    
+    let loginInProgress = false;
+    
+    window.loginGoogle = async function() {
+      console.log('LOGIN: loginGoogle() function called');
+      if (loginInProgress) {
+        console.log('Login already in progress');
+        return;
+      }
+      
+      // Store the intended destination before redirect
+      sessionStorage.setItem('returnTo', targetPage);
+      // CRITICAL: Mark form as shown BEFORE starting auth to prevent premature redirect
+      // when onAuthStateChanged fires during the popup flow
+      sessionStorage.setItem('loginFormShown', 'true');
+      loginInProgress = true;
+      
+      try {
+        // Use popup instead of redirect for better browser compatibility
+        const result = await signInWithPopup(auth, googleProvider);
+        // User logged in successfully, redirect
+        const returnTo = sessionStorage.getItem('returnTo') || targetPage;
+        sessionStorage.removeItem('returnTo');
+        window.location.href = returnTo;
+      } catch (err) {
+        // Handle specific errors - show on page
+        console.error('Google login error:', err.code, err.message, 'Error string:', String(err));
+        
+        let errorMessage = err.message;
+        const errorStr = String(err);
+        
+        // Check if error involves popup (popup-blocked or popup-closed)
+        const isPopupError = err.code === 'auth/popup-blocked' || 
+                            err.code === 'auth/popup-closed-by-user' ||
+                            errorStr.includes('popup-blocked') ||
+                            errorStr.includes('popup-closed');
+        
+        // If popup error, try redirect fallback automatically
+        if (isPopupError) {
+          console.log('Popup error detected, falling back to redirect...');
+          try {
+            await signInWithRedirect(auth, googleProvider);
+            return; // Redirect will handle the rest
+          } catch (redirectErr) {
+            console.error('Redirect fallback also failed:', redirectErr);
+            errorMessage = 'Could not open login popup. Please allow popups for this site.';
+          }
+        } else if (err.code === 'auth/unauthorized-domain') {
+          errorMessage = 'This domain is not authorized for Google login. Please contact the site administrator.';
+        } else if (err.code === 'auth/operation-not-allowed') {
+          errorMessage = 'Google login is not enabled. Please contact the site administrator.';
+        } else if (err.code === 'auth/network-request-failed') {
+          errorMessage = 'Network error. Please check your internet connection and try again.';
+        } else if (err.code === 'auth/popup-closed-by-user') {
+          errorMessage = 'Login was cancelled. Please try again.';
+        }
+        
+        const errorEl = document.getElementById('login-error');
+        errorEl.textContent = errorMessage;
+        errorEl.style.display = 'block';
+      } finally {
+        loginInProgress = false;
+      }
+    };
+
+    window.logout = function() {
+      signOut(auth);
+    };
+
+    // Tab switching
+    console.log('LOGIN: Setting up tab listeners');
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tabs-content > div').forEach(f => f.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab + '-form').classList.add('active');
+      });
+    });
+
+    // Auth state listener - handles both initial check and subsequent changes
+    // First check: if user is already logged in when arriving at login page, redirect immediately
+    (function initialAuthCheck() {
+      const currentPage = window.location.pathname.split('/').pop();
+      if (currentPage === 'login.html' || currentPage === '') {
+        // First check auth.currentUser (synchronous if already initialized)
+        if (auth.currentUser) {
+          const returnTo = sessionStorage.getItem('returnTo') || targetPage;
+          sessionStorage.removeItem('returnTo');
+          window.location.href = returnTo;
+          return;
+        }
+        // If not yet initialized, wait for onAuthStateChanged
+        const unsubscribe = onAuthStateChanged(auth, user => {
+          if (user) {
+            // User already logged in - redirect to target
+            const returnTo = sessionStorage.getItem('returnTo') || targetPage;
+            sessionStorage.removeItem('returnTo');
+            window.location.href = returnTo;
+          }
+          unsubscribe(); // Stop listening after first check
+        });
+      }
+    })();
+
+    onAuthStateChanged(auth, user => {
+      const forms = document.querySelectorAll('.tabs-content > div');
+      const userInfo = document.getElementById('user-info');
+      
+      if (user) {
+        // User is logged in
+        
+        // Check if this is an immediate redirect (user already logged in when arriving at login page)
+        const isInitialLoad = !sessionStorage.getItem('loginFormShown');
+        
+        if (isInitialLoad) {
+          // User was already logged in, redirect to intended destination
+          const returnTo = targetPage;
+          window.location.href = returnTo;
+          return;
+        }
+        
+        // Otherwise show user info (they just logged in)
+        forms.forEach(f => f.style.display = 'none');
+        document.querySelector('.tabs').style.display = 'none';
+        userInfo.classList.add('show');
+        
+        document.getElementById('user-name').textContent = `Welcome, ${user.displayName || user.email}!`;
+        document.getElementById('user-email').textContent = user.email;
+        document.getElementById('user-avatar').textContent = user.photoURL ? '📸' : (user.displayName ? user.displayName[0].toUpperCase() : '👤');
+      } else {
+        // User is not logged in - mark that form was shown so we don't redirect on subsequent checks
+        sessionStorage.setItem('loginFormShown', 'true');
+        
+        forms.forEach(f => f.style.display = '');
+        document.querySelector('.tabs').style.display = 'flex';
+        userInfo.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>
