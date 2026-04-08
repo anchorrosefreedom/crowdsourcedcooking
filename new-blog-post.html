@@ -190,6 +190,15 @@ You can share recipes, cooking tips, ingredient recommendations, or any kitchen-
         btn.textContent = 'Publish Post';
       }
     });
+  
+    // Set active nav link based on current page
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      const href = link.getAttribute('href');
+      if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+        link.classList.add('active');
+      }
+    });
   </script>
 </body>
 </html>

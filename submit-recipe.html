@@ -11,6 +11,12 @@
     nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
     .logo { font-size: 1.5rem; font-weight: 700; color: #2a9d8f; }
     .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a.active {
+      color: #2a9d8f;
+      border-bottom: 2px solid #2a9d8f;
+      padding-bottom: 4px;
+    }
+
     .nav-links a { color: #333; text-decoration: none; font-weight: 500; transition: color 0.2s; }
     .nav-links a:hover { color: #2a9d8f; }
     main { max-width: 900px; margin: 0 auto; padding: 2rem; }
@@ -547,6 +553,15 @@
       
       submitBtn.disabled = false;
       submitBtn.textContent = 'Submit Recipe';
+    });
+  
+    // Set active nav link based on current page
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      const href = link.getAttribute('href');
+      if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+        link.classList.add('active');
+      }
     });
   </script>
 </body>

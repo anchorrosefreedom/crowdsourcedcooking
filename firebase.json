@@ -19,16 +19,8 @@
         ]
       }
     ],
-    "rewrites": [
-      {
-        "source": "/login.html",
-        "destination": "/login.html"
-      },
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
+    "cleanUrls": true,
+    "trailingSlash": false
   },
   "firestore": {
     "rules": "firestore.rules"
