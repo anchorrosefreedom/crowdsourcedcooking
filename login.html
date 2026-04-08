@@ -160,7 +160,7 @@
           // Ignore "missing initial state" error - user can login normally
           console.log('Redirect result error (ignored):', err.message);
         });
-    }, 100); // Small delay to let Firebase initialize
+    }, 500); // Longer delay to let Firebase fully restore session
 
     window.login = function() {
       const email = document.getElementById('login-email').value;
