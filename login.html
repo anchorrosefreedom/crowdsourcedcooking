@@ -137,27 +137,25 @@
     const urlParams = new URLSearchParams(window.location.search);
     const targetPage = urlParams.get('redirect') || 'submit-recipe.html';
 
-    // Handle redirect result (for Google sign-in) with better error handling
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result && result.user) {
-          const returnTo = sessionStorage.getItem('returnTo') || targetPage;
-          sessionStorage.removeItem('returnTo');
-          window.location.href = returnTo;
-        }
-      })
-      .catch((err) => {
-        // Handle "missing initial state" error - redirect to target page directly
-        // This can happen if sessionStorage was cleared or unavailable
-        console.log('Redirect result error:', err.message);
-        if (err.message.includes('missing initial state')) {
-          // Check if user is actually already logged in (maybe from cookie/session)
-          if (auth.currentUser) {
-            window.location.href = targetPage;
+    // Skip getRedirectResult if user is already logged in (avoids "missing initial state" error)
+    // Just redirect to target - no need to process a redirect result
+    if (auth.currentUser) {
+      window.location.href = targetPage;
+    } else {
+      // Handle redirect result (for Google sign-in) with robust error handling
+      getRedirectResult(auth)
+        .then((result) => {
+          if (result && result.user) {
+            const returnTo = sessionStorage.getItem('returnTo') || targetPage;
+            sessionStorage.removeItem('returnTo');
+            window.location.href = returnTo;
           }
-          // Otherwise, show normal login form - user can try again
-        }
-      });
+        })
+        .catch((err) => {
+          // Ignore "missing initial state" error - user can login normally
+          console.log('Redirect result error (ignored):', err.message);
+        });
+    }
 
     window.login = function() {
       const email = document.getElementById('login-email').value;
