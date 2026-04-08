@@ -403,27 +403,25 @@
     }
 
     // ====== AUTH HANDLING ======
-    // Wait for auth to fully initialize before checking
+    // Simple, robust auth checking
     
-    function checkAuthState() {
-      // Use onAuthStateChanged - it fires when Firebase auth is ready
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
-        console.log('Auth state:', user ? user.email : 'not logged in');
-        updateAuthUI(user);
-        unsubscribe(); // Only run once
-      });
-      
-      // Also check immediately in case session is already restored
-      setTimeout(() => {
-        if (auth.currentUser && !currentUser) {
-          console.log('Immediate auth check found user:', auth.currentUser.email);
-          updateAuthUI(auth.currentUser);
-        }
-      }, 100);
-    }
+    // Show loading state initially
+    document.getElementById('login-required').style.display = 'none';
+    document.getElementById('recipe-form').style.display = 'none';
     
-    // Initialize auth check
-    checkAuthState();
+    // Method 1: Direct check after a delay (in case session is already restored)
+    setTimeout(() => {
+      console.log('Direct check - currentUser:', auth.currentUser);
+      if (auth.currentUser) {
+        updateAuthUI(auth.currentUser);
+      }
+    }, 300);
+    
+    // Method 2: Listen for auth state changes
+    onAuthStateChanged(auth, (user) => {
+      console.log('Auth state changed:', user ? user.email : 'logged out');
+      updateAuthUI(user);
+    });
 
     // Update UI based on auth state
     function updateAuthUI(user) {
