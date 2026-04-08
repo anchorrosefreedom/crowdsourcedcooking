@@ -402,41 +402,17 @@
       window.history.replaceState({}, document.title, 'submit-recipe.html');
     }
 
-    // ====== UNIFIED AUTH HANDLING ======
-    // Handle redirect result from Google login with delay to let Firebase initialize
+    // ====== AUTH HANDLING ======
+    // Wait for Firebase to fully restore session before checking
     setTimeout(() => {
-      getRedirectResult(auth)
-        .then((result) => {
-          if (result && result.user) {
-            console.log('Redirect login successful:', result.user.email);
-          }
-        })
-        .catch((err) => {
-          console.log('Redirect error (ignored):', err.message);
-        });
-    }, 100);
-
-    // Check current auth state IMMEDIATELY (before waiting for onAuthStateChanged)
-    // This is critical - if user is already logged in, auth.currentUser is available right away
-    console.log('=== PAGE LOAD START ===');
-    console.log('auth.currentUser:', auth.currentUser);
-    console.log('auth:', auth);
-    console.log('auth.emulatorConfig:', auth.emulatorConfig);
-    console.log('auth.app:', auth.app);
-    
-    // Try forcing a session refresh
-    if (auth.currentUser) {
-      console.log('User already logged in:', auth.currentUser.email);
-      updateAuthUI(auth.currentUser);
-    } else {
-      // Try getting it synchronously after a small delay
-      setTimeout(() => {
-        console.log('Delayed check - auth.currentUser:', auth.currentUser);
-        if (auth.currentUser) {
-          updateAuthUI(auth.currentUser);
-        }
-      }, 100);
-    }
+      console.log('Auth check - currentUser:', auth.currentUser);
+      if (auth.currentUser) {
+        console.log('User logged in:', auth.currentUser.email);
+        updateAuthUI(auth.currentUser);
+      } else {
+        console.log('No user, waiting for onAuthStateChanged');
+      }
+    }, 500);
 
     // Update UI based on auth state
     function updateAuthUI(user) {
