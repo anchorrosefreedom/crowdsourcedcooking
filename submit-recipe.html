@@ -421,19 +421,8 @@
     document.getElementById('login-required').style.display = 'none';
     document.getElementById('recipe-form').style.display = 'none';
 
-    // Auth listener
-    onAuthStateChanged(auth, (user) => {
-      updateUI(user);
-    });
-    
-    // Timeout fallback - show form after 5 seconds even if auth doesn't resolve
-    setTimeout(() => {
-      const loading = document.getElementById('loading');
-      if (loading && loading.style.display !== 'none') {
-        // Default to showing the login required message if no user resolved
-        updateUI(null);
-      }
-    }, 5000);
+    // Direct auth check - no listener
+    auth.currentUser ? updateUI(auth.currentUser) : updateUI(null);
 
     // Handle form submission
     document.getElementById('submit-recipe').addEventListener('submit', async (e) => {
