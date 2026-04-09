@@ -383,7 +383,7 @@
   // Import recipe from URL
   function importRecipe() {
     const urlInput = document.getElementById('sourceUrl');
-    const url = urlInput.value.trim();
+    const url = urlInput ? urlInput.value.trim() : '';
     const statusEl = document.getElementById('import-status');
     
     if (!url) {
@@ -395,31 +395,40 @@
     statusEl.textContent = 'Importing recipe... (this may take a moment)';
     statusEl.style.color = '#666';
     
-    // Use fetch to call the Firebase Cloud Function directly
+    // Use fetch to call the Firebase Cloud Function
     fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/importRecipe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ url: url })
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) throw new Error('HTTP error');
+      return response.json();
+    })
     .then(data => {
+      console.log('Import response:', data);
       const recipe = data.result?.recipe || data.recipe;
-      if (recipe) {
+      if (recipe && recipe.title) {
         // Populate form fields
-        if (recipe.title) document.getElementById('title').value = recipe.title;
-        if (recipe.description) document.getElementById('description').value = recipe.description;
-        if (recipe.ingredients?.length) document.getElementById('ingredients').value = recipe.ingredients.join('\n');
-        if (recipe.instructions) document.getElementById('instructions').value = recipe.instructions;
+        if (document.getElementById('title')) document.getElementById('title').value = recipe.title;
+        if (document.getElementById('description')) document.getElementById('description').value = recipe.description || '';
+        if (document.getElementById('ingredients') && recipe.ingredients?.length) {
+          document.getElementById('ingredients').value = recipe.ingredients.join('\n');
+        }
+        if (document.getElementById('instructions') && recipe.instructions) {
+          document.getElementById('instructions').value = recipe.instructions;
+        }
         
         statusEl.textContent = 'Recipe imported! Review and edit as needed.';
         statusEl.style.color = '#2a9d8f';
       } else {
-        statusEl.textContent = 'Could not find recipe data';
+        statusEl.textContent = 'Could not find recipe data in this URL';
         statusEl.style.color = '#e53e3e';
       }
     })
     .catch(error => {
-      statusEl.textContent = 'Import failed. Please enter recipe manually.';
+      console.error('Import error:', error);
+      statusEl.textContent = 'Import failed: ' + error.message;
       statusEl.style.color = '#e53e3e';
     });
   }
