@@ -515,18 +515,16 @@ async function importRecipe() {
   }
   
   try {
-    statusEl.textContent = 'Importing recipe... (this may take a moment)';
+    statusEl.textContent = 'Importing recipe...';
     statusEl.style.color = '#666';
     importBtn.disabled = true;
-    console.log('Starting import for:', url);
+    console.log('Starting import for URL:', url);
     
-    // Try using Firebase callable functions
-    try {
-      const importRecipeFn = httpsCallable(functions, 'importRecipe', { region: 'us-central1' });
-      const result = await importRecipeFn({ url });
-      console.log('Import result:', result.data);
-      
-      if (result.data && result.data.success && result.data.recipe) {
+    const importRecipeFn = httpsCallable(functions, 'importRecipe');
+    const result = await importRecipeFn({ url: url });
+    console.log('Import result:', result.data);
+    
+    if (result.data && result.data.success && result.data.recipe) {
       const recipe = result.data.recipe;
       
       // Populate form fields
@@ -543,7 +541,6 @@ async function importRecipe() {
       // Set image if available
       if (recipe.image) {
         document.getElementById('imported-image-url').value = recipe.image;
-        // Display the imported image in preview
         const preview = document.getElementById('image-preview');
         const removeBtn = document.getElementById('remove-image');
         if (preview) {
@@ -553,23 +550,17 @@ async function importRecipe() {
         if (removeBtn) {
           removeBtn.style.display = 'inline-block';
         }
-        statusEl.textContent = 'Recipe and image imported! Review and edit as needed.';
+        statusEl.textContent = 'Recipe and image imported!';
+      } else {
+        statusEl.textContent = 'Recipe imported! Fill in any remaining fields.';
       }
-      
-      statusEl.textContent = 'Recipe imported successfully! Review and edit as needed.';
       statusEl.style.color = '#2a9d8f';
+    } else {
+      throw new Error('No recipe data returned');
     }
   } catch (error) {
     console.error('Import error:', error);
-    let errorMsg = 'Failed to import. ';
-    if (error.response?.status === 402 || error.response?.status === 403 || error.response?.status === 404) {
-      errorMsg += 'This site blocks automated imports. Try a different recipe URL (e.g., smaller blogs).';
-    } else if (error.code === '/functions/unavailable') {
-      errorMsg += 'Import service is unavailable. Please try again later.';
-    } else {
-      errorMsg += 'Please check the URL and try again.';
-    }
-    statusEl.textContent = errorMsg;
+    statusEl.textContent = 'Import failed. Please enter recipe manually.';
     statusEl.style.color = '#e53e3e';
   } finally {
     importBtn.disabled = false;
