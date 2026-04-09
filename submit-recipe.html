@@ -497,7 +497,6 @@
     
 // Import recipe from URL
 async function importRecipe() {
-  alert('Starting import...');
   const urlInput = document.getElementById('sourceUrl');
   const url = urlInput.value.trim();
   const statusEl = document.getElementById('import-status');
@@ -515,17 +514,8 @@ async function importRecipe() {
     importBtn.disabled = true;
     
     // Call the Firebase function
-    alert('Calling Firebase function...');
-    try {
-      const importRecipeFn = httpsCallable(functions, 'importRecipe');
-      alert('Function created, calling...');
-      const result = await importRecipeFn({ url });
-      alert('Got result: ' + JSON.stringify(result.data));
-    } catch(e) {
-      alert('Error: ' + e.message + ' - ' + e.code);
-      throw e;
-    }
-    
+    const importRecipeFn = httpsCallable(functions, 'importRecipe');
+    const result = await importRecipeFn({ url });
     const recipe = result.data?.recipe;
     if (recipe) {
       // Populate form fields
