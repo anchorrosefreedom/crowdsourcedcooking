@@ -516,11 +516,14 @@ async function importRecipe() {
     importBtn.disabled = true;
     
     // Call Firebase function
+    alert('Calling Firebase function...');
     console.log('Calling Firebase function with URL:', url);
     console.log('Functions object:', functions);
     const importRecipe = httpsCallable(functions, 'importRecipe');
     console.log('Calling function...');
+    alert('Waiting for result...');
     const result = await importRecipe({ url });
+    alert('Got result: ' + JSON.stringify(result).substring(0,100));
     console.log('Result:', result);
     const recipe = result.data?.recipe;
     if (recipe) {
