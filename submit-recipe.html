@@ -140,7 +140,7 @@
           <label>Original Recipe URL (optional)</label>
           <div style="display: flex; gap: 0.5rem;">
             <input type="url" id="sourceUrl" placeholder="Link to original recipe if you adapted this" style="flex: 1;">
-            <button type="button" id="import-btn" onclick="importRecipe()" style="padding: 0.75rem 1rem; white-space: nowrap;">Import Recipe</button>
+            <button type="button" id="import-btn"  style="padding: 0.75rem 1rem; white-space: nowrap;">Import Recipe</button>
           </div>
           <div id="import-status" style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;"></div>
         </div>
@@ -502,6 +502,9 @@
   
     
 // Import recipe from URL
+// Add click handler
+document.getElementById('import-btn').addEventListener('click', importRecipe);
+
 async function importRecipe() {
   const urlInput = document.getElementById('sourceUrl');
   const url = urlInput.value.trim();
