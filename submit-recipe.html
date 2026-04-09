@@ -171,7 +171,7 @@
     <nav>
       <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
       <ul class="nav-links">
-        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="categories.html">Recipes</a></li>
         <li><a href="submit-recipe.html" class="active">Submit Recipe</a></li>
@@ -325,14 +325,7 @@
       }
     });
     
-    // Set active nav link based on current page
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      const href = link.getAttribute('href');
-      if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-        link.classList.add('active');
-      }
-    });
+    
     
     const emojiMap = {
       'beef': '🥩', 'chicken': '🍗', 'pork': '🐷', 'fish': '🐟',
