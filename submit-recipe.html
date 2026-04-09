@@ -217,7 +217,7 @@
 
         <div class="form-group">
           <label>Author Name</label>
-          <input type="text" id="author" style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px">
+          <input type="text" id="author" readonly style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px;background:#f0f0f0;color:#666" placeholder="Loading...">
         </div>
 
         <div class="form-group">
@@ -263,6 +263,9 @@
               <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-proteins" value="Fish"> Fish</label>
               <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-proteins" value="Seafood"> Seafood</label>
               <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-proteins" value="Lamb"> Lamb</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-proteins" value="Turkey"> Turkey</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-proteins" value="Bacon"> Bacon</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-proteins" value="Eggs"> Eggs</label>
             </div>
           </div>
           
@@ -275,6 +278,51 @@
               <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-vegetables" value="Broccoli"> Broccoli</label>
               <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-vegetables" value="Cauliflower"> Cauliflower</label>
               <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-vegetables" value="Zucchini"> Zucchini</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-vegetables" value="Asparagus"> Asparagus</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-vegetables" value="Peppers"> Peppers</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-vegetables" value="Onions"> Onions</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-vegetables" value="Tomatoes"> Tomatoes</label>
+            </div>
+          </div>
+          
+          <div style="margin-bottom: 0.75rem;">
+            <button type="button" onclick="toggleDropdown('fruits')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:500">
+              <span>Fruits</span><span style="color:#666">▼</span>
+            </button>
+            <div id="fruits-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px;margin-top:0.25rem">
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-fruits" value="Apples"> Apples</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-fruits" value="Bananas"> Bananas</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-fruits" value="Berries"> Berries</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-fruits" value="Citrus"> Citrus</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-fruits" value="Avocado"> Avocado</label>
+            </div>
+          </div>
+          
+          <div style="margin-bottom: 0.75rem;">
+            <button type="button" onclick="toggleDropdown('nuts')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:500">
+              <span>Nuts/Seeds</span><span style="color:#666">▼</span>
+            </button>
+            <div id="nuts-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px;margin-top:0.25rem">
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-nuts" value="Almonds"> Almonds</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-nuts" value="Walnuts"> Walnuts</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-nuts" value="Pecans"> Pecans</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-nuts" value="Macadamia"> Macadamia</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-nuts" value="Chia Seeds"> Chia Seeds</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-nuts" value="Flax Seeds"> Flax Seeds</label>
+            </div>
+          </div>
+          
+          <div style="margin-bottom: 0.75rem;">
+            <button type="button" onclick="toggleDropdown('dairy')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:500">
+              <span>Dairy</span><span style="color:#666">▼</span>
+            </button>
+            <div id="dairy-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px;margin-top:0.25rem">
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-dairy" value="Butter"> Butter</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-dairy" value="Cream Cheese"> Cream Cheese</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-dairy" value="Heavy Cream"> Heavy Cream</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-dairy" value="Cheese"> Cheese</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-dairy" value="Sour Cream"> Sour Cream</label>
+              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-dairy" value="Coconut Milk"> Coconut Milk</label>
             </div>
           </div>
         </div>
@@ -475,12 +523,14 @@
           if (document.getElementById('description')) document.getElementById('description').value = recipe.description || '';
           if (document.getElementById('ingredients') && recipe.ingredients) document.getElementById('ingredients').value = recipe.ingredients.join('\n');
           if (document.getElementById('instructions') && recipe.instructions) document.getElementById('instructions').value = recipe.instructions;
-          if (document.getElementById('author') && recipe.author) document.getElementById('author').value = recipe.author;
+          var authorName = recipe.author || "Unknown"; if (document.getElementById('author')) document.getElementById('author').value = authorName;
           if (recipe.image) {
+            // Set the image in the main preview area
+            document.getElementById('image-preview').src = recipe.image;
+            document.getElementById('image-preview-container').style.display = 'block';
+            document.getElementById('upload-area').style.display = 'none';
+            // Store the imported image URL for form submission
             document.getElementById('imported-image').value = recipe.image;
-            var img = document.getElementById('imported-img');
-            var preview = document.getElementById('imported-image-preview');
-            if (img && preview) { img.src = recipe.image; preview.style.display = 'block'; }
           }
           status.textContent = 'Imported!';
           status.style.color = 'green';
