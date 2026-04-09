@@ -522,7 +522,7 @@ async function importRecipe() {
     
     // Try using Firebase callable functions
     try {
-      const importRecipeFn = httpsCallable(functions, 'importRecipe');
+      const importRecipeFn = httpsCallable(functions, 'importRecipe', { region: 'us-central1' });
       const result = await importRecipeFn({ url });
       console.log('Import result:', result.data);
       
