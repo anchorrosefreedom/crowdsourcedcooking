@@ -497,8 +497,6 @@
     
 // Import recipe from URL
 async function importRecipe() {
-  alert('Import function called!');
-  console.log('=== IMPORT STARTED ===');
   const urlInput = document.getElementById('sourceUrl');
   const url = urlInput.value.trim();
   const statusEl = document.getElementById('import-status');
@@ -506,28 +504,21 @@ async function importRecipe() {
   
   if (!url) {
     statusEl.textContent = 'Please enter a URL first';
-    statusEl.style.color = '#e53e3e';
+    statusEl.style.color = 'red';
     return;
   }
   
   try {
     statusEl.textContent = 'Importing recipe...';
-    statusEl.style.color = '#666';
     importBtn.disabled = true;
     
-    // Call Firebase function
-    alert('Calling Firebase function...');
-    console.log('Calling Firebase function with URL:', url);
-    console.log('Functions object:', functions);
-    const importRecipe = httpsCallable(functions, 'importRecipe');
-    console.log('Calling function...');
-    alert('Waiting for result...');
-    const result = await importRecipe({ url });
-    alert('Got result: ' + JSON.stringify(result).substring(0,100));
-    console.log('Result:', result);
-    const recipe = result.data?.recipe;
-    if (recipe) {
-      // Populate form fields
+    // Use Firebase callable
+    const importRecipeFn = httpsCallable(functions, 'importRecipe');
+    const result = await importRecipeFn({ url });
+    
+    if (result.data && result.data.recipe) {
+      const recipe = result.data.recipe;
+      
       if (recipe.title) document.getElementById('title').value = recipe.title;
       if (recipe.description) document.getElementById('description').value = recipe.description;
       if (recipe.prepTime) document.getElementById('prepTime').value = recipe.prepTime;
@@ -540,21 +531,18 @@ async function importRecipe() {
         document.getElementById('imported-image-url').value = recipe.image;
         const preview = document.getElementById('image-preview');
         if (preview) { preview.src = recipe.image; preview.classList.add('show'); }
-        const removeBtn = document.getElementById('remove-image');
-        if (removeBtn) removeBtn.style.display = 'inline-block';
         statusEl.textContent = 'Recipe and image imported!';
       } else {
-        statusEl.textContent = 'Recipe imported! Fill in any remaining fields.';
+        statusEl.textContent = 'Recipe imported! Fill in remaining fields.';
       }
-      statusEl.style.color = '#2a9d8f';
+      statusEl.style.color = 'green';
     } else {
-      throw new Error('No recipe data found');
+      statusEl.textContent = 'Could not find recipe data';
+      statusEl.style.color = 'red';
     }
   } catch (error) {
-    console.error('Import error:', error);
-    statusEl.textContent = 'Import failed: ' + (error.message || 'Unknown error');
-    statusEl.style.color = '#e53e3e';
-    alert('Import failed: ' + error.message);
+    statusEl.textContent = 'Error: ' + error.message;
+    statusEl.style.color = 'red';
   } finally {
     importBtn.disabled = false;
   }
