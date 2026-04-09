@@ -87,14 +87,14 @@
 </head>
 <body>
   <!-- FORCE LOAD - hide loading immediately -->
-  <script>document.getElementById('loading').style.display='none';document.getElementById('form-section').style.display='block';</script>
+  <script>document.getElementById('loading').style.display='none';document.getElementById('submit-recipe').style.display='block';</script>
   
   <script>
     // Emergency fallback - hide loading immediately
     setTimeout(function() {
       var loading = document.getElementById('loading');
       if (loading) loading.style.display = 'none';
-      var form = document.getElementById('form-section');
+      var form = document.getElementById('submit-recipe');
       if (form) form.style.display = 'block';
     }, 100);
   </script>
