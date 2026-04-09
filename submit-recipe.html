@@ -300,11 +300,6 @@
   </div>
 
   <script type="module">
-    // Global error handler
-    window.onerror = function(msg, url, line) {
-      alert('JavaScript Error: ' + msg + '\nLine: ' + line);
-      return false;
-    };
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
