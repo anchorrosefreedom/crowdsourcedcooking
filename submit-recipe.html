@@ -382,6 +382,7 @@
     loadRecipes();
   // Import recipe from URL
   function importRecipe() {
+  alert('Import function running...');
     const urlInput = document.getElementById('sourceUrl');
     const url = urlInput ? urlInput.value.trim() : '';
     const statusEl = document.getElementById('import-status');
