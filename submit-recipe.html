@@ -201,7 +201,7 @@
         <label>Original Recipe URL (optional)</label>
         <div style="display: flex; gap: 0.5rem;">
           <input type="url" id="sourceUrl" placeholder="Link to original recipe if you adapted this" style="flex: 1;">
-          <button type="button" onclick="var u=document.getElementById('sourceUrl').value.trim();var s=document.getElementById('import-status');if(!u){s.textContent='Enter URL';s.style.color='red';return}s.textContent='Importing...';s.style.color='#666';fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/importRecipe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:u})}).then(r=>r.json()).then(d=>{var recipe=d.result?.recipe||d.recipe;if(recipe&&recipe.title){if(document.getElementById('title'))document.getElementById('title').value=recipe.title;if(document.getElementById('description'))document.getElementById('description').value=recipe.description||'';if(document.getElementById('ingredients')&&recipe.ingredients)document.getElementById('ingredients').value=recipe.ingredients.join('\n');if(document.getElementById('instructions')&&recipe.instructions)document.getElementById('instructions').value=recipe.instructions;s.textContent='Imported!';s.style.color='green'}else{s.textContent='No recipe found';s.style.color='red'}}).catch(e=>{s.textContent='Error: '+e.message;s.style.color='red'})" style="padding: 0.75rem 1rem; white-space: nowrap; background: #2a9d8f; color: white; border: none; border-radius: 8px; cursor: pointer;">Import Recipe</button>
+          <button type="button" onclick="alert('Button clicked!');var u=document.getElementById('sourceUrl').value.trim();var s=document.getElementById('import-status');if(!u){s.textContent='Enter URL';s.style.color='red';return}s.textContent='Importing...';s.style.color='#666';fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/importRecipe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:u})}).then(r=>r.json()).then(d=>{var recipe=d.result?.recipe||d.recipe;if(recipe&&recipe.title){if(document.getElementById('title'))document.getElementById('title').value=recipe.title;if(document.getElementById('description'))document.getElementById('description').value=recipe.description||'';if(document.getElementById('ingredients')&&recipe.ingredients)document.getElementById('ingredients').value=recipe.ingredients.join('\n');if(document.getElementById('instructions')&&recipe.instructions)document.getElementById('instructions').value=recipe.instructions;s.textContent='Imported!';s.style.color='green'}else{s.textContent='No recipe found';s.style.color='red'}}).catch(e=>{s.textContent='Error: '+e.message;s.style.color='red'})" style="padding: 0.75rem 1rem; white-space: nowrap; background: #2a9d8f; color: white; border: none; border-radius: 8px; cursor: pointer;">Import Recipe</button>
         </div>
         <div id="import-status" style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;"></div>
       </div>
@@ -382,7 +382,6 @@
     loadRecipes();
   // Import recipe from URL
   function importRecipe() {
-  alert('Import function running...');
     const urlInput = document.getElementById('sourceUrl');
     const url = urlInput ? urlInput.value.trim() : '';
     const statusEl = document.getElementById('import-status');
