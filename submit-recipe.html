@@ -545,9 +545,12 @@ async function importRecipe() {
         statusEl.textContent = 'Recipe imported! Fill in remaining fields.';
       }
       statusEl.style.color = 'green';
-    } else {
-      statusEl.textContent = 'Could not find recipe data';
-      statusEl.style.color = 'red';
+      } else {
+        statusEl.textContent = 'Could not find recipe data';
+        statusEl.style.color = 'red';
+      }
+    } catch (funcError) {
+      throw funcError;
     }
   } catch (error) {
     statusEl.textContent = 'Error: ' + error.message;
