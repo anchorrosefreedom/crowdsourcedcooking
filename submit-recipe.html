@@ -199,7 +199,11 @@
       
       <div class="form-group">
         <label>Original Recipe URL (optional)</label>
-        <input type="url" id="sourceUrl" placeholder="Link to original recipe if you adapted this">
+        <div style="display: flex; gap: 0.5rem;">
+          <input type="url" id="sourceUrl" placeholder="Link to original recipe if you adapted this" style="flex: 1;">
+          <button type="button" onclick="importRecipe()" style="padding: 0.75rem 1rem; white-space: nowrap; background: #2a9d8f; color: white; border: none; border-radius: 8px; cursor: pointer;">Import Recipe</button>
+        </div>
+        <div id="import-status" style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;"></div>
       </div>
       
       <div class="form-group">
@@ -376,6 +380,49 @@
     }
     
     loadRecipes();
+  // Import recipe from URL
+  function importRecipe() {
+    const urlInput = document.getElementById('sourceUrl');
+    const url = urlInput.value.trim();
+    const statusEl = document.getElementById('import-status');
+    
+    if (!url) {
+      statusEl.textContent = 'Please enter a URL first';
+      statusEl.style.color = '#e53e3e';
+      return;
+    }
+    
+    statusEl.textContent = 'Importing recipe... (this may take a moment)';
+    statusEl.style.color = '#666';
+    
+    // Use fetch to call the Firebase Cloud Function directly
+    fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/importRecipe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: url })
+    })
+    .then(response => response.json())
+    .then(data => {
+      const recipe = data.result?.recipe || data.recipe;
+      if (recipe) {
+        // Populate form fields
+        if (recipe.title) document.getElementById('title').value = recipe.title;
+        if (recipe.description) document.getElementById('description').value = recipe.description;
+        if (recipe.ingredients?.length) document.getElementById('ingredients').value = recipe.ingredients.join('\n');
+        if (recipe.instructions) document.getElementById('instructions').value = recipe.instructions;
+        
+        statusEl.textContent = 'Recipe imported! Review and edit as needed.';
+        statusEl.style.color = '#2a9d8f';
+      } else {
+        statusEl.textContent = 'Could not find recipe data';
+        statusEl.style.color = '#e53e3e';
+      }
+    })
+    .catch(error => {
+      statusEl.textContent = 'Import failed. Please enter recipe manually.';
+      statusEl.style.color = '#e53e3e';
+    });
+  }
   </script>
 </body>
 </html>
