@@ -515,15 +515,18 @@ async function importRecipe() {
   }
   
   try {
-    statusEl.textContent = 'Importing recipe...';
+    statusEl.textContent = 'Importing recipe... (this may take a moment)';
     statusEl.style.color = '#666';
     importBtn.disabled = true;
+    console.log('Starting import for:', url);
     
-    const functions = getFunctions(app, "us-central1");
-    const importRecipe = httpsCallable(functions, 'importRecipe');
-    const result = await importRecipe({ url });
-    
-    if (result.data.success && result.data.recipe) {
+    // Try using Firebase callable functions
+    try {
+      const importRecipeFn = httpsCallable(functions, 'importRecipe');
+      const result = await importRecipeFn({ url });
+      console.log('Import result:', result.data);
+      
+      if (result.data && result.data.success && result.data.recipe) {
       const recipe = result.data.recipe;
       
       // Populate form fields
