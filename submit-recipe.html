@@ -169,13 +169,12 @@
 <body>
   <header>
     <nav>
-      <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="Submit Recipe - CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
+      <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
       <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="submit-recipe.html">Submit Recipe</a></li>
+        <li><a href="index.html" class="active">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="categories.html">Recipes</a></li>
-        <li><a href="submit-recipe.html">Submit Recipe</a></li>
+        <li><a href="submit-recipe.html" class="active">Submit Recipe</a></li>
         <li><a href="keto.html">Diets</a></li>
         <li><a href="blog.html">Blog</a></li>
         <li><a href="login.html?redirect=index.html" id="auth-link">Login</a></li>
@@ -186,70 +185,69 @@
   
   <main>
     <div class="form-card">
-      <h1>Submit Your Recipe</h1>
-      <p class="subtitle">Share your creation with the community</p>
-      
-      <div class="form-group">
-        <label>Recipe Photo * (required)</label>
-        <div class="image-upload-area" onclick="document.getElementById('image-input').click()">
-          <div class="upload-icon">📷</div>
-          <div class="upload-text">Click to upload a photo</div>
+      <form id="recipe-form">
+        <div class="form-group">
+          <label>Recipe Photo * (required)</label>
+          <div class="image-upload-area" onclick="document.getElementById('image-input').click()">
+            <span>📷 Click to upload</span>
+          </div>
+          <input type="file" id="image-input" accept="image/*" style="display:none">
         </div>
-        <input type="file" id="image-input" accept="image/*" style="display: none;">
-      </div>
-      
-      <div class="form-group">
-        <label>Original Recipe URL (optional)</label>
-        <div style="display: flex; gap: 0.5rem;">
-          <input type="url" id="sourceUrl" placeholder="Link to original recipe if you adapted this" style="flex: 1;">
-          <button type="button" onclick="alert('Button clicked!');var u=document.getElementById('sourceUrl').value.trim();var s=document.getElementById('import-status');if(!u){s.textContent='Enter URL';s.style.color='red';return}s.textContent='Importing...';s.style.color='#666';fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/importRecipe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:u})}).then(r=>r.json()).then(d=>{var recipe=d.result?.recipe||d.recipe;if(recipe&&recipe.title){if(document.getElementById('title'))document.getElementById('title').value=recipe.title;if(document.getElementById('description'))document.getElementById('description').value=recipe.description||'';if(document.getElementById('ingredients')&&recipe.ingredients)document.getElementById('ingredients').value=recipe.ingredients.join('\n');if(document.getElementById('instructions')&&recipe.instructions)document.getElementById('instructions').value=recipe.instructions;if(recipe.image){document.getElementById('imported-image').value=recipe.image;var img=document.getElementById('imported-img');var preview=document.getElementById('imported-image-preview');if(img&&preview){img.src=recipe.image;preview.style.display='block';}s.textContent='Imported! Image included.'}else{s.textContent='Imported!'}s.style.color='green'}else{s.textContent='No recipe found';s.style.color='red'}}).catch(e=>{console.log('Fetch error:',e);s.textContent='Error: '+e.message+' (type: '+e.type+')';s.style.color='red'})" style="padding: 0.75rem 1rem; white-space: nowrap; background: #2a9d8f; color: white; border: none; border-radius: 8px; cursor: pointer;">Import Recipe</button>
+
+        <div class="form-group">
+          <label>Original Recipe URL (optional)</label>
+          <div style="display:flex;gap:0.5rem">
+            <input type="url" id="sourceUrl" placeholder="Link to original recipe if you adapted this" style="flex:1;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px;">
+            <button type="button" onclick="var u=document.getElementById('sourceUrl').value.trim();var s=document.getElementById('import-status');if(!u){s.textContent='Enter URL';s.style.color='red';return}s.textContent='Importing...';s.style.color='#666';fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/importRecipe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:u})}).then(r=>r.json()).then(d=>{var recipe=d.result?.recipe||d.recipe;if(recipe&&recipe.title){if(document.getElementById('title'))document.getElementById('title').value=recipe.title;if(document.getElementById('description'))document.getElementById('description').value=recipe.description||'';if(document.getElementById('ingredients')&&recipe.ingredients)document.getElementById('ingredients').value=recipe.ingredients.join('
+');if(document.getElementById('instructions')&&recipe.instructions)document.getElementById('instructions').value=recipe.instructions;if(recipe.image){document.getElementById('imported-image').value=recipe.image;var img=document.getElementById('imported-img');var preview=document.getElementById('imported-image-preview');if(img&&preview){img.src=recipe.image;preview.style.display='block'}}s.textContent='Imported!';s.style.color='green'}else{s.textContent='No recipe found';s.style.color='red'}}).catch(e=>{s.textContent='Error: '+e.message;s.style.color='red'})" style="padding:1rem;background:#2a9d8f;color:white;border:none;border-radius:8px;cursor:pointer;white-space:nowrap">Import Recipe</button>
+          </div>
+          <input type="hidden" id="imported-image">
+          <div id="imported-image-preview" style="display:none;margin-top:0.5rem"><img id="imported-img" style="max-width:200px;border-radius:8px"></div>
+          <div id="import-status" style="margin-top:0.5rem;font-size:0.9rem;color:#666"></div>
         </div>
-        <input type="hidden" id="imported-image">
-        <div id="imported-image-preview" style="display:none; margin-top:0.5rem;"><img id="imported-img" style="max-width:200px; border-radius:8px;"></div>
-      <div id="import-status" style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;"></div>
-      </div>
-      
-      <div class="form-group">
-        <label>Recipe Title *</label>
-        <input type="text" id="title" required placeholder="e.g., Grandma's Apple Pie">
-      </div>
-      
-      <div class="form-group">
-        <label>Description</label>
-        <textarea id="description" placeholder="Brief description of your recipe..."></textarea>
-      </div>
-      
-      <div class="form-group">
-        <label>Category *</label>
-        <select id="category" required>
-          <option value="">Select category</option>
-          <option value="Main Dishes">Main Dishes</option>
-          <option value="Meats">Meats</option>
-          <option value="Side Dishes">Side Dishes</option>
-          <option value="Breakfasts">Breakfasts</option>
-          <option value="Breads">Breads</option>
-          <option value="Desserts">Desserts</option>
-          <option value="Drinks">Drinks</option>
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label>Ingredients *</label>
-        <textarea id="ingredients" placeholder="List your ingredients, one per line..." required></textarea>
-      </div>
-      
-      <div class="form-group">
-        <label>Instructions *</label>
-        <textarea id="instructions" placeholder="How to prepare your recipe..." required></textarea>
-      </div>
-      
-      <button type="submit" id="submit-btn">Submit Recipe</button>
+
+        <div class="form-group">
+          <label>Recipe Title *</label>
+          <input type="text" id="title" required placeholder="e.g., Grandma's Apple Pie" style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px">
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="description" placeholder="Brief description of your recipe..." style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px;min-height:80px"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Category *</label>
+          <select id="category" required style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px">
+            <option value="">Select category</option>
+            <option value="Main Dishes">Main Dishes</option>
+            <option value="Meats">Meats</option>
+            <option value="Side Dishes">Side Dishes</option>
+            <option value="Breakfasts">Breakfasts</option>
+            <option value="Breads">Breads</option>
+            <option value="Desserts">Desserts</option>
+            <option value="Drinks">Drinks</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Ingredients *</label>
+          <textarea id="ingredients" placeholder="List your ingredients, one per line..." required style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px;min-height:120px"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Instructions *</label>
+          <textarea id="instructions" placeholder="How to prepare your recipe..." required style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px;min-height:120px"></textarea>
+        </div>
+
+        <button type="submit" style="background:#2a9d8f;color:white;border:none;padding:1rem 2rem;border-radius:8px;font-size:1.1rem;font-weight:600;cursor:pointer;width:100%">Submit Recipe</button>
+      </form>
     </div>
   </main>
 
   
   <footer>
-    <p>© 2026 Submit Recipe - CrowdSourced Cooking — Made by cooks, for cooks</p>
+    <p>© 2026 CrowdSourced Cooking — Made by cooks, for cooks</p>
   </footer>
   
   <script type="module">
@@ -383,64 +381,6 @@
     }
     
     loadRecipes();
-  // Import recipe from URL
-  function importRecipe() {
-    const urlInput = document.getElementById('sourceUrl');
-    const url = urlInput ? urlInput.value.trim() : '';
-    const statusEl = document.getElementById('import-status');
-    
-    if (!url) {
-      statusEl.textContent = 'Please enter a URL first';
-      statusEl.style.color = '#e53e3e';
-      return;
-    }
-    
-    statusEl.textContent = 'Importing recipe... (this may take a moment)';
-    statusEl.style.color = '#666';
-    
-    // Use fetch to call the Firebase Cloud Function
-    fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/importRecipe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url: url })
-    })
-    .then(response => {
-      if (!response.ok) throw new Error('HTTP error');
-      return response.json();
-    })
-    .then(data => {
-      console.log('Import response:', data);
-      const recipe = data.result?.recipe || data.recipe;
-      if (recipe && recipe.title) {
-        // Populate form fields
-        if (document.getElementById('title')) document.getElementById('title').value = recipe.title;
-        if (document.getElementById('description')) document.getElementById('description').value = recipe.description || '';
-        if (document.getElementById('ingredients') && recipe.ingredients?.length) {
-          document.getElementById('ingredients').value = recipe.ingredients.join('\n');
-        }
-        if (document.getElementById('instructions') && recipe.instructions) {
-          document.getElementById('instructions').value = recipe.instructions;
-        }
-        
-        statusEl.textContent = 'Recipe imported! Review and edit as needed.';
-        statusEl.style.color = '#2a9d8f';
-      } else {
-        statusEl.textContent = 'Could not find recipe data in this URL';
-        statusEl.style.color = '#e53e3e';
-      }
-    })
-    .catch(error => {
-      console.error('Import error:', error);
-      statusEl.textContent = 'Import failed: ' + error.message;
-      statusEl.style.color = '#e53e3e';
-    });
-  }
-  // Set active nav link
-    const page = window.location.pathname.split('/').pop().replace('.html','') || 'index';
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      const href = link.getAttribute('href').replace('.html','');
-      if (href === page) link.classList.add('active');
-    });
   </script>
 </body>
 </html>
