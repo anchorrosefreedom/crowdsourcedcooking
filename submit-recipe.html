@@ -165,18 +165,16 @@
       }
     }
   </style>
-<script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js"></script>
 </head>
 <body>
   <header>
     <nav>
       <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
       <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html" class="active">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="categories.html">Recipes</a></li>
-        <li><a href="submit-recipe.html" class="active">Submit Recipe</a></li>
+        <li><a href="submit-recipe.html">Submit Recipe</a></li>
         <li><a href="keto.html">Diets</a></li>
         <li><a href="blog.html">Blog</a></li>
         <li><a href="login.html?redirect=index.html" id="auth-link">Login</a></li>
@@ -189,10 +187,10 @@
     <div class="form-card">
       <form id="recipe-form">
         <div class="form-group">
-          <label>Recipe Photo * (required)</label>
-          <div class="image-upload-area" id="upload-area" style="min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#f8f9fa;border:2px dashed #ddd;border-radius:12px;padding:2rem;margin-bottom:0.5rem" onclick="document.getElementById('image-input').click()">
+          <label>Recipe Photo *</label>
+          <div id="upload-area" style="min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#f8f9fa;border:2px dashed #ddd;border-radius:12px;padding:2rem;margin-bottom:0.5rem" onclick="document.getElementById('image-input').click()">
             <span style="font-size:3rem">📷</span>
-            <span style="margin-top:0.5rem;color:#666;font-size:1.1rem">Click to upload a photo</span>
+            <span style="margin-top:0.5rem;color:#666;font-size:1.1rem">Click to upload</span>
           </div>
           <input type="file" id="image-input" accept="image/*" style="display:none" onchange="handleImageSelect(event)">
           <div id="image-preview-container" style="display:none;margin-top:1rem">
@@ -202,11 +200,10 @@
         </div>
 
         <div class="form-group">
-          <label>Original Recipe URL (optional)</label>
+          <label>Original Recipe URL</label>
           <div style="display:flex;gap:0.5rem">
-            <input type="url" id="sourceUrl" placeholder="Link to original recipe if you adapted this" style="flex:1;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px;">
-            <button type="button" onclick="alert('Import button clicked!');var u=document.getElementById('sourceUrl').value.trim();var s=document.getElementById('import-status');if(!u){s.textContent='Enter URL';s.style.color='red';return}s.textContent='Importing...';s.style.color='#666';fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/importRecipe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:u})}).then(r=>r.json()).then(d=>{var recipe=d.result?.recipe||d.recipe;if(recipe&&recipe.title){if(document.getElementById('title'))document.getElementById('title').value=recipe.title;if(document.getElementById('description'))document.getElementById('description').value=recipe.description||'';if(document.getElementById('ingredients')&&recipe.ingredients)document.getElementById('ingredients').value=recipe.ingredients.join('
-');if(document.getElementById('instructions')&&recipe.instructions)document.getElementById('instructions').value=recipe.instructions;if(recipe.image){document.getElementById('imported-image').value=recipe.image;var img=document.getElementById('imported-img');var preview=document.getElementById('imported-image-preview');if(img&&preview){img.src=recipe.image;preview.style.display='block'}}s.textContent='Imported!';s.style.color='green'}else{s.textContent='No recipe found';s.style.color='red'}}).catch(e=>{s.textContent='Error: '+e.message;s.style.color='red'})" style="padding:1rem;background:#2a9d8f;color:white;border:none;border-radius:8px;cursor:pointer;white-space:nowrap">Import Recipe</button>
+            <input type="url" id="sourceUrl" placeholder="Link to original recipe" style="flex:1;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px">
+            <button type="button" id="import-btn" style="padding:1rem;background:#2a9d8f;color:white;border:none;border-radius:8px;cursor:pointer;white-space:nowrap">Import Recipe</button>
           </div>
           <input type="hidden" id="imported-image">
           <div id="imported-image-preview" style="display:none;margin-top:0.5rem"><img id="imported-img" style="max-width:200px;border-radius:8px"></div>
@@ -215,17 +212,17 @@
 
         <div class="form-group">
           <label>Recipe Title *</label>
-          <input type="text" id="title" required placeholder="e.g., Grandma's Apple Pie" style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px">
+          <input type="text" id="title" required style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px">
         </div>
 
         <div class="form-group">
           <label>Author Name</label>
-          <input type="text" id="author" placeholder="Your name or the original author" style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px">
+          <input type="text" id="author" style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px">
         </div>
 
         <div class="form-group">
           <label>Description</label>
-          <textarea id="description" placeholder="Brief description of your recipe..." style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px;min-height:80px"></textarea>
+          <textarea id="description" style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px;min-height:80px"></textarea>
         </div>
 
         <div class="form-group">
@@ -244,20 +241,19 @@
 
         <div class="form-group">
           <label>Ingredients *</label>
-          <textarea id="ingredients" placeholder="List your ingredients, one per line..." required style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px;min-height:120px"></textarea>
+          <textarea id="ingredients" required style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px;min-height:120px"></textarea>
         </div>
 
         <div class="form-group">
           <label>Instructions *</label>
-          <textarea id="instructions" placeholder="How to prepare your recipe..." required style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px;min-height:120px"></textarea>
+          <textarea id="instructions" required style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px;min-height:120px"></textarea>
         </div>
 
-        
         <div class="form-group">
           <label>Tags (Select categories below)</label>
           
           <div style="margin-bottom: 0.75rem;">
-            <button type="button" onclick="document.getElementById('proteins-dropdown').style.display = document.getElementById('proteins-dropdown').style.display === 'none' ? 'block' : 'none'" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:500">
+            <button type="button" onclick="toggleDropdown('proteins')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:500">
               <span>Proteins</span><span style="color:#666">▼</span>
             </button>
             <div id="proteins-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px;margin-top:0.25rem">
@@ -267,14 +263,11 @@
               <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-proteins" value="Fish"> Fish</label>
               <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-proteins" value="Seafood"> Seafood</label>
               <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-proteins" value="Lamb"> Lamb</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-proteins" value="Turkey"> Turkey</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-proteins" value="Bacon"> Bacon</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-proteins" value="Eggs"> Eggs</label>
             </div>
           </div>
           
           <div style="margin-bottom: 0.75rem;">
-            <button type="button" onclick="document.getElementById('vegetables-dropdown').style.display = document.getElementById('vegetables-dropdown').style.display === 'none' ? 'block' : 'none'" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:500">
+            <button type="button" onclick="toggleDropdown('vegetables')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:500">
               <span>Vegetables</span><span style="color:#666">▼</span>
             </button>
             <div id="vegetables-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px;margin-top:0.25rem">
@@ -282,39 +275,6 @@
               <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-vegetables" value="Broccoli"> Broccoli</label>
               <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-vegetables" value="Cauliflower"> Cauliflower</label>
               <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-vegetables" value="Zucchini"> Zucchini</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-vegetables" value="Asparagus"> Asparagus</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-vegetables" value="Peppers"> Peppers</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-vegetables" value="Onions"> Onions</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-vegetables" value="Tomatoes"> Tomatoes</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-vegetables" value="Mushrooms"> Mushrooms</label>
-            </div>
-          </div>
-          
-          <div style="margin-bottom: 0.75rem;">
-            <button type="button" onclick="document.getElementById('nuts-dropdown').style.display = document.getElementById('nuts-dropdown').style.display === 'none' ? 'block' : 'none'" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:500">
-              <span>Nuts/Seeds</span><span style="color:#666">▼</span>
-            </button>
-            <div id="nuts-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px;margin-top:0.25rem">
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-nuts" value="Almonds"> Almonds</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-nuts" value="Walnuts"> Walnuts</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-nuts" value="Pecans"> Pecans</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-nuts" value="Macadamia"> Macadamia</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-nuts" value="Chia Seeds"> Chia Seeds</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-nuts" value="Flax Seeds"> Flax Seeds</label>
-            </div>
-          </div>
-          
-          <div style="margin-bottom: 0.75rem;">
-            <button type="button" onclick="document.getElementById('dairy-dropdown').style.display = document.getElementById('dairy-dropdown').style.display === 'none' ? 'block' : 'none'" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:500">
-              <span>Dairy/Fats</span><span style="color:#666">▼</span>
-            </button>
-            <div id="dairy-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px;margin-top:0.25rem">
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-dairy" value="Butter"> Butter</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-dairy" value="Cream Cheese"> Cream Cheese</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-dairy" value="Heavy Cream"> Heavy Cream</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-dairy" value="Cheese"> Cheese</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-dairy" value="Sour Cream"> Sour Cream</label>
-              <label style="display:block;padding:0.25rem"><input type="checkbox" name="tags-dairy" value="Coconut Oil"> Coconut Oil</label>
             </div>
           </div>
         </div>
@@ -404,7 +364,14 @@
       }
     });
     
-    
+    // Set active nav link based on current page
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      const href = link.getAttribute('href');
+      if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+        link.classList.add('active');
+      }
+    });
     
     const emojiMap = {
       'beef': '🥩', 'chicken': '🍗', 'pork': '🐷', 'fish': '🐟',
@@ -453,33 +420,18 @@
     }
     
     loadRecipes();
-  
+  </script>
 
-    // Initialize Firebase
-    var firebaseConfig = { apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk", authDomain: "crowdsourcedcooking.firebaseapp.com", projectId: "crowdsourcedcooking", storageBucket: "crowdsourcedcooking.firebasestorage.app", messagingSenderId: "1025589287082", appId: "1:1025589287082:web:15569e323aa2781ab858d3" };
-    firebase.initializeApp(firebaseConfig);
-    
-    // Check auth and pre-populate author
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        document.getElementById('author').value = user.displayName || user.email || 'Logged In User';
-      }
-    });
-
+  <script>
+    // Image handling
     function handleImageSelect(event) {
       var file = event.target.files[0];
       if (!file) return;
-      
       var reader = new FileReader();
       reader.onload = function(e) {
-        var preview = document.getElementById('image-preview');
-        var container = document.getElementById('image-preview-container');
-        var uploadArea = document.getElementById('upload-area');
-        if (preview && container) {
-          preview.src = e.target.result;
-          container.style.display = 'block';
-          uploadArea.style.display = 'none';
-        }
+        document.getElementById('image-preview').src = e.target.result;
+        document.getElementById('image-preview-container').style.display = 'block';
+        document.getElementById('upload-area').style.display = 'none';
       };
       reader.readAsDataURL(file);
     }
@@ -489,6 +441,59 @@
       document.getElementById('image-preview-container').style.display = 'none';
       document.getElementById('upload-area').style.display = 'flex';
     }
-</script>
+    
+    // Dropdown toggle
+    function toggleDropdown(id) {
+      var el = document.getElementById(id + '-dropdown');
+      el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    }
+    
+    // Import Recipe - using fetch
+    document.getElementById('import-btn').addEventListener('click', function() {
+      var url = document.getElementById('sourceUrl').value.trim();
+      var status = document.getElementById('import-status');
+      
+      if (!url) {
+        status.textContent = 'Please enter a URL first';
+        status.style.color = 'red';
+        return;
+      }
+      
+      status.textContent = 'Importing...';
+      status.style.color = '#666';
+      
+      fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/importRecipe', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({url: url})
+      })
+      .then(function(response) { return response.json(); })
+      .then(function(data) {
+        var recipe = data.result ? data.result.recipe : data.recipe;
+        if (recipe && recipe.title) {
+          if (document.getElementById('title')) document.getElementById('title').value = recipe.title || '';
+          if (document.getElementById('description')) document.getElementById('description').value = recipe.description || '';
+          if (document.getElementById('ingredients') && recipe.ingredients) document.getElementById('ingredients').value = recipe.ingredients.join('\n');
+          if (document.getElementById('instructions') && recipe.instructions) document.getElementById('instructions').value = recipe.instructions;
+          if (document.getElementById('author') && recipe.author) document.getElementById('author').value = recipe.author;
+          if (recipe.image) {
+            document.getElementById('imported-image').value = recipe.image;
+            var img = document.getElementById('imported-img');
+            var preview = document.getElementById('imported-image-preview');
+            if (img && preview) { img.src = recipe.image; preview.style.display = 'block'; }
+          }
+          status.textContent = 'Imported!';
+          status.style.color = 'green';
+        } else {
+          status.textContent = 'Could not find recipe';
+          status.style.color = 'red';
+        }
+      })
+      .catch(function(error) {
+        status.textContent = 'Error: ' + error.message;
+        status.style.color = 'red';
+      });
+    });
+  </script>
 </body>
 </html>
