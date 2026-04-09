@@ -120,10 +120,12 @@
     });
 
     // Set active nav link based on current page
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    let currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    // Remove .html extension for Firebase hosting compatibility
+    currentPage = currentPage.replace('.html', '');
     document.querySelectorAll('.nav-links a').forEach(link => {
-      const href = link.getAttribute('href');
-      if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+      const href = link.getAttribute('href').replace('.html', '');
+      if (href === currentPage || (currentPage === '' && href === 'index')) {
         link.classList.add('active');
       }
     });
