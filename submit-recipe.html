@@ -86,6 +86,15 @@
   </style>
 </head>
 <body>
+  <script>
+    // Emergency fallback - hide loading immediately
+    setTimeout(function() {
+      var loading = document.getElementById('loading');
+      if (loading) loading.style.display = 'none';
+      var form = document.getElementById('form-section');
+      if (form) form.style.display = 'block';
+    }, 100);
+  </script>
   <header>
     <nav>
       <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
