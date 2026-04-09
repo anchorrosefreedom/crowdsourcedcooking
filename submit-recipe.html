@@ -201,11 +201,11 @@
         
         <!-- Tags - Mobile Friendly Dropdowns -->
         <div class="form-group">
-          <label>Tags * (Select categories below)</label>
+          <label>Tags * (Click each category button to select items)</label>
           
           <div style="margin-bottom: 0.75rem;">
             <button type="button" onclick="document.getElementById('proteins-dropdown').style.display = document.getElementById('proteins-dropdown').style.display === 'none' ? 'block' : 'none'" style="width: 100%; padding: 0.75rem; background: white; border: 1px solid #ddd; font-weight: 500; border-radius: 4px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-              <span id="proteins-label">Proteins (0)</span><span style="color: #666;">▼</span>
+              <span id="proteins-label" style="font-weight: 600; color: #333;">Proteins</span><span style="color: #666;">▼</span>
             </button>
             <div id="proteins-dropdown" style="display: none; background: #f8f9fa; padding: 0.5rem; border-radius: 4px; margin-top: 0.25rem;">
               <label style="display: block; padding: 0.25rem;"><input type="checkbox" name="tags-proteins" value="Beef"> Beef</label>
@@ -222,7 +222,7 @@
           
           <div style="margin-bottom: 0.75rem;">
             <button type="button" onclick="document.getElementById('vegetables-dropdown').style.display = document.getElementById('vegetables-dropdown').style.display === 'none' ? 'block' : 'none'" style="width: 100%; padding: 0.75rem; background: white; border: 1px solid #ddd; font-weight: 500; border-radius: 4px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-              <span id="vegetables-label">Vegetables (0)</span><span style="color: #666;">▼</span>
+              <span id="vegetables-label" style="font-weight: 600; color: #333;">Vegetables</span><span style="color: #666;">▼</span>
             </button>
             <div id="vegetables-dropdown" style="display: none; background: #f8f9fa; padding: 0.5rem; border-radius: 4px; margin-top: 0.25rem;">
               <label style="display: block; padding: 0.25rem;"><input type="checkbox" name="tags-vegetables" value="Leafy Greens"> Leafy Greens</label>
@@ -240,7 +240,7 @@
           
           <div style="margin-bottom: 0.75rem;">
             <button type="button" onclick="document.getElementById('nuts-dropdown').style.display = document.getElementById('nuts-dropdown').style.display === 'none' ? 'block' : 'none'" style="width: 100%; padding: 0.75rem; background: white; border: 1px solid #ddd; font-weight: 500; border-radius: 4px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-              <span id="nuts-label">Nuts/Seeds (0)</span><span style="color: #666;">▼</span>
+              <span id="nuts-label" style="font-weight: 600; color: #333;">Nuts/Seeds</span><span style="color: #666;">▼</span>
             </button>
             <div id="nuts-dropdown" style="display: none; background: #f8f9fa; padding: 0.5rem; border-radius: 4px; margin-top: 0.25rem;">
               <label style="display: block; padding: 0.25rem;"><input type="checkbox" name="tags-nuts" value="Almonds"> Almonds</label>
@@ -256,7 +256,7 @@
           
           <div style="margin-bottom: 0.75rem;">
             <button type="button" onclick="document.getElementById('flours-dropdown').style.display = document.getElementById('flours-dropdown').style.display === 'none' ? 'block' : 'none'" style="width: 100%; padding: 0.75rem; background: white; border: 1px solid #ddd; font-weight: 500; border-radius: 4px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-              <span id="flours-label">Flours (0)</span><span style="color: #666;">▼</span>
+              <span id="flours-label" style="font-weight: 600; color: #333;">Flours</span><span style="color: #666;">▼</span>
             </button>
             <div id="flours-dropdown" style="display: none; background: #f8f9fa; padding: 0.5rem; border-radius: 4px; margin-top: 0.25rem;">
               <label style="display: block; padding: 0.25rem;"><input type="checkbox" name="tags-flours" value="Almond Flour"> Almond Flour</label>
@@ -269,7 +269,7 @@
           
           <div style="margin-bottom: 0.75rem;">
             <button type="button" onclick="document.getElementById('dairy-dropdown').style.display = document.getElementById('dairy-dropdown').style.display === 'none' ? 'block' : 'none'" style="width: 100%; padding: 0.75rem; background: white; border: 1px solid #ddd; font-weight: 500; border-radius: 4px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-              <span id="dairy-label">Dairy/Fats (0)</span><span style="color: #666;">▼</span>
+              <span id="dairy-label" style="font-weight: 600; color: #333;">Dairy/Fats</span><span style="color: #666;">▼</span>
             </button>
             <div id="dairy-dropdown" style="display: none; background: #f8f9fa; padding: 0.5rem; border-radius: 4px; margin-top: 0.25rem;">
               <label style="display: block; padding: 0.25rem;"><input type="checkbox" name="tags-dairy" value="Cheese"> Cheese</label>
@@ -283,7 +283,7 @@
           
           <div>
             <button type="button" onclick="document.getElementById('other-dropdown').style.display = document.getElementById('other-dropdown').style.display === 'none' ? 'block' : 'none'" style="width: 100%; padding: 0.75rem; background: white; border: 1px solid #ddd; font-weight: 500; border-radius: 4px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-              <span id="other-label">Other (0)</span><span style="color: #666;">▼</span>
+              <span id="other-label" style="font-weight: 600; color: #333;">Other</span><span style="color: #666;">▼</span>
             </button>
             <div id="other-dropdown" style="display: none; background: #f8f9fa; padding: 0.5rem; border-radius: 4px; margin-top: 0.25rem;">
               <label style="display: block; padding: 0.25rem;"><input type="checkbox" name="tags-other" value="Avocado"> Avocado</label>
