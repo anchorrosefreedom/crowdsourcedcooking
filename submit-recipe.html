@@ -508,67 +508,52 @@ async function importRecipe() {
     return;
   }
   
-  if (!url.startsWith('http://') && !url.startsWith('https://')) {
-    statusEl.textContent = 'Please enter a valid URL starting with http:// or https://';
-    statusEl.style.color = '#e53e3e';
-    return;
-  }
-  
   try {
     statusEl.textContent = 'Importing recipe...';
     statusEl.style.color = '#666';
     importBtn.disabled = true;
-    console.log('Starting import for URL:', url);
     
+    // Call the Firebase function
     const importRecipeFn = httpsCallable(functions, 'importRecipe');
-    const result = await importRecipeFn({ url: url });
-    console.log('Import result:', result.data);
+    const result = await importRecipeFn({ url });
     
-    if (result.data && result.data.success && result.data.recipe) {
-      const recipe = result.data.recipe;
-      
+    const recipe = result.data?.recipe;
+    if (recipe) {
       // Populate form fields
       if (recipe.title) document.getElementById('title').value = recipe.title;
       if (recipe.description) document.getElementById('description').value = recipe.description;
       if (recipe.prepTime) document.getElementById('prepTime').value = recipe.prepTime;
       if (recipe.cookTime) document.getElementById('cookTime').value = recipe.cookTime;
       if (recipe.servings) document.getElementById('servings').value = recipe.servings;
-      if (recipe.ingredients && recipe.ingredients.length) {
-        document.getElementById('ingredients').value = recipe.ingredients.join('\n');
-      }
+      if (recipe.ingredients?.length) document.getElementById('ingredients').value = recipe.ingredients.join('\n');
       if (recipe.instructions) document.getElementById('instructions').value = recipe.instructions;
       
-      // Set image if available
       if (recipe.image) {
         document.getElementById('imported-image-url').value = recipe.image;
         const preview = document.getElementById('image-preview');
+        if (preview) { preview.src = recipe.image; preview.classList.add('show'); }
         const removeBtn = document.getElementById('remove-image');
-        if (preview) {
-          preview.src = recipe.image;
-          preview.classList.add('show');
-        }
-        if (removeBtn) {
-          removeBtn.style.display = 'inline-block';
-        }
+        if (removeBtn) removeBtn.style.display = 'inline-block';
         statusEl.textContent = 'Recipe and image imported!';
       } else {
         statusEl.textContent = 'Recipe imported! Fill in any remaining fields.';
       }
       statusEl.style.color = '#2a9d8f';
     } else {
-      throw new Error('No recipe data returned');
+      throw new Error('No recipe data found');
     }
   } catch (error) {
     console.error('Import error:', error);
-    statusEl.textContent = 'Import failed. Please enter recipe manually.';
+    statusEl.textContent = 'Import failed: ' + (error.message || 'Unknown error');
     statusEl.style.color = '#e53e3e';
+    alert('Import failed: ' + error.message);
   } finally {
     importBtn.disabled = false;
   }
 }
 
 
-    // Set active nav link based on current page
+// Set active nav link based on current page
     let currentPage = window.location.pathname.split('/').pop() || 'index.html';
     // Handle Firebase hosting which removes .html extension
     if (currentPage.endsWith('.html')) {
