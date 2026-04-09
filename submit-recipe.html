@@ -417,21 +417,9 @@
     }
 
     // Initial state
-    // Hide loading and show form
+    // Hide loading and show form immediately
     document.getElementById('loading').style.display = 'none';
-    
-    // Check auth and show appropriate UI
-    const user = auth.currentUser;
-    if (user) {
-      document.getElementById('form-section').style.display = 'block';
-      document.getElementById('login-prompt').style.display = 'none';
-      document.getElementById('user-info').style.display = 'block';
-      document.getElementById('user-info').textContent = 'Logged in as: ' + (user.displayName || user.email);
-    } else {
-      document.getElementById('form-section').style.display = 'none';
-      document.getElementById('login-prompt').style.display = 'block';
-      document.getElementById('user-info').style.display = 'none';
-    }
+    document.getElementById('form-section').style.display = 'block';
 
     // Handle form submission
     document.getElementById('submit-recipe').addEventListener('submit', async (e) => {
