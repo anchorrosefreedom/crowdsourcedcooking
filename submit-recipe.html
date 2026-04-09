@@ -521,11 +521,17 @@ async function importRecipe() {
     statusEl.textContent = 'Importing recipe...';
     importBtn.disabled = true;
     
-    // Use Firebase callable
-    const importRecipeFn = httpsCallable(functions, 'importRecipe');
-    const result = await importRecipeFn({ url });
+    // Call function via HTTP
+    const response = await fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/importRecipe', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({url})
+    });
     
-    if (result.data && result.data.recipe) {
+    const data = await response.json();
+    const recipe = data.result?.recipe || data.recipe;
+    
+    if (recipe) {
       const recipe = result.data.recipe;
       
       if (recipe.title) document.getElementById('title').value = recipe.title;
