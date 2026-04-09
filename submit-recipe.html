@@ -165,6 +165,8 @@
       }
     }
   </style>
+<script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js"></script>
 </head>
 <body>
   <header>
@@ -452,6 +454,17 @@
     
     loadRecipes();
   
+
+    // Initialize Firebase
+    var firebaseConfig = { apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk", authDomain: "crowdsourcedcooking.firebaseapp.com", projectId: "crowdsourcedcooking", storageBucket: "crowdsourcedcooking.firebasestorage.app", messagingSenderId: "1025589287082", appId: "1:1025589287082:web:15569e323aa2781ab858d3" };
+    firebase.initializeApp(firebaseConfig);
+    
+    // Check auth and pre-populate author
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        document.getElementById('author').value = user.displayName || user.email || 'Logged In User';
+      }
+    });
 
     function handleImageSelect(event) {
       var file = event.target.files[0];
