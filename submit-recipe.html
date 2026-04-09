@@ -188,10 +188,15 @@
       <form id="recipe-form">
         <div class="form-group">
           <label>Recipe Photo * (required)</label>
-          <div class="image-upload-area" onclick="document.getElementById('image-input').click()">
-            <span>📷 Click to upload</span>
+          <div class="image-upload-area" id="upload-area" style="min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#f8f9fa;border:2px dashed #ddd;border-radius:12px;padding:2rem;margin-bottom:0.5rem" onclick="document.getElementById('image-input').click()">
+            <span style="font-size:3rem">📷</span>
+            <span style="margin-top:0.5rem;color:#666;font-size:1.1rem">Click to upload a photo</span>
           </div>
-          <input type="file" id="image-input" accept="image/*" style="display:none">
+          <input type="file" id="image-input" accept="image/*" style="display:none" onchange="handleImageSelect(event)">
+          <div id="image-preview-container" style="display:none;margin-top:1rem">
+            <img id="image-preview" style="max-width:300px;border-radius:8px">
+            <button type="button" onclick="removeImage()" style="display:block;margin-top:0.5rem;padding:0.5rem;background:#e53e3e;color:white;border:none;border-radius:4px;cursor:pointer">Remove</button>
+          </div>
         </div>
 
         <div class="form-group">
@@ -441,6 +446,31 @@
     }
     
     loadRecipes();
-  </script>
+  
+
+    function handleImageSelect(event) {
+      var file = event.target.files[0];
+      if (!file) return;
+      
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var preview = document.getElementById('image-preview');
+        var container = document.getElementById('image-preview-container');
+        var uploadArea = document.getElementById('upload-area');
+        if (preview && container) {
+          preview.src = e.target.result;
+          container.style.display = 'block';
+          uploadArea.style.display = 'none';
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+    
+    function removeImage() {
+      document.getElementById('image-input').value = '';
+      document.getElementById('image-preview-container').style.display = 'none';
+      document.getElementById('upload-area').style.display = 'flex';
+    }
+</script>
 </body>
 </html>
