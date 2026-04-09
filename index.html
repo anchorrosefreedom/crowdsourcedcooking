@@ -254,29 +254,39 @@
       return session ? JSON.parse(session) : null;
     }
 
-    // Update nav immediately if user is already logged in
-    const updateNavAuthUI = (user) => {
+    // Update nav based on auth state
+    function updateNavAuthUI(user) {
       const authLink = document.getElementById('auth-link');
       if (user) {
         authLink.href = 'logout.html';
         authLink.textContent = 'Log Off';
+        console.log('User logged in:', user.email || user.uid);
       } else {
         authLink.href = 'login.html';
         authLink.textContent = 'Login';
+        console.log('User logged out');
       }
-    };
-
-    // Initialize and check auth state using localStorage
-    const session = getSession();
-    if (session && session.idToken) {
-      console.log('User already logged in:', session.email);
-      updateNavAuthUI({ email: session.email });
-    } else {
-      console.log('No active session, showing login');
-      updateNavAuthUI(null);
     }
 
-    // Listen for storage events (from other tabs/windows)
+    // Listen for Firebase auth state changes
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is logged in via Firebase
+        updateNavAuthUI(user);
+      } else {
+        // No Firebase user - check localStorage as fallback
+        const session = getSession();
+        if (session && session.idToken) {
+          // Has localStorage session but Firebase doesn't know about it
+          // This shouldn't happen normally, but handle it gracefully
+          updateNavAuthUI({ email: session.email });
+        } else {
+          updateNavAuthUI(null);
+        }
+      }
+    });
+
+    // Also listen for storage events (from other tabs/windows)
     window.addEventListener('storage', (e) => {
       if (e.key === 'firebase-session') {
         const newSession = e.newValue ? JSON.parse(e.newValue) : null;

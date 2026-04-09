@@ -170,20 +170,24 @@
       hideMessages();
       
       try {
+        const result = await createUserWithEmailAndPassword(auth, email, password);
         window.location.href = targetPage;
       } catch (err) {
         showError(err.message);
+        setLoading(false);
       }
-      
-      setLoading(false);
     });
 
     // Google Login
     document.getElementById('googleBtn').addEventListener('click', async () => {
       const provider = new GoogleAuthProvider();
+      setLoading(true);
+      hideMessages();
       try {
+        const result = await signInWithPopup(auth, provider);
         window.location.href = targetPage;
       } catch (err) {
+        setLoading(false);
         if (err.code === 'auth/popup-blocked') {
           showError('Popup was blocked. Please allow popups for this site.');
         } else if (err.code === 'auth/unauthorized-domain') {

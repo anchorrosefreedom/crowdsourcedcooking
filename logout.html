@@ -17,6 +17,9 @@
     });
     const auth = getAuth(app);
     
+    // Clear localStorage session if it exists
+    localStorage.removeItem('firebase-session');
+    
     signOut(auth).then(() => {
       window.location.href = 'index.html';
     }).catch(() => {
