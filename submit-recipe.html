@@ -207,7 +207,7 @@
           <label>Original Recipe URL</label>
           <div style="display:flex;gap:0.5rem">
             <input type="url" id="sourceUrl" placeholder="Link to original recipe" style="flex:1;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px">
-            <button type="button" id="import-btn" onclick="alert('Import clicked!');" style="padding:1rem;background:#2a9d8f;color:white;border:none;border-radius:8px;cursor:pointer;white-space:nowrap">Import Recipe</button>
+            <button type="button" id="import-btn"  style="padding:1rem;background:#2a9d8f;color:white;border:none;border-radius:8px;cursor:pointer;white-space:nowrap">Import Recipe</button>
           </div>
           <input type="hidden" id="imported-image">
           <div id="imported-image-preview" style="display:none;margin-top:0.5rem"><img id="imported-img" style="max-width:200px;border-radius:8px"></div>
@@ -474,25 +474,7 @@
     loadRecipes();
   </script>
 
-  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js"></script>
-<script>
-    // Initialize Firebase
-    var firebaseConfig = { apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk", authDomain: "crowdsourcedcooking.firebaseapp.com", projectId: "crowdsourcedcooking", storageBucket: "crowdsourcedcooking.firebasestorage.app", messagingSenderId: "1025589287082", appId: "1:1025589287082:web:15569e323aa2781ab858d3" };
-    firebase.initializeApp(firebaseConfig);
-    
-    // Pre-populate author with user info
-    firebase.auth().onAuthStateChanged(function(user) {
-      var authorField = document.getElementById('author');
-      if (authorField) {
-        if (user) {
-          authorField.value = user.displayName || user.email || 'Unknown';
-        } else {
-          authorField.value = 'Unknown';
-        }
-      }
-    });
-</script>
+  <script>var authorPreloaded = "Unknown";</script>
 <script>
     // Image handling
     var photoUrls = [];
@@ -570,8 +552,8 @@
       el.style.display = el.style.display === 'none' ? 'block' : 'none';
     }
     
-    // Import Recipe - using fetch
-    document.getElementById('import-btn').addEventListener('click', function() {
+    // Import Recipe
+    document.getElementById('import-btn').onclick = function() {
       var url = document.getElementById('sourceUrl').value.trim();
       var status = document.getElementById('import-status');
       
