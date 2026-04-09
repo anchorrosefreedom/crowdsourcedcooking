@@ -302,7 +302,7 @@
   <script type="module">
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
     import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-storage.js";
     import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-functions.js";
@@ -417,12 +417,21 @@
     }
 
     // Initial state
-    document.getElementById('loading').style.display = 'block';
-    document.getElementById('login-required').style.display = 'none';
-    document.getElementById('recipe-form').style.display = 'none';
-
-    // Direct auth check - no listener
-    auth.currentUser ? updateUI(auth.currentUser) : updateUI(null);
+    // Hide loading and show form
+    document.getElementById('loading').style.display = 'none';
+    
+    // Check auth and show appropriate UI
+    const user = auth.currentUser;
+    if (user) {
+      document.getElementById('form-section').style.display = 'block';
+      document.getElementById('login-prompt').style.display = 'none';
+      document.getElementById('user-info').style.display = 'block';
+      document.getElementById('user-info').textContent = 'Logged in as: ' + (user.displayName || user.email);
+    } else {
+      document.getElementById('form-section').style.display = 'none';
+      document.getElementById('login-prompt').style.display = 'block';
+      document.getElementById('user-info').style.display = 'none';
+    }
 
     // Handle form submission
     document.getElementById('submit-recipe').addEventListener('submit', async (e) => {
