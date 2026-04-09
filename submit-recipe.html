@@ -187,16 +187,20 @@
     <div class="form-card">
       <form id="recipe-form">
         <div class="form-group">
-          <label>Recipe Photo *</label>
-          <div id="upload-area" style="min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#f8f9fa;border:2px dashed #ddd;border-radius:12px;padding:2rem;margin-bottom:0.5rem" onclick="document.getElementById('image-input').click()">
-            <span style="font-size:3rem">📷</span>
-            <span style="margin-top:0.5rem;color:#666;font-size:1.1rem">Click to upload</span>
+          <label>Recipe Photos (max 10)</label>
+          <div id="photo-carousel" style="position:relative;min-height:250px;background:#f8f9fa;border:2px dashed #ddd;border-radius:12px;padding:1rem;margin-bottom:0.5rem;overflow:hidden">
+            <div id="photo-counter" style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.7);color:white;padding:4px 10px;border-radius:12px;font-size:0.9rem;z-index:10;display:none">0/10</div>
+            <div id="photo-container" style="display:flex;align-items:center;justify-content:center;min-height:220px">
+              <div id="upload-prompt" onclick="document.getElementById('image-input').click()" style="text-align:center;cursor:pointer;padding:2rem">
+                <span style="font-size:3rem">📷</span>
+                <div style="margin-top:0.5rem;color:#666;font-size:1.1rem">Click to add photos</div>
+                <div style="margin-top:0.5rem;color:#999;font-size:0.9rem">Up to 10 photos</div>
+              </div>
+            </div>
+            <div id="photo-nav" style="display:none;position:absolute;top:50%;transform:translateY(-50%);font-size:2rem;cursor:pointer;background:rgba(0,0,0,0.5);color:white;padding:10px;border-radius:50%;user-select:none" onclick="changePhoto(-1)">❮</div>
+            <div id="photo-nav-right" style="display:none;position:absolute;top:50%;transform:translateY(-50%);right:10px;font-size:2rem;cursor:pointer;background:rgba(0,0,0,0.5);color:white;padding:10px;border-radius:50%;user-select:none" onclick="changePhoto(1)">❯</div>
           </div>
-          <input type="file" id="image-input" accept="image/*" style="display:none" onchange="handleImageSelect(event)">
-          <div id="image-preview-container" style="display:none;margin-top:1rem">
-            <img id="image-preview" style="max-width:300px;border-radius:8px">
-            <button type="button" onclick="removeImage()" style="display:block;margin-top:0.5rem;padding:0.5rem;background:#e53e3e;color:white;border:none;border-radius:4px;cursor:pointer">Remove</button>
-          </div>
+          <input type="file" id="image-input" accept="image/*" multiple style="display:none" onchange="handleImageSelect(event)">
         </div>
 
         <div class="form-group">
@@ -491,22 +495,73 @@
 </script>
 <script>
     // Image handling
+    var photoUrls = [];
+    var currentPhotoIndex = 0;
+    
     function handleImageSelect(event) {
-      var file = event.target.files[0];
-      if (!file) return;
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        document.getElementById('image-preview').src = e.target.result;
-        document.getElementById('image-preview-container').style.display = 'block';
-        document.getElementById('upload-area').style.display = 'none';
-      };
-      reader.readAsDataURL(file);
+      var files = event.target.files;
+      if (!files || files.length === 0) return;
+      
+      var remainingSlots = 10 - photoUrls.length;
+      var filesToAdd = Array.from(files).slice(0, remainingSlots);
+      
+      filesToAdd.forEach(function(file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          photoUrls.push(e.target.result);
+          updatePhotoCarousel();
+        };
+        reader.readAsDataURL(file);
+      });
     }
     
-    function removeImage() {
-      document.getElementById('image-input').value = '';
-      document.getElementById('image-preview-container').style.display = 'none';
-      document.getElementById('upload-area').style.display = 'flex';
+    function updatePhotoCarousel() {
+      var container = document.getElementById('photo-container');
+      var counter = document.getElementById('photo-counter');
+      var navLeft = document.getElementById('photo-nav');
+      var navRight = document.getElementById('photo-nav-right');
+      var uploadPrompt = document.getElementById('upload-prompt');
+      
+      if (photoUrls.length === 0) {
+        container.innerHTML = '<div id="upload-prompt" onclick="document.getElementById('image-input').click()" style="text-align:center;cursor:pointer;padding:2rem"><span style="font-size:3rem">📷</span><div style="margin-top:0.5rem;color:#666;font-size:1.1rem">Click to add photos</div><div style="margin-top:0.5rem;color:#999;font-size:0.9rem">Up to 10 photos</div></div>';
+        counter.style.display = 'none';
+        navLeft.style.display = 'none';
+        navRight.style.display = 'none';
+      } else {
+        container.innerHTML = '<img id="current-photo" style="max-width:100%;max-height:220px;border-radius:8px;transition:transform 0.3s">';
+        document.getElementById('current-photo').src = photoUrls[currentPhotoIndex];
+        counter.textContent = (currentPhotoIndex + 1) + '/' + photoUrls.length;
+        counter.style.display = 'block';
+        
+        if (photoUrls.length > 1) {
+          navLeft.style.display = currentPhotoIndex > 0 ? 'block' : 'none';
+          navRight.style.display = currentPhotoIndex < photoUrls.length - 1 ? 'block' : 'none';
+        } else {
+          navLeft.style.display = 'none';
+          navRight.style.display = 'none';
+        }
+        
+        // Add swipe support
+        var carousel = document.getElementById('photo-carousel');
+        carousel.onclick = null;
+        carousel.ontouchstart = function(e) {
+          carousel.dataset.touchStartX = e.touches[0].clientX;
+        };
+        carousel.ontouchend = function(e) {
+          var touchEndX = e.changedTouches[0].clientX;
+          var diff = parseInt(carousel.dataset.touchStartX) - touchEndX;
+          if (Math.abs(diff) > 50) {
+            changePhoto(diff > 0 ? 1 : -1);
+          }
+        };
+      }
+    }
+    
+    function changePhoto(direction) {
+      currentPhotoIndex += direction;
+      if (currentPhotoIndex < 0) currentPhotoIndex = 0;
+      if (currentPhotoIndex >= photoUrls.length) currentPhotoIndex = photoUrls.length - 1;
+      updatePhotoCarousel();
     }
     
     // Dropdown toggle
