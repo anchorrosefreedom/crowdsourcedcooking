@@ -470,7 +470,26 @@
     loadRecipes();
   </script>
 
-  <script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js"></script>
+<script>
+    // Initialize Firebase
+    var firebaseConfig = { apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk", authDomain: "crowdsourcedcooking.firebaseapp.com", projectId: "crowdsourcedcooking", storageBucket: "crowdsourcedcooking.firebasestorage.app", messagingSenderId: "1025589287082", appId: "1:1025589287082:web:15569e323aa2781ab858d3" };
+    firebase.initializeApp(firebaseConfig);
+    
+    // Pre-populate author with user info
+    firebase.auth().onAuthStateChanged(function(user) {
+      var authorField = document.getElementById('author');
+      if (authorField) {
+        if (user) {
+          authorField.value = user.displayName || user.email || 'Unknown';
+        } else {
+          authorField.value = 'Unknown';
+        }
+      }
+    });
+</script>
+<script>
     // Image handling
     function handleImageSelect(event) {
       var file = event.target.files[0];
@@ -523,7 +542,7 @@
           if (document.getElementById('description')) document.getElementById('description').value = recipe.description || '';
           if (document.getElementById('ingredients') && recipe.ingredients) document.getElementById('ingredients').value = recipe.ingredients.join('\n');
           if (document.getElementById('instructions') && recipe.instructions) document.getElementById('instructions').value = recipe.instructions;
-          var authorName = recipe.author || "Unknown"; if (document.getElementById('author')) document.getElementById('author').value = authorName;
+          // Note: user info is pre-populated, but import can override it if (document.getElementById('author')) document.getElementById('author').value = authorName;
           if (recipe.image) {
             // Set the image in the main preview area
             document.getElementById('image-preview').src = recipe.image;
