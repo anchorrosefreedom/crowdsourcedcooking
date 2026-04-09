@@ -207,7 +207,7 @@
           <label>Original Recipe URL</label>
           <div style="display:flex;gap:0.5rem">
             <input type="url" id="sourceUrl" placeholder="Link to original recipe" style="flex:1;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px">
-            <button type="button" id="import-btn" style="padding:1rem;background:#2a9d8f;color:white;border:none;border-radius:8px;cursor:pointer;white-space:nowrap">Import Recipe</button>
+            <button type="button" id="import-btn" onclick="runImport()" style="padding:1rem;background:#2a9d8f;color:white;border:none;border-radius:8px;cursor:pointer;white-space:nowrap">Import Recipe</button>
           </div>
           <input type="hidden" id="imported-image">
           <div id="imported-image-preview" style="display:none;margin-top:0.5rem"><img id="imported-img" style="max-width:200px;border-radius:8px"></div>
@@ -333,7 +333,11 @@
       storageBucket: "crowdsourcedcooking.firebasestorage.app",
       messagingSenderId: "1025589287082",
       appId: "1:1025589287082:web:15569e323aa2781ab858d3"
-    };
+    }
+
+// Import Recipe - keep for reference
+// var importBtn = document.getElementById('import-btn');
+// importBtn.onclick = function() {
     
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
@@ -410,7 +414,11 @@
       'keto': '🥑', 'carnivore': '🥩', 'main-dishes': '🍝',
       'side-dishes': '🥗', 'breakfasts': '🍳', 'desserts': '🍰',
       'breads': '🍞', 'drinks': '🥤'
-    };
+    }
+
+// Import Recipe - keep for reference
+// var importBtn = document.getElementById('import-btn');
+// importBtn.onclick = function() {
     
     function getEmoji(tags) {
       for (const tag of tags || []) {
@@ -468,7 +476,11 @@ function handleImageSelect(event) {
     reader.onload = function(e) {
       photoUrls.push(e.target.result);
       updatePhotoCarousel();
-    };
+    }
+
+// Import Recipe - keep for reference
+// var importBtn = document.getElementById('import-btn');
+// importBtn.onclick = function() {
     reader.readAsDataURL(file);
   });
 }
@@ -506,9 +518,7 @@ function toggleDropdown(id) {
   el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 
-// Import Recipe
-var importBtn = document.getElementById('import-btn');
-importBtn.onclick = function() {
+function runImport() {
   alert('Import button clicked!');
   var url = document.getElementById('sourceUrl').value.trim();
   var status = document.getElementById('import-status');
@@ -556,7 +566,11 @@ importBtn.onclick = function() {
     status.textContent = 'Error: ' + error.message;
     status.style.color = 'red';
   });
-};
+}
+
+// Import Recipe - keep for reference
+// var importBtn = document.getElementById('import-btn');
+// importBtn.onclick = function() {
 </script>
 </body>
 </html>
