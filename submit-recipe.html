@@ -171,10 +171,10 @@
     <nav>
       <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
       <ul class="nav-links">
-        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="categories.html">Recipes</a></li>
-        <li><a href="submit-recipe.html">Submit Recipe</a></li>
+        <li><a href="submit-recipe.html" class="active">Submit Recipe</a></li>
         <li><a href="keto.html">Diets</a></li>
         <li><a href="blog.html">Blog</a></li>
         <li><a href="login.html?redirect=index.html" id="auth-link">Login</a></li>
@@ -207,7 +207,7 @@
           <label>Original Recipe URL</label>
           <div style="display:flex;gap:0.5rem">
             <input type="url" id="sourceUrl" placeholder="Link to original recipe" style="flex:1;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px">
-            <a href="javascript:runImport()" style="display:inline-block;padding:1rem;background:#2a9d8f;color:white;text-decoration:none;border-radius:8px;cursor:pointer;white-space:nowrap;font-family:inherit;font-size:1rem">Import Recipe</a>
+            <a href="javascript:void(0)" onclick="runImport(); return false;" style="display:inline-block;padding:1rem;background:#2a9d8f;color:white;text-decoration:none;border-radius:8px;cursor:pointer;white-space:nowrap;font-family:inherit;font-size:1rem">Import Recipe</a>
           </div>
           <input type="hidden" id="imported-image">
           <div id="imported-image-preview" style="display:none;margin-top:0.5rem"><img id="imported-img" style="max-width:200px;border-radius:8px"></div>
@@ -519,6 +519,7 @@ function toggleDropdown(id) {
 }
 
 function runImport() {
+  alert("Import function called!");
   alert('Import button clicked!');
   var url = document.getElementById('sourceUrl').value.trim();
   var status = document.getElementById('import-status');
