@@ -334,7 +334,7 @@ function importRecipe() {
       document.getElementById('import-status').textContent = '✓ Imported';
       if (r.image) { photoUrls.push(r.image); currentPhotoIndex = 0; updatePhotoCarousel(); }
     } else {
-      document.getElementById('import-status').textContent = 'Cannot import - enter manually';
+      document.getElementById('import-status').textContent = 'This site does not allow importing -Please enter recipe manually';
     }
   }).catch(function(e) { document.getElementById('import-status').textContent = 'Error'; });
 }
