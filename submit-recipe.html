@@ -147,6 +147,11 @@ function importRecipe() {
       document.getElementById('instructions').value = r.instructions || '';
       if(r.author) document.getElementById('author').value = r.author;
       document.getElementById('import-status').textContent = '✓ Imported';
+      if (r.image) {
+        photoUrls.push(r.image);
+        currentPhotoIndex = 0;
+        updatePhotoCarousel();
+      }
     } else {
       document.getElementById('import-status').textContent = 'Not found';
     }
