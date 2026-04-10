@@ -198,16 +198,16 @@
       <button onclick="showTab('saved')" id="tab-saved" style="padding:0.5rem 1rem;background:#eee;color:#333;border:none;border-radius:8px 8px 0 0;cursor:pointer;font-weight:500">Saved</button>
     </div>
     
-    <div id="tab-created" class="tab-content">
+    <div id="created" class="tab-content">
       <p style="color:#666;">Loading your created recipes...</p>
     </div>
-    <div id="tab-imported" class="tab-content" style="display:none;">
+    <div id="imported" class="tab-content" style="display:none;">
       <p style="color:#666;">No imported recipes yet</p>
     </div>
-    <div id="tab-mimo" class="tab-content" style="display:none;">
+    <div id="mimo" class="tab-content" style="display:none;">
       <p style="color:#666;">No MiMO recipes yet</p>
     </div>
-    <div id="tab-saved" class="tab-content" style="display:none;">
+    <div id="saved" class="tab-content" style="display:none;">
       <p style="color:#666;">No saved recipes yet</p>
     </div>
   </main>
@@ -216,19 +216,8 @@
     <p>© 2026 CrowdSourced Cooking — Made by cooks, for cooks</p>
   </footer>
   
-  <script>
-    function showTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-      document.querySelectorAll('[id^=tab-]').forEach(el => {
-        el.style.background = '#eee';
-        el.style.color = '#333';
-      });
-      document.getElementById('tab-' + tabId).style.background = '#2a9d8f';
-      document.getElementById('tab-' + tabId).style.color = 'white';
-      document.getElementById(tabId).style.display = 'block';
-    }
-  </script>
-</body>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
     import { getFirestore, collection, query, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
     import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
     
@@ -359,5 +348,19 @@
     
     loadRecipes();
   </script>
-<script>function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}</script></body>
+<script>function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}</script>  <script>
+    function showTab(tabId) {
+      var tabs = document.querySelectorAll('[id^="tab-"]');
+      tabs.forEach(function(btn) {
+        btn.style.background = '#eee';
+        btn.style.color = '#333';
+      });
+      document.getElementById('tab-' + tabId).style.background = '#2a9d8f';
+      document.getElementById('tab-' + tabId).style.color = 'white';
+      var contents = document.querySelectorAll('.tab-content');
+      contents.forEach(function(el) { el.style.display = 'none'; });
+      document.getElementById(tabId).style.display = 'block';
+    }
+  </script>
+</body>
 </html>
