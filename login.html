@@ -5,59 +5,217 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - CrowdSourced Cooking</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-    .container { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
-    h1 { text-align: center; margin-bottom: 1.5rem; color: #333; }
-    .tabs { display: flex; margin-bottom: 1.5rem; border-bottom: 2px solid #eee; }
-    .tab { flex: 1; padding: 0.75rem; text-align: center; cursor: pointer; color: #666; font-weight: 500; transition: all 0.2s; }
-    .tab.active { color: #e53e3e; border-bottom: 2px solid #e53e3e; margin-bottom: -2px; }
-    .form-section { display: flex; flex-wrap: wrap; gap: 0.25rem; }
-    .form-section.active { display: block; }
-    input { width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; }
-    button { width: 100%; padding: 0.75rem; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
-    .btn-google { background: #4285f4; color: white; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
-    .btn-google:hover { background: #3574e8; }
-    .btn-primary { background: #e53e3e; color: white; }
-    .btn-primary:hover { background: #c53030; }
-    .error { color: #e53e3e; font-size: 0.875rem; margin-bottom: 1rem; text-align: center; display: flex; flex-wrap: wrap; gap: 0.25rem; }
-    .error.show { display: block; }
-    .success { color: #38a169; font-size: 0.875rem; margin-bottom: 1rem; text-align: center; display: flex; flex-wrap: wrap; gap: 0.25rem; }
-    .success.show { display: block; }
-    .loading { opacity: 0.6; pointer-events: none; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f8f9fa;
+      min-height: 100vh;
+    }
+    header {
+      background: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: #2a9d8f;
+    }
+    .nav-links a.active {
+      color: #2a9d8f;
+      border-bottom: 2px solid #2a9d8f;
+      padding-bottom: 4px;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .hero {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
+    }
+    .hero-banner {
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+      height: auto;
+      display: block;
+      max-height: 50vh;
+    }
+    .hero-content {
+      padding: 2rem;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #264653;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+    }
+    .cta-button {
+      display: inline-block;
+      background: #2a9d8f;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .cta-button:hover {
+      transform: translateY(-2px);
+      background: #21867a;
+    }
+    .section-title {
+      font-size: 1.5rem;
+      color: #264653;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .feature-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    .feature-card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #264653;
+    }
+    .feature-card p {
+      color: #666;
+      font-size: 0.95rem;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+      background: white;
+      margin-top: 3rem;
+    }
+    .show { display: flex !important; flex-wrap: wrap; }
+    @media (max-width: 768px) {
+      button[onclick="toggleNav()"] { display: block; }
+      #nav-list { display: none; width: 100%; }
+      #nav-list.show { display: flex; flex-wrap: wrap; }
+       }
+      nav {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      nav > img {
+        height: 36px !important;
+      }
+      .nav-links {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 0.25rem;
+        width: 100%;
+        padding: 0.25rem 0;
+      }
+      .nav-links a {
+        white-space: nowrap;
+        font-size: 0.65rem;
+      }
+      .hero h1 {
+        font-size: 1.6rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>CrowdSourced Cooking</h1>
-    
-    <div class="tabs">
-      <div class="tab active" data-tab="login">Login</div>
-      <div class="tab" data-tab="register">Register</div>
-    </div>
-    
-    <div id="error" class="error"></div>
-    <div id="success" class="success"></div>
-    
-    <button class="btn-google" id="googleBtn">Continue with Google</button>
-    
-    <div class="form-section active" id="loginForm">
-      <input type="email" id="loginEmail" placeholder="Email">
-      <input type="password" id="loginPassword" placeholder="Password">
-      <button class="btn-primary" id="loginBtn">Login</button>
-    </div>
-    
-    <div class="form-section" id="registerForm">
-      <input type="email" id="registerEmail" placeholder="Email">
-      <input type="password" id="registerPassword" placeholder="Password">
-      <button class="btn-primary" id="registerBtn">Register</button>
-    </div>
-  </div>
-
+  <header>
+    <nav>
+      <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
+      <button onclick="toggleNav()" style="display:none;font-size:1.5rem;background:none;border:none;cursor:pointer;padding:0.5rem">☰</button>
+      <ul class="nav-links" id="nav-list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html" class="active">Login</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="categories.html">Recipes</a></li>
+        <li><a href="submit-recipe.html">Submit Recipe</a></li>
+        <li><a href="keto.html">Diets</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="login.html?redirect=index.html" id="auth-link">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main style="max-width:400px;margin:2rem auto;padding:2rem;background:white;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.08);">
+    <h1 style="margin-bottom:1.5rem;text-align:center;color:#264653;">Login</h1>
+    <form id="login-form">
+      <div style="margin-bottom:1rem;">
+        <label style="display:block;margin-bottom:0.5rem;font-weight:500;">Email</label>
+        <input type="email" id="email" required style="width:100%;padding:0.75rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;">
+      </div>
+      <div style="margin-bottom:1rem;">
+        <label style="display:block;margin-bottom:0.5rem;font-weight:500;">Password</label>
+        <input type="password" id="password" required style="width:100%;padding:0.75rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;">
+      </div>
+      <button type="submit" style="width:100%;padding:0.75rem;background:#2a9d8f;color:white;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;">Sign In</button>
+    </form>
+    <p style="margin-top:1rem;text-align:center;color:#666;font-size:0.9rem;">
+      <a href="#" style="color:#2a9d8f;text-decoration:none;">Forgot password?</a>
+    </p>
+  </main>
+  
+  <footer>
+    <p>© 2026 CrowdSourced Cooking — Made by cooks, for cooks</p>
+  </footer>
+  
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
-
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
+    import { getFirestore, collection, query, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
+    
     const firebaseConfig = {
       apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
       authDomain: "crowdsourcedcooking.firebaseapp.com",
@@ -66,142 +224,68 @@
       messagingSenderId: "1025589287082",
       appId: "1:1025589287082:web:15569e323aa2781ab858d3"
     };
-
+    
     const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
     const auth = getAuth(app);
     
-    // Get redirect target FIRST
-    const urlParams = new URLSearchParams(window.location.search);
-    const targetPage = urlParams.get('redirect') || 'index.html';
+    // Force session persistence explicitly
+    setPersistence(auth, browserLocalPersistence)
+      .then(() => console.log('Auth persistence set to session'))
+      .catch(err => console.log('Persistence error:', err.message));
     
-    // Set persistence to local so user stays logged in
-    setPersistence(auth, browserLocalPersistence).then(() => {
-      // After persistence is set, check if user is already logged in
-      if (auth.currentUser) {
-        window.location.href = targetPage;
-      }
-    }).catch(err => console.log('Persistence error:', err));
+    // Custom session management - works with our REST API login
+    function getSession() {
+      const session = localStorage.getItem('firebase-session');
+      return session ? JSON.parse(session) : null;
+    }
 
-    // Listen for auth state changes - if logged in, redirect
+    // Update nav based on auth state
+    function updateNavAuthUI(user) {
+      const authLink = document.getElementById('auth-link');
+      if (user) {
+        authLink.href = 'logout.html';
+        authLink.textContent = 'Log Off';
+        console.log('User logged in:', user.email || user.uid);
+      } else {
+        authLink.href = 'login.html';
+        authLink.textContent = 'Login';
+        console.log('User logged out');
+      }
+    }
+
+    // Listen for Firebase auth state changes
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        window.location.href = targetPage;
-      }
-    });
-
-    // Tab switching
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.form-section').forEach(f => f.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById(tab.dataset.tab + 'Form').classList.add('active');
-        hideMessages();
-      });
-    });
-
-    function showError(msg) {
-      const el = document.getElementById('error');
-      el.textContent = msg;
-      el.classList.add('show');
-      document.getElementById('success').classList.remove('show');
-    }
-
-    function showSuccess(msg) {
-      const el = document.getElementById('success');
-      el.textContent = msg;
-      el.classList.add('show');
-      document.getElementById('error').classList.remove('show');
-    }
-
-    function hideMessages() {
-      document.getElementById('error').classList.remove('show');
-      document.getElementById('success').classList.remove('show');
-    }
-
-    function setLoading(loading) {
-      const container = document.querySelector('.container');
-      if (loading) {
-        container.classList.add('loading');
+        // User is logged in via Firebase
+        updateNavAuthUI(user);
       } else {
-        container.classList.remove('loading');
-      }
-    }
-
-    // Email/Password Login
-    document.getElementById('loginBtn').addEventListener('click', async () => {
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-      
-      if (!email || !password) {
-        showError('Please fill in all fields');
-        return;
-      }
-      
-      setLoading(true);
-      hideMessages();
-      
-      try {
-        const result = await signInWithEmailAndPassword(auth, email, password);
-        // Direct redirect - no delay
-        window.location.href = targetPage;
-      } catch (err) {
-        showError(err.message);
-        setLoading(false);
-      }
-    });
-
-    // Email/Password Register
-    document.getElementById('registerBtn').addEventListener('click', async () => {
-      const email = document.getElementById('registerEmail').value;
-      const password = document.getElementById('registerPassword').value;
-      
-      if (!email || !password) {
-        showError('Please fill in all fields');
-        return;
-      }
-      
-      if (password.length < 6) {
-        showError('Password must be at least 6 characters');
-        return;
-      }
-      
-      setLoading(true);
-      hideMessages();
-      
-      try {
-        const result = await createUserWithEmailAndPassword(auth, email, password);
-        window.location.href = targetPage;
-      } catch (err) {
-        showError(err.message);
-        setLoading(false);
-      }
-    });
-
-    // Google Login
-    document.getElementById('googleBtn').addEventListener('click', async () => {
-      const provider = new GoogleAuthProvider();
-      setLoading(true);
-      hideMessages();
-      try {
-        const result = await signInWithPopup(auth, provider);
-        window.location.href = targetPage;
-      } catch (err) {
-        setLoading(false);
-        if (err.code === 'auth/popup-blocked') {
-          showError('Popup was blocked. Please allow popups for this site.');
-        } else if (err.code === 'auth/unauthorized-domain') {
-          showError('Google login not configured. Please use email/password, or ask the admin to enable Google Sign-In in Firebase Console.');
-        } else if (err.code === 'auth/api-key-not-valid') {
-          showError('Google login not configured. Please use email/password, or ask the admin to enable Google Sign-In in Firebase Console.');
+        // No Firebase user - check localStorage as fallback
+        const session = getSession();
+        if (session && session.idToken) {
+          // Has localStorage session but Firebase doesn't know about it
+          // This shouldn't happen normally, but handle it gracefully
+          updateNavAuthUI({ email: session.email });
         } else {
-          showError(err.message);
+          updateNavAuthUI(null);
         }
       }
     });
 
-    console.log('Login page loaded');
-  
+    // Also listen for storage events (from other tabs/windows)
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'firebase-session') {
+        const newSession = e.newValue ? JSON.parse(e.newValue) : null;
+        if (newSession) {
+          console.log('User logged in via another tab:', newSession.email);
+          updateNavAuthUI({ email: newSession.email });
+        } else {
+          console.log('User logged out via another tab');
+          updateNavAuthUI(null);
+        }
+      }
+    });
+    
     // Set active nav link based on current page
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     document.querySelectorAll('.nav-links a').forEach(link => {
@@ -210,6 +294,76 @@
         link.classList.add('active');
       }
     });
+    
+    const emojiMap = {
+      'beef': '🥩', 'chicken': '🍗', 'pork': '🐷', 'fish': '🐟',
+      'keto': '🥑', 'carnivore': '🥩', 'main-dishes': '🍝',
+      'side-dishes': '🥗', 'breakfasts': '🍳', 'desserts': '🍰',
+      'breads': '🍞', 'drinks': '🥤'
+    };
+    
+    function getEmoji(tags) {
+      for (const tag of tags || []) {
+        if (emojiMap[tag.toLowerCase()]) return emojiMap[tag.toLowerCase()];
+      }
+      return '🍽️';
+    }
+    
+    async function loadRecipes() {
+      try {
+        const q = query(collection(db, 'recipes'), orderBy('createdAt', 'desc'), limit(4));
+        const snapshot = await getDocs(q);
+        const grid = document.getElementById('recipe-grid');
+        
+        if (snapshot.empty) {
+          grid.innerHTML = '<div class="feature-card"><h2>No recipes yet</h2><p>Be the first to contribute!</p></div>';
+          return;
+        }
+        
+        let html = '';
+        snapshot.forEach(doc => {
+          const recipe = doc.data();
+          html += `
+            <a href="recipe.html?id=${doc.id}" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
+              <div style="font-size:3rem;text-align:center;margin-bottom:0.5rem;">${getEmoji(recipe.tags)}</div>
+              <h2 style="font-size:1.1rem;margin-bottom:0.5rem;color:#264653;">${recipe.title}</h2>
+              <p style="color:#666;font-size:0.9rem;margin-bottom:0.75rem;">${recipe.description || ''}</p>
+              <div style="display:flex;gap:1rem;color:#888;font-size:0.8rem;">
+                <span>⏱️ ${recipe.time || ''}</span>
+                <span>👍 ${recipe.upvotes || 0}</span>
+              </div>
+            </a>
+          `;
+        });
+        grid.innerHTML = html;
+      } catch (error) {
+        console.error('Error loading recipes:', error);
+      }
+    }
+    
+    loadRecipes();
   </script>
-<script>function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}</script></body>
+<script>function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}</script><script>
+document.getElementById("login-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+  var email = document.getElementById("email").value;
+  var password = document.getElementById("password").value;
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(function(userCredential) {
+      var redirect = new URLSearchParams(window.location.search).get("redirect") || "index.html";
+      window.location.href = redirect;
+    })
+    .catch(function(error) {
+      alert("Login failed: " + error.message);
+    });
+});
+</script><script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
+  authDomain: "crowdsourcedcooking.firebaseapp.com"
+});
+function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}
+</script></body>
 </html>
