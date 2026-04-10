@@ -208,7 +208,8 @@
           <label>Original Recipe URL</label>
           <div style="display:flex;gap:0.5rem">
             <input type="url" id="sourceUrl" placeholder="Link to original recipe" style="flex:1;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px">
-            <a href="javascript:(function(){ 
+            <form onsubmit="event.preventDefault(); (function(){ 
+  alert('Import clicked!'); 
   alert('Import clicked!'); 
   var url = document.getElementById('sourceUrl').value.trim(); 
   var status = document.getElementById('import-status'); 
@@ -229,7 +230,9 @@
       status.textContent='Import complete!';status.style.color='green';
     }else{status.textContent='No recipe found';status.style.color='red';}
   }).catch(function(e){status.textContent='Error: '+e.message;status.style.color='red';});
-})()" style="padding:1rem;background:#2a9d8f;color:white;text-decoration:none;border-radius:8px;cursor:pointer;white-space:nowrap;display:inline-block">Import Recipe</a>
+})(); return false;" style="display:inline-block">
+  <button type="submit" style="padding:1rem;background:#2a9d8f;color:white;border:none;border-radius:8px;cursor:pointer;white-space:nowrap">Import Recipe</button>
+</form>
           </div>
           <div id="import-status" style="margin-top:0.5rem;font-size:0.9rem;color:#666"></div>
         </div>
