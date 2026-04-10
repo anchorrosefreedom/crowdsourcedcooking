@@ -209,11 +209,11 @@
         </div>
         <div class="form-group">
           <label>Recipe Title *</label>
-          <input type="text" id="title" required>
+          <input type="text" id="title" required style="width:100%;padding:0.5rem;font-size:1rem;border:1px solid #ddd;border-radius:8px">
         </div>
         <div class="form-group">
           <label>Author Name</label>
-          <input type="text" id="author" value="Unknown" readonly>
+          <input type="text" id="author" value="Unknown" readonly style="width:100%;padding:0.5rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;background:#f0f0f0;color:#666">
         </div>
         <div class="form-group">
           <label>Description</label>
@@ -264,6 +264,11 @@
           </div>
           <div style="margin-bottom:0.5rem">
             <button type="button" onclick="toggleDropdown('dairy')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Dairy</button>
+            <div id="dairy-dropdown" style="display:none">Dairy</div>
+          </div>
+          <div style="margin-bottom:0.5rem">
+            <button type="button" onclick="toggleDropdown('nuts')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Nuts/Seeds</button>
+            <div id="nuts-dropdown" style="display:none">Nuts/Seeds</div>
             <div id="dairy-dropdown" style="display:none">Dairy</div>
           </div>
       </form>
