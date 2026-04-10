@@ -207,8 +207,8 @@
         <div class="form-group">
           <label>Original Recipe URL</label>
           <div style="display:flex;gap:0.5rem">
-            <input type="url" id="sourceUrl" placeholder="Link to original recipe" style="flex:1;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px">
-            <button type="button" onclick="var url=document.getElementById('sourceUrl').value.trim();if(!url){document.getElementById('import-status').textContent='Enter a URL';document.getElementById('import-status').style.color='red';return;}document.getElementById('import-status').textContent='Importing...';fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/importRecipe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:url})}).then(r=>r.json()).then(d=>{var r=d.result?d.result.recipe:d.recipe;if(r&&r.title){document.getElementById('title').value=r.title||'';document.getElementById('description').value=r.description||'';document.getElementById('ingredients').value=r.ingredients?r.ingredients.join('\n'):'';document.getElementById('instructions').value=r.instructions||'';if(r.author)document.getElementById('author').value=r.author;document.getElementById('import-status').textContent='Import complete!';}else{document.getElementById('import-status').textContent='No recipe found';}}).catch(e=>{document.getElementById('import-status').textContent='Error: '+e.message;});" style="padding:1rem;background:#2a9d8f;color:white;border:none;border-radius:8px;cursor:pointer">Import Recipe</button> 
+            <input type="url" id="sourceUrl" placeholder="Link to original recipe" style="flex:1;padding:0.5rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;height:40px">
+            <button type="button" onclick="var url=document.getElementById('sourceUrl').value.trim();if(!url){document.getElementById('import-status').textContent='Enter a URL';document.getElementById('import-status').style.color='red';return;}document.getElementById('import-status').textContent='Importing...';fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/importRecipe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:url})}).then(r=>r.json()).then(d=>{var r=d.result?d.result.recipe:d.recipe;if(r&&r.title){document.getElementById('title').value=r.title||'';document.getElementById('description').value=r.description||'';document.getElementById('ingredients').value=r.ingredients?r.ingredients.join('\n'):'';document.getElementById('instructions').value=r.instructions||'';if(r.author)document.getElementById('author').value=r.author;document.getElementById('import-status').textContent='Import complete!';}else{document.getElementById('import-status').textContent='No recipe found';}}).catch(e=>{document.getElementById('import-status').textContent='Error: '+e.message;});" style="padding:1rem;background:#2a9d8f;color:white;border:none;border-radius:8px;cursor:pointer">Import</button> 
   alert('Import clicked!'); 
   alert('Import clicked!'); 
   var url = document.getElementById('sourceUrl').value.trim(); 
@@ -237,7 +237,7 @@
 
         <div class="form-group">
           <label>Recipe Title *</label>
-          <input type="text" id="title" required style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px">
+          <input type="text" id="title" required style="width:100%;padding:0.5rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;height:40px">
         </div>
 
         <div class="form-group">
@@ -252,7 +252,7 @@
 
         <div class="form-group">
           <label>Category *</label>
-          <select id="category" required style="width:100%;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px">
+          <select id="category" required style="width:100%;padding:0.5rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;height:40px">
             <option value="">Select category</option>
             <option value="Main Dishes">Main Dishes</option>
             <option value="Meats">Meats</option>
