@@ -278,7 +278,7 @@
           </div>
         </div>
         <button type="submit" style="background:#2a9d8f;color:white;border:none;padding:1rem 2rem;border-radius:8px;font-size:1.1rem;font-weight:600;cursor:pointer;width:100%">Submit Recipe</button>
-        <p style="margin-top:1rem;font-size:0.85rem;color:#666">* Some sites don't allow importing - enter recipe manually if needed</p>
+        <p style="margin-top:1rem;font-size:0.85rem;color:#666">Some sites don't allow importing - enter recipe manually if needed</p>
       </form>
     </div>
   </main>
@@ -335,7 +335,7 @@ function importRecipe() {
       document.getElementById('import-status').textContent = '✓ Imported';
       if (r.image) { photoUrls.push(r.image); currentPhotoIndex = 0; updatePhotoCarousel(); }
     } else {
-      document.getElementById('import-status').textContent = 'Unable to import *';
+      document.getElementById('import-status').textContent = 'This site doesn't allow importing - Please enter recipe manually';
     }
   }).catch(function(e) { document.getElementById('import-status').textContent = 'Site blocked - enter manually'; });
 }
