@@ -286,7 +286,8 @@
   <header>
     <nav>
       <div class="logo">CrowdSourced Cooking</div>
-      <ul class="nav-links">
+      <button onclick="toggleNav()" style="display:none;font-size:1.5rem;background:none;border:none;cursor:pointer;padding:0.5rem">☰</button>
+      <ul class="nav-links" id="nav-list">
         <li><a href="#">Home</a></li>
         <li><a href="#">Recipes</a></li>
         <li><a href="#">Categories</a></li>
@@ -416,5 +417,5 @@
   <footer>
     <p>© 2026 CrowdSourced Cooking · <a href="#">About</a> · <a href="#">Privacy</a></p>
   </footer>
-</body>
+<script>function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}</script></body>
 </html>

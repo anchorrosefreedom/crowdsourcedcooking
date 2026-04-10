@@ -141,6 +141,9 @@
       margin-top: 3rem;
     }
     @media (max-width: 768px) {
+      #nav-list { display: none; width: 100%; }
+      #nav-list.show { display: flex; flex-wrap: wrap; }
+      button[onclick="toggleNav()"] { display: block; }
       nav {
         flex-wrap: wrap;
         gap: 0.5rem;
@@ -170,7 +173,8 @@
   <header>
     <nav>
       <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
-      <ul class="nav-links">
+      <button onclick="toggleNav()" style="display:none;font-size:1.5rem;background:none;border:none;cursor:pointer;padding:0.5rem">☰</button>
+      <ul class="nav-links" id="nav-list">
         <li><a href="index.html" class="active">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="categories.html">Recipes</a></li>
@@ -357,5 +361,5 @@
     
     loadRecipes();
   </script>
-</body>
+<script>function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}</script></body>
 </html>
