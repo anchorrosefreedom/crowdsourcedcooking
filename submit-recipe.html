@@ -208,7 +208,7 @@
           <label>Original Recipe URL</label>
           <div style="display:flex;gap:0.5rem">
             <input type="url" id="sourceUrl" placeholder="Link to original recipe" style="flex:1;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px">
-            <form onsubmit="event.preventDefault(); (function(){ 
+            <button type="button" onclick="var url=document.getElementById('sourceUrl').value.trim();if(!url){alert('Enter a URL');return;}document.getElementById('import-status').textContent='Importing...';fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/importRecipe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:url})}).then(r=>r.json()).then(d=>{var r=d.result?d.result.recipe:d.recipe;if(r&&r.title){document.getElementById('title').value=r.title||'';document.getElementById('description').value=r.description||'';document.getElementById('ingredients').value=r.ingredients?r.ingredients.join('\n'):'';document.getElementById('instructions').value=r.instructions||'';if(r.author)document.getElementById('author').value=r.author;document.getElementById('import-status').textContent='Import complete!';}else{document.getElementById('import-status').textContent='No recipe found';}}).catch(e=>{document.getElementById('import-status').textContent='Error: '+e.message;});" style="padding:1rem;background:#2a9d8f;color:white;border:none;border-radius:8px;cursor:pointer">Import Recipe</button> 
   alert('Import clicked!'); 
   alert('Import clicked!'); 
   var url = document.getElementById('sourceUrl').value.trim(); 
@@ -230,9 +230,7 @@
       status.textContent='Import complete!';status.style.color='green';
     }else{status.textContent='No recipe found';status.style.color='red';}
   }).catch(function(e){status.textContent='Error: '+e.message;status.style.color='red';});
-})(); return false;" style="display:inline-block">
-  <button type="submit" style="padding:1rem;background:#2a9d8f;color:white;border:none;border-radius:8px;cursor:pointer;white-space:nowrap">Import Recipe</button>
-</form>
+
           </div>
           <div id="import-status" style="margin-top:0.5rem;font-size:0.9rem;color:#666"></div>
         </div>
