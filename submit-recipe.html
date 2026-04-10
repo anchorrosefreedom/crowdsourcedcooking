@@ -208,7 +208,7 @@
           <label>Original Recipe URL</label>
           <div style="display:flex;gap:0.5rem">
             <input type="url" id="sourceUrl" placeholder="Link to original recipe" style="flex:1;padding:1rem;font-size:1.1rem;border:1px solid #ddd;border-radius:8px">
-            <button type="button" onclick="runImport()" style="padding:1rem;background:#2a9d8f;color:white;border:none;border-radius:8px;cursor:pointer;white-space:nowrap">Import Recipe</button>
+            <a href="#" onclick="runImport(); return false;" style="padding:1rem;background:#2a9d8f;color:white;text-decoration:none;border-radius:8px;cursor:pointer;white-space:nowrap;display:inline-block">Import Recipe</a>
           </div>
           <div id="import-status" style="margin-top:0.5rem;font-size:0.9rem;color:#666"></div>
         </div>
