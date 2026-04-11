@@ -1,223 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recipe - CrowdSourced Cooking</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8f9fa; min-height: 100vh; }
-    header { background: white; padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
-    nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
-    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
-    .nav-links a { color: #333; text-decoration: none; font-weight: 500; }
-    .nav-links a:hover {
-    }
-        .nav-links a.active {
-      color: #2a9d8f;
-      border-bottom: 2px solid #2a9d8f;
-      padding-bottom: 4px;
-    }
-    main { max-width: 900px; margin: 0 auto; padding: 2rem; }
-    .breadcrumb { margin-bottom: 1.5rem; }
-    .breadcrumb a { color: #2a9d8f; text-decoration: none; }
-    .breadcrumb span { color: #666; }
-    .recipe-header { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 2rem; }
-    .recipe-image { width: 100%; height: 300px; background: linear-gradient(135deg, #e9f5f4 0%, #d4e8e5 100%); display: flex; align-items: center; justify-content: center; font-size: 5rem; }
-    .recipe-content { padding: 2rem; }
-    .recipe-title { font-size: 2rem; color: #264653; margin-bottom: 0.5rem; }
-    .recipe-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
-    .tag { background: #e9f5f4; color: #2a9d8f; padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.85rem; font-weight: 500; }
-    .recipe-meta { display: flex; gap: 1.5rem; padding: 1rem 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee; margin: 1rem 0; }
-    .meta-item { display: flex; align-items: center; gap: 0.5rem; color: #666; }
-    .meta-item strong { color: #264653; }
-    .vote-buttons { display: flex; gap: 1rem; margin: 1.5rem 0; }
-    .vote-btn { display: flex; align-items: center; gap: 0.5rem; background: white; border: 2px solid #2a9d8f; color: #2a9d8f; padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; }
-    .vote-btn:hover { background: #2a9d8f; color: white; }
-    .section { background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 2rem; }
-    .section h2 { font-size: 1.3rem; color: #264653; margin-bottom: 1rem; }
-    .ingredients-list { list-style: none; }
-    .ingredients-list li { padding: 0.75rem 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 0.25rem; }
-    .instructions ol { margin-left: 1.5rem; }
-    .instructions li { padding: 0.75rem 0; color: #444; }
-    .fork-btn { display: inline-block; background: #264653; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; margin-top: 1rem; }
-    .video-link { display: flex; align-items: center; gap: 0.5rem; background: #f0f0f0; padding: 0.75rem 1rem; border-radius: 8px; text-decoration: none; color: #333; margin-top: 1rem; }
-    .loading, .error { text-align: center; padding: 3rem; color: #666; }
-    .error { color: #e74c3c; }
-    footer { text-align: center; padding: 2rem; color: #666; background: white; margin-top: 3rem; }
-    @media (max-width: 768px) {
-      button[onclick="toggleNav()"] { display: block; }
-      #nav-list { display: none; width: 100%; }
-      #nav-list.show { display: flex; flex-wrap: wrap; }
-       } .nav-links { 
-        display: flex; 
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        gap: 0.25rem;
-      }
-      .nav-links a {
-        white-space: nowrap;
-        font-size: 0.85rem;
-        padding: 0.2rem 0.25rem;
-      } .recipe-meta { flex-wrap: wrap; } .recipe-title { font-size: 1.5rem; } }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recipe - CrowdSourced Cooking</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8f9fa; }
+header { background: white; padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
+nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+.nav-links { display: flex; gap: 1.5rem; list-style: none; }
+.nav-links a { color: #333; text-decoration: none; font-weight: 500; }
+main { max-width: 800px; margin: 2rem auto; padding: 1rem; }
+h1 { color: #264653; margin-bottom: 1rem; }
+.meta { color: #666; margin-bottom: 1rem; }
+.error { color: #e53e3e; padding: 2rem; text-align: center; }
+</style>
 </head>
 <body>
-  <header>
-    <nav>
-      <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
-      <button onclick="toggleNav()" style="display:none;font-size:1.5rem;background:none;border:none;cursor:pointer;padding:0.5rem">☰</button>
-      <ul class="nav-links" id="nav-list">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="categories.html">Recipes</a></li>
-        <li><a href="submit-recipe.html">Submit Recipe</a></li>
-        <li><a href="keto.html">Diets</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="login.html?redirect=recipe.html" id="auth-link">Login</a></li>
-      </ul>
-    </nav>
-  </header>
-  
-  <main>
-    <div class="breadcrumb">
-      <a href="index.html">← Home</a>
-      <span> / Recipe</span>
-    </div>
-    
-    <div id="recipe-container">
-      <div class="loading">Loading recipe...</div>
-    </div>
-  </main>
-  
-  <footer>
-    <p>© 2026 CrowdSourced Cooking — Made by cooks, for cooks</p>
-  </footer>
-  
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
-    import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
-    import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
-    
-    const firebaseConfig = {
-      apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
-      authDomain: "crowdsourcedcooking.firebaseapp.com",
-      projectId: "crowdsourcedcooking",
-      storageBucket: "crowdsourcedcooking.firebasestorage.app",
-      messagingSenderId: "1025589287082",
-      appId: "1:1025589287082:web:15569e323aa2781ab858d3"
-    };
-    
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-    
-    // Auth state handler
-    onAuthStateChanged(auth, user => {
-      const authLink = document.getElementById('auth-link');
-      if (user) {
-        authLink.href = 'logout.html';
-        authLink.textContent = 'Log Off';
-      } else {
-        authLink.href = 'login.html';
-        authLink.textContent = 'Login';
-      }
+<header><nav>
+<a href="index.html">CrowdSourced Cooking</a>
+<ul class="nav-links">
+<li><a href="index.html">Home</a></li>
+<li><a href="about.html">About</a></li>
+<li><a href="categories.html">Recipes</a></li>
+<li><a href="submit-recipe.html">Submit Recipe</a></li>
+</ul>
+</nav></header>
+<main>
+<h1 id="title">Loading...</h1>
+<p class="meta">By <span id="author"></span></p>
+<p id="description"></p>
+<div class="section">
+<h2>Ingredients</h2>
+<ul id="ingredients-list"></ul>
+</div>
+<div class="section">
+<h2>Instructions</h2>
+<ol id="instructions-list"></ol>
+</div>
+<button id="upvote">👍 Upvote</button>
+</main>
+<script>
+function loadRecipe() {
+  var params = new URLSearchParams(window.location.search);
+  var id = params.get("id");
+  if(!id) {
+    document.getElementById("title").innerHTML = "<p class=\"error\">No recipe specified</p>";
+    return;
+  }
+  fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getRecipe?id="+id)
+    .then(function(r){return r.json()})
+    .then(function(data){
+      if(data.error) throw new Error(data.error);
+      document.getElementById("title").textContent = data.title || "";
+      document.getElementById("author").textContent = data.author || "Anonymous";
+      document.getElementById("description").textContent = data.description || "";
+      var ing = Array.isArray(data.ingredients) ? data.ingredients : [data.ingredients];
+      document.getElementById("ingredients-list").innerHTML = ing.map(function(i){return "<li>"+i+"</li>"}).join("");
+      var ins = Array.isArray(data.instructions) ? data.instructions : [data.instructions];
+      document.getElementById("instructions-list").innerHTML = ins.map(function(i){return "<li>"+i+"</li>"}).join("");
+      document.getElementById("upvote").textContent = (data.upvotes||0) + " upvotes";
+    })
+    .catch(function(e){
+      document.getElementById("title").innerHTML = "<p class=\"error\">Error: "+e.message+"</p>";
     });
-
-    // Set active nav link based on current page
-    let currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    // Remove .html extension for Firebase hosting compatibility
-    currentPage = currentPage.replace('.html', '');
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      const href = link.getAttribute('href').replace('.html', '');
-      if (href === currentPage || (currentPage === '' && href === 'index')) {
-        link.classList.add('active');
-      }
-    });
-    
-    const urlParams = new URLSearchParams(window.location.search);
-    const recipeId = urlParams.get('id');
-    
-    const container = document.getElementById('recipe-container');
-    
-    const emojiMap = {
-      'beef': '🥩', 'chicken': '🍗', 'pork': '🐷', 'fish': '🐟',
-      'keto': '🥑', 'carnivore': '🥩', 'main-dishes': '🍝',
-      'side-dishes': '🥗', 'breakfasts': '🍳', 'desserts': '🍰',
-      'breads': '🍞', 'drinks': '🥤'
-    };
-    
-    function getEmoji(tags) {
-      for (const tag of tags || []) {
-        if (emojiMap[tag.toLowerCase()]) return emojiMap[tag.toLowerCase()];
-      }
-      return '🍽️';
-    }
-    
-    async function loadRecipe() {
-      if (!recipeId) {
-        container.innerHTML = '<div class="error">No recipe specified. <a href="categories.html">Browse categories</a></div>';
-        return;
-      }
-      
-      try {
-        const recipeSnap = await getDoc(doc(db, 'recipes', recipeId));
-        
-        if (!recipeSnap.exists()) {
-          container.innerHTML = '<div class="error">Recipe not found. <a href="categories.html">Browse categories</a></div>';
-          return;
-        }
-        
-        const recipe = recipeSnap.data();
-        
-        container.innerHTML = `
-          <div class="recipe-header">
-            <div class="recipe-image">${getEmoji(recipe.tags)}</div>
-            <div class="recipe-content">
-              <h1 class="recipe-title">${recipe.title}</h1>
-              <div class="recipe-tags">
-                ${(recipe.tags || []).map(t => `<span class="tag">${t}</span>`).join('')}
-              </div>
-              <div class="recipe-meta">
-                <div class="meta-item">⏱️ <strong>${recipe.time || 'N/A'}</strong></div>
-                <div class="meta-item">🍽️ <strong>${recipe.servings || 'N/A'} servings</strong></div>
-                <div class="meta-item">👍 <strong id="vote-count">${recipe.upvotes || 0}</strong> votes</div>
-              </div>
-              <div class="vote-buttons">
-                <button class="vote-btn" onclick="alert('Thanks for voting!')">👍 Upvote</button>
-              </div>
-              ${recipe.videoUrl ? `<a href="${recipe.videoUrl}" target="_blank" class="video-link">🎬 Watch Video</a>` : ''}
-            </div>
-          </div>
-          
-          <div class="section">
-            <h2>📝 Ingredients</h2>
-            <ul class="ingredients-list">
-              ${Array.isArray(recipe.ingredients) ? recipe.ingredients.map(ing => \`<li><input type="checkbox"> \${ing}</li>\`).join('') : \`<li>\${recipe.ingredients || 'No ingredients listed'}</li>\`}'
-            </ul>
-          </div>
-          
-          <div class="section">
-            <h2>👨‍🍳 Instructions</h2>
-            <ol class="instructions">
-              ${Array.isArray(recipe.instructions) ? recipe.instructions.map((step, i) => \`<li>\${step}</li>\`).join('') : \`<li>\${recipe.instructions || ''}</li>\`}'
-            </ol>
-          </div>
-          
-          <div class="section">
-            <h2>🔀 MiMO - Make it My Own</h2>
-            <p>Found a recipe you love? Click the button below to create your own version — tweak ingredients, adjust portions, or add your twist. Your MiMO will stay linked to the original.</p>
-            <a href="submit-recipe.html?mimo=${recipeId}" class="fork-btn">🔀 Make it My Own</a>
-          </div>
-        `;
-        
-      } catch (error) {
-        console.error('Error loading recipe:', error);
-        container.innerHTML = '<div class="error">Error loading recipe. Please try again.</div>';
-      }
-    }
-    
-    loadRecipe();
-  </script>
-<script>function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}</script></body>
+}
+window.onload = loadRecipe;
+</script>
+</body>
 </html>
