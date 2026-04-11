@@ -183,20 +183,47 @@
     </nav>
   </header>
   
-  <main style="max-width:600px;margin:2rem auto;padding:2rem;background:white;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.08)">
+  <main style="max-width:700px;margin:2rem auto;padding:1rem">
     <h1 style="margin-bottom:1.5rem;text-align:center;color:#264653">Submit Your Recipe</h1>
-    <form id="recipe-form">
+    <div class="form-card" style="background:white;padding:1.5rem;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.08)">
+    <form>
+      <div style="margin-bottom:1rem">
+        <label style="display:block;margin-bottom:0.5rem;font-weight:500">Recipe Photos (max 10)</label>
+        <div onclick="document.getElementById('image-input').click()" style="text-align:center;cursor:pointer;padding:2rem;border:2px dashed #ddd;border-radius:8px">
+          <span style="font-size:3rem">📷</span>
+          <div style="margin-top:0.5rem;color:#666">Click to add photos</div>
+        </div>
+        <input type="file" id="image-input" multiple accept="image/*" style="display:none">
+      </div>
+      <div style="display:flex;gap:0.5rem;margin-bottom:1rem">
+        <input type="url" id="sourceUrl" placeholder="Link to original recipe" style="flex:1;padding:0.75rem;font-size:1rem;border:1px solid #ddd;border-radius:8px">
+        <button type="button" onclick="importRecipe()" style="padding:0.75rem 1rem;background:#2a9d8f;color:white;border:none;border-radius:8px;cursor:pointer">Import</button>
+      </div>
+      <div id="import-status" style="margin-bottom:1rem;font-size:0.85rem;color:#2a9d8f;min-height:1rem"></div>
       <div style="margin-bottom:1rem">
         <label style="display:block;margin-bottom:0.5rem;font-weight:500">Recipe Title *</label>
         <input type="text" id="title" required style="width:100%;padding:0.75rem;font-size:1rem;border:1px solid #ddd;border-radius:8px">
       </div>
       <div style="margin-bottom:1rem">
-        <label style="display:block;margin-bottom:0.5rem;font-weight:500">Author</label>
-        <input type="text" id="author" value="Unknown" style="width:100%;padding:0.75rem;font-size:1rem;border:1px solid #ddd;border-radius:8px">
+        <label style="display:block;margin-bottom:0.5rem;font-weight:500">Author Name</label>
+        <input type="text" id="author" value="Unknown" readonly style="width:100%;padding:0.75rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;background:#f0f0f0;color:#666">
       </div>
       <div style="margin-bottom:1rem">
         <label style="display:block;margin-bottom:0.5rem;font-weight:500">Description</label>
         <textarea id="description" style="width:100%;padding:0.75rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;min-height:80px"></textarea>
+      </div>
+      <div style="margin-bottom:1rem">
+        <label style="display:block;margin-bottom:0.5rem;font-weight:500">Category *</label>
+        <select id="category" required style="width:100%;padding:0.75rem;font-size:1rem;border:1px solid #ddd;border-radius:8px">
+          <option value="">Select category</option>
+          <option value="Main Dishes">Main Dishes</option>
+          <option value="Meats">Meats</option>
+          <option value="Side Dishes">Side Dishes</option>
+          <option value="Breakfasts">Breakfasts</option>
+          <option value="Breads">Breads</option>
+          <option value="Desserts">Desserts</option>
+          <option value="Drinks">Drinks</option>
+        </select>
       </div>
       <div style="margin-bottom:1rem">
         <label style="display:block;margin-bottom:0.5rem;font-weight:500">Ingredients * (one per line)</label>
@@ -206,10 +233,53 @@
         <label style="display:block;margin-bottom:0.5rem;font-weight:500">Instructions *</label>
         <textarea id="instructions" required style="width:100%;padding:0.75rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;min-height:100px"></textarea>
       </div>
-      <div id="status" style="margin-bottom:1rem;min-height:1.5rem"></div>
+      <div style="margin-bottom:1rem">
+        <label style="display:block;margin-bottom:0.5rem;font-weight:500">Tags</label>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:0.5rem">
+          <div style="margin-bottom:0.5rem">
+            <button type="button" onclick="toggleDropdown('proteins')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Proteins ▼</button>
+            <div id="proteins-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
+              <label style="display:block"><input type="checkbox" name="tags" value="Beef"> Beef</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Chicken"> Chicken</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Fish"> Fish</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Pork"> Pork</label>
+            </div>
+          </div>
+          <div style="margin-bottom:0.5rem">
+            <button type="button" onclick="toggleDropdown("vegetables")" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Vegetables ▼</button>
+            <div id="vegetables-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
+              <label style="display:block"><input type="checkbox" name="tags" value="Broccoli"> Broccoli</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Leafy Greens"> Leafy Greens</label>
+            </div>
+          </div>
+          <div style="margin-bottom:0.5rem">
+            <button type="button" onclick="toggleDropdown("fruits")" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Fruits ▼</button>
+            <div id="fruits-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
+              <label style="display:block"><input type="checkbox" name="tags" value="Apples"> Apples</label>
+            </div>
+          </div>
+          <div style="margin-bottom:0.5rem">
+            <button type="button" onclick="toggleDropdown("dairy")" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Dairy ▼</button>
+            <div id="dairy-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
+              <label style="display:block"><input type="checkbox" name="tags" value="Butter"> Butter</label>
+            </div>
+          </div>
+          <div style="margin-bottom:0.5rem">
+            <button type="button" onclick="toggleDropdown("nuts")" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Nuts/Seeds ▼</button>
+            <div id="nuts-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
+              <label style="display:block"><input type="checkbox" name="tags" value="Almonds"> Almonds</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="submit-status" style="margin-bottom:1rem;min-height:1.5rem;font-weight:500"></div>
       <button type="button" onclick="submitRecipe()" style="width:100%;padding:1rem;background:#2a9d8f;color:white;border:none;border-radius:8px;font-size:1.1rem;font-weight:600;cursor:pointer">Submit Recipe</button>
     </form>
-  </main>
+    </div>
+        <p>Join our community of home cooks sharing recipes, tips, and kitchen secrets. From comfort food to healthy keto meals — everyone's welcome.</p>
+        <a href="categories.html" class="cta-button">Browse Recipes</a>
+      </div>
+    </section>
     
     <h2 class="section-title">🍽️ Latest</h2>
     <section class="features" id="recipe-grid">
@@ -377,45 +447,63 @@
     loadRecipes();
   </script>
 <script>
+function toggleDropdown(id) {
+  var el = document.getElementById(id + "-dropdown");
+  el.style.display = el.style.display === "none" ? "block" : "none";
+}
+function importRecipe() {
+  var url = document.getElementById("sourceUrl").value.trim();
+  if(!url) { document.getElementById("import-status").textContent = "Enter URL"; return; }
+  document.getElementById("import-status").textContent = "Importing...";
+  fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/importRecipe", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({url: url})
+  }).then(function(r) { return r.json(); }).then(function(d) {
+    var r = d.result ? d.result.recipe : d.recipe;
+    if(r && r.title) {
+      document.getElementById("title").value = r.title || "";
+      document.getElementById("description").value = r.description || "";
+      document.getElementById("ingredients").value = r.ingredients ? r.ingredients.join("\n") : "";
+      document.getElementById("instructions").value = r.instructions || "";
+      var author = r.author || "";
+      if(!author) {
+        try { author = new URL(url).hostname.replace("www.", ""); } catch(e) { author = "Unknown"; }
+      }
+      document.getElementById("author").value = author;
+      document.getElementById("import-status").textContent = "✓ Imported";
+    } else {
+      document.getElementById("import-status").textContent = "This site does not allow importing";
+    }
+  }).catch(function(e) { document.getElementById("import-status").textContent = "Error"; });
+}
 function submitRecipe() {
   var title = document.getElementById("title").value;
   var author = document.getElementById("author").value || "Unknown";
   var description = document.getElementById("description").value;
   var ingredients = document.getElementById("ingredients").value.split("\n").filter(function(x) { return x.trim(); });
   var instructions = document.getElementById("instructions").value;
-  
   if(!title || !ingredients.length || !instructions) {
-    document.getElementById("status").textContent = "Please fill in title, ingredients, and instructions";
-    document.getElementById("status").style.color = "#e53e3e";
+    document.getElementById("submit-status").textContent = "Please fill in title, ingredients, and instructions";
+    document.getElementById("submit-status").style.color = "#e53e3e";
     return;
   }
-  
-  document.getElementById("status").textContent = "Saving...";
-  document.getElementById("status").style.color = "#2a9d8f";
-  
-  var data = {
-    title: title,
-    author: author,
-    description: description,
-    ingredients: ingredients,
-    instructions: instructions,
-    createdAt: new Date().toISOString(),
-    upvotes: 0
-  };
-  
+  document.getElementById("submit-status").textContent = "Saving...";
+  document.getElementById("submit-status").style.color = "#2a9d8f";
+  var tags = [];
+  document.querySelectorAll("input[name=\"tags"]:checked").forEach(function(cb) { tags.push(cb.value); });
+  var data = { title: title, author: author, description: description, ingredients: ingredients, instructions: instructions, tags: tags, createdAt: new Date().toISOString(), upvotes: 0 };
   fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(data)
   }).then(function(res) { return res.json(); }).then(function(doc) {
-    document.getElementById("status").textContent = "✓ Saved!";
-    document.getElementById("status").style.color = "#38a169";
-    setTimeout(function() {
-      window.location.href = "recipe.html?id=" + (doc.id || doc.name);
-    }, 500);
+    document.getElementById("submit-status").textContent = "✓ Saved!";
+    document.getElementById("submit-status").style.color = "#38a169";
+    setTimeout(function() { window.location.href = "recipe.html?id=" + (doc.id || doc.name); }, 500);
   }).catch(function(err) {
-    document.getElementById("status").textContent = "Error: " + err.message;
-    document.getElementById("status").style.color = "#e53e3e";
+    document.getElementById("submit-status").textContent = "Error: " + err.message;
+    document.getElementById("submit-status").style.color = "#e53e3e";
   });
 }
 </script></body>
