@@ -314,8 +314,8 @@ function updatePhotoCarousel() {
 function addCustomTag(input, type) {
   var val = input.value.trim();
   if(!val) return;
-  // Title case
-  val = val.replace(/\w/g, function(t) { return t.toUpperCase(); });
+  // Title case - first letter of each word
+  val = val.toLowerCase().split(' ').map(function(w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join(' ');
   // Check spelling (basic - could integrate a dictionary API)
   var checkbox = input.previousElementSibling;
   var label = document.createElement('label');
