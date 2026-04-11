@@ -328,6 +328,15 @@ function importRecipe() {
     var r = d.result ? d.result.recipe : d.recipe;
     if(r && r.title) {
       document.getElementById('title').value = r.title || '';
+      // Use domain as author
+      var author = r.author || '';
+      if(!author) {
+        try {
+          var srcUrl = new URL(document.getElementById('sourceUrl').value);
+          author = srcUrl.hostname.replace('www.', '');
+        } catch(e) { author = 'Unknown'; }
+      }
+      document.getElementById('author').value = author;
       document.getElementById('description').value = r.description || '';
       document.getElementById('ingredients').value = r.ingredients ? r.ingredients.join('\n') : '';
       document.getElementById('instructions').value = r.instructions || '';
