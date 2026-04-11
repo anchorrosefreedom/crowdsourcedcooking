@@ -8,38 +8,65 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8f9fa; }
 header { background: white; padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+nav { max-width: 900px; margin: 0 auto; display: flex; gap: 1.5rem; }
+nav a { color: #2a9d8f; text-decoration: none; font-weight: 500; }
 main { max-width: 800px; margin: 2rem auto; padding: 1rem; }
-.error { color: #e53e3e; }
+h1 { color: #264653; font-size: 1.8rem; margin-bottom: 0.5rem; }
+.author { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+.description { margin: 1rem 0; font-size: 1.1rem; }
+.image { max-width: 100%; height: auto; border-radius: 8px; margin: 1rem 0; }
+.section { background: white; padding: 1.5rem; border-radius: 12px; margin: 1rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+h2 { color: #264653; font-size: 1.2rem; margin-bottom: 1rem; border-bottom: 2px solid #2a9d8f; padding-bottom: 0.5rem; }
+ol { margin-left: 1.5rem; }
+ol li { padding: 0.75rem 0; border-bottom: 1px solid #eee; font-size: 1rem; }
+ol li:last-child { border-bottom: none; }
+ul { list-style: none; margin: 0; }
+ul li { padding: 0.5rem 0; margin-left: 0; font-size: 1rem; }
+ul li:before { content: "• "; color: #2a9d8f; margin-right: 0.5rem; }
+.votes { background: #2a9d8f; color: white; padding: 0.5rem 1rem; border-radius: 20px; display: inline-block; font-weight: 500; }
+.error { color: #e53e3e; background: #fee; padding: 1rem; border-radius: 8px; }
 </style>
 </head>
 <body>
-<header><a href="index.html">Home</a> | <a href="about.html">About</a> | <a href="categories.html">Recipes</a> | <a href="submit-recipe.html">Submit</a></header>
+<header><nav>
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="categories.html">Recipes</a>
+<a href="submit-recipe.html">Submit Recipe</a>
+</nav></header>
 <main>
 <h1 id="title">Loading...</h1>
-<p>By <span id="author"></span></p>
-<p id="description"></p>
-<h2>Ingredients</h2>
+<p class="author">By <span id="author"></span></p>
+<img id="image" class="image" style="display:none">
+<p id="description" class="description"></p>
+<div class="section">
+<h2>🥕 Ingredients</h2>
 <ul id="ings"></ul>
-<h2>Instructions</h2>
+</div>
+<div class="section">
+<h2>📝 Instructions</h2>
 <ol id="instrs"></ol>
+</div>
+<span id="votes" class="votes">0 upvotes</span>
 </main>
 <script>
-// Support both ?id= and ?recipeid= from cleanUrls redirects
 var params = new URLSearchParams(window.location.search);
 var id = params.get("id") || params.get("recipeid");
-if(!id) { document.getElementById("title").innerHTML = "<p class=\"error\">No recipe ID</p>"; }
+if(!id) { document.getElementById("title").innerHTML = "<p class="error">No recipe ID</p>"; }
 else {
 fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getRecipe?id=" + id)
   .then(function(r){return r.json()})
   .then(function(data){
     if(data.error) throw new Error(data.error);
     document.getElementById("title").textContent = data.title || "";
-    document.getElementById("author").textContent = data.author || "";
+    document.getElementById("author").textContent = data.author || "Anonymous";
     document.getElementById("description").textContent = data.description || "";
+    if(data.image) { var img=document.getElementById("image"); img.src=data.image; img.style.display="block"; }
     var ing = Array.isArray(data.ingredients) ? data.ingredients : [data.ingredients];
     document.getElementById("ings").innerHTML = ing.map(function(i){return "<li>"+i+"</li>"}).join("");
     var ins = Array.isArray(data.instructions) ? data.instructions : [data.instructions];
-    document.getElementById("instrs").innerHTML = ins.map(function(i){return "<li>"+i+"</li>"}).join("");
+    document.getElementById("instrs").innerHTML = ins.map(function(i,idx){return "<li>"+(idx+1)+". "+i+"</li>"}).join("");
+    document.getElementById("votes").textContent = (data.upvotes||0) + " upvotes";
   })
   .catch(function(e){
     document.getElementById("title").innerHTML = "<p class=\"error\">Error: "+e.message+"</p>";
