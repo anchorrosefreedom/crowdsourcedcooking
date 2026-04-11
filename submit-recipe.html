@@ -282,7 +282,7 @@
             </div>
           </div>
         </div>
-        <button type="submit" style="background:#2a9d8f;color:white;border:none;padding:1rem 2rem;border-radius:8px;font-size:1.1rem;font-weight:600;cursor:pointer;width:100%">Submit Recipe</button>
+        <button type="button" onclick="saveRecipe()" style="background:#2a9d8f;color:white;border:none;padding:1rem 2rem;border-radius:8px;font-size:1.1rem;font-weight:600;cursor:pointer;width:100%">Submit Recipe</button>
           <div id="submit-status" style="margin-top:0.5rem;font-size:0.9rem;color:#2a9d8f;min-height:1rem"></div>
       </form>
     </div>
@@ -384,8 +384,7 @@ function importRecipe() {
   </script>
 <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js"></script>
 <script>
-document.getElementById('recipe-form').addEventListener('submit', function(e) {
-  e.preventDefault();
+function saveRecipe() {
   var title = document.getElementById('title').value;
   if(!title) { 
     document.getElementById('submit-status').textContent = 'Please enter a recipe title';
@@ -428,7 +427,7 @@ document.getElementById('recipe-form').addEventListener('submit', function(e) {
     document.getElementById('submit-status').textContent = 'Error: ' + err.message;
     document.getElementById('submit-status').style.color = '#e53e3e';
   });
-});
+}
 </script>
 </body>
 </html>
