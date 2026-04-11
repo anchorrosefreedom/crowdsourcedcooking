@@ -415,7 +415,14 @@ function saveRecipe() {
     upvotes: 0
   };
   
-  console.log('Saving recipe:', recipeData);
+  console.log('Starting save...');
+  try {
+    var db = firebase.firestore();
+    console.log('Firestore:', db);
+    console.log('Collection:', db.collection('recipes'));
+  } catch(e) {
+    console.error('Init error:', e);
+  }
   var db = firebase.firestore();
   // Add timeout
   var timeout = setTimeout(function() {
