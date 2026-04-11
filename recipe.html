@@ -4,69 +4,56 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Recipe - CrowdSourced Cooking</title>
+<script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8f9fa; }
-header { background: white; padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
-nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
-.nav-links { display: flex; gap: 1.5rem; list-style: none; }
-.nav-links a { color: #333; text-decoration: none; font-weight: 500; }
+header { background: white; padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+nav { max-width: 1200px; margin: 0 auto; display: flex; gap: 1rem; }
+a { color: #2a9d8f; text-decoration: none; }
 main { max-width: 800px; margin: 2rem auto; padding: 1rem; }
-h1 { color: #264653; margin-bottom: 1rem; }
-.meta { color: #666; margin-bottom: 1rem; }
-.error { color: #e53e3e; padding: 2rem; text-align: center; }
+.error { color: #e53e3e; }
 </style>
 </head>
 <body>
 <header><nav>
-<a href="index.html">CrowdSourced Cooking</a>
-<ul class="nav-links">
-<li><a href="index.html">Home</a></li>
-<li><a href="about.html">About</a></li>
-<li><a href="categories.html">Recipes</a></li>
-<li><a href="submit-recipe.html">Submit Recipe</a></li>
-</ul>
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="categories.html">Recipes</a>
+<a href="submit-recipe.html">Submit Recipe</a>
 </nav></header>
 <main>
 <h1 id="title">Loading...</h1>
-<p class="meta">By <span id="author"></span></p>
+<p>By <span id="author"></span></p>
 <p id="description"></p>
-<div class="section">
 <h2>Ingredients</h2>
-<ul id="ingredients-list"></ul>
-</div>
-<div class="section">
+<ul id="ings"></ul>
 <h2>Instructions</h2>
-<ol id="instructions-list"></ol>
-</div>
-<button id="upvote">👍 Upvote</button>
+<ol id="instrs"></ol>
+<p id="votes"></p>
 </main>
 <script>
-function loadRecipe() {
-  var params = new URLSearchParams(window.location.search);
-  var id = params.get("id");
-  if(!id) {
-    document.getElementById("title").innerHTML = "<p class=\"error\">No recipe specified</p>";
-    return;
-  }
-  fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getRecipe?id="+id)
-    .then(function(r){return r.json()})
-    .then(function(data){
-      if(data.error) throw new Error(data.error);
-      document.getElementById("title").textContent = data.title || "";
-      document.getElementById("author").textContent = data.author || "Anonymous";
-      document.getElementById("description").textContent = data.description || "";
-      var ing = Array.isArray(data.ingredients) ? data.ingredients : [data.ingredients];
-      document.getElementById("ingredients-list").innerHTML = ing.map(function(i){return "<li>"+i+"</li>"}).join("");
-      var ins = Array.isArray(data.instructions) ? data.instructions : [data.instructions];
-      document.getElementById("instructions-list").innerHTML = ins.map(function(i){return "<li>"+i+"</li>"}).join("");
-      document.getElementById("upvote").textContent = (data.upvotes||0) + " upvotes";
-    })
-    .catch(function(e){
-      document.getElementById("title").innerHTML = "<p class=\"error\">Error: "+e.message+"</p>";
-    });
+var config = {apiKey:"AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",authDomain:"crowdsourcedcooking.firebaseapp.com",projectId:"crowdsourcedcooking",storageBucket:"crowdsourcedcooking.firebasestorage.app",messagingSenderId:"1025589287082",appId:"1:1025589287082:web:15569e323aa2781ab858d3"};
+firebase.initializeApp(config);
+var db = firebase.firestore();
+var params = new URLSearchParams(window.location.search);
+var id = params.get("id");
+if(!id) { document.getElementById("title").innerHTML = "<p class=\"error\">No recipe ID</p>"; }
+else {
+db.collection("recipes").doc(id).get().then(function(doc) {
+  if(!doc.exists) { document.getElementById("title").innerHTML = "<p class=\"error\">Recipe not found</p>"; return; }
+  var r = doc.data();
+  document.getElementById("title").textContent = r.title || "";
+  document.getElementById("author").textContent = r.author || "";
+  document.getElementById("description").textContent = r.description || "";
+  var ing = r.ingredients || [];
+  document.getElementById("ings").innerHTML = ing.map(function(i){return "<li>"+i+"</li>"}).join("");
+  var ins = r.instructions || [];
+  document.getElementById("instrs").innerHTML = ins.map(function(i){return "<li>"+i+"</li>"}).join("");
+  document.getElementById("votes").textContent = (r.upvotes||0) + " upvotes";
+}).catch(function(e) { document.getElementById("title").innerHTML = "<p class=\"error\">Error: "+e.message+"</p>"; });
 }
-window.onload = loadRecipe;
 </script>
 </body>
 </html>
