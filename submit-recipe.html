@@ -356,5 +356,42 @@ function importRecipe() {
       }
     });
   </script>
+<script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js"></script>
+<script>
+document.getElementById('recipe-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  var title = document.getElementById('title').value;
+  if(!title) { alert('Please enter a recipe title'); return; }
+  
+  var ingredients = document.getElementById('ingredients').value.split('
+').filter(function(i) { return i.trim(); });
+  var instructions = document.getElementById('instructions').value;
+  var author = document.getElementById('author').value || 'Anonymous';
+  var description = document.getElementById('description').value;
+  var time = document.getElementById('time').value;
+  
+  var tags = [];
+  document.querySelectorAll('input[name="tags"]:checked').forEach(function(cb) { tags.push(cb.value); });
+  
+  var recipeData = {
+    title: title,
+    description: description,
+    ingredients: ingredients,
+    instructions: instructions,
+    author: author,
+    time: time,
+    tags: tags,
+    createdAt: new Date().toISOString(),
+    upvotes: 0
+  };
+  
+  var db = firebase.firestore();
+  db.collection('recipes').add(recipeData).then(function(docRef) {
+    window.location.href = 'recipe.html?id=' + docRef.id;
+  }).catch(function(err) {
+    alert('Error: ' + err.message);
+  });
+});
+</script>
 </body>
 </html>
