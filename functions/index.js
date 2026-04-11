@@ -99,3 +99,35 @@ exports.saveRecipe = functions.https.onRequest(async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+exports.getRecipe = functions.https.onRequest(async (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type');
+  
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+  
+  const recipeId = req.query.id;
+  if (!recipeId) {
+    res.status(400).json({ error: 'No recipe ID' });
+    return;
+  }
+  
+  const admin = require('firebase-admin');
+  admin.initializeApp();
+  const db = admin.firestore();
+  
+  try {
+    const doc = await db.collection('recipes').doc(recipeId).get();
+    if (!doc.exists) {
+      res.status(404).json({ error: 'Recipe not found' });
+      return;
+    }
+    res.json(doc.data());
+  } catch(err) {
+    res.status(500).json({ error: err.message });
+  }
+});
