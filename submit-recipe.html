@@ -278,6 +278,7 @@
           </div>
         </div>
         <button type="submit" style="background:#2a9d8f;color:white;border:none;padding:1rem 2rem;border-radius:8px;font-size:1.1rem;font-weight:600;cursor:pointer;width:100%">Submit Recipe</button>
+          <div id="submit-status" style="margin-top:0.5rem;font-size:0.9rem;color:#2a9d8f;min-height:1rem"></div>
       </form>
     </div>
   </main>
@@ -361,7 +362,13 @@ function importRecipe() {
 document.getElementById('recipe-form').addEventListener('submit', function(e) {
   e.preventDefault();
   var title = document.getElementById('title').value;
-  if(!title) { alert('Please enter a recipe title'); return; }
+  if(!title) { 
+    document.getElementById('submit-status').textContent = 'Please enter a recipe title';
+    document.getElementById('submit-status').style.color = '#e53e3e';
+    return; 
+  }
+  document.getElementById('submit-status').textContent = 'Saving...';
+  document.getElementById('submit-status').style.color = '#2a9d8f';
   
   var ingredients = document.getElementById('ingredients').value.split('
 ').filter(function(i) { return i.trim(); });
@@ -388,8 +395,12 @@ document.getElementById('recipe-form').addEventListener('submit', function(e) {
   var db = firebase.firestore();
   db.collection('recipes').add(recipeData).then(function(docRef) {
     window.location.href = 'recipe.html?id=' + docRef.id;
+  }).then(function() {
+    document.getElementById('submit-status').textContent = '✓ Saved!';
+    document.getElementById('submit-status').style.color = '#38a169';
   }).catch(function(err) {
-    alert('Error: ' + err.message);
+    document.getElementById('submit-status').textContent = 'Error: ' + err.message;
+    document.getElementById('submit-status').style.color = '#e53e3e';
   });
 });
 </script>
