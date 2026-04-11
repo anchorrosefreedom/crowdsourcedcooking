@@ -140,7 +140,6 @@
       background: white;
       margin-top: 3rem;
     }
-    .show { display: flex !important; flex-wrap: wrap; }
     @media (max-width: 768px) {
       button[onclick="toggleNav()"] { display: block; }
       #nav-list { display: none; width: 100%; }
@@ -192,6 +191,8 @@
   <main style="max-width:400px;margin:2rem auto;padding:2rem;background:white;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.08);">
     <h1 style="margin-bottom:1.5rem;text-align:center;color:#264653;">Login</h1>
     <form id="login-form">
+      <button type="button" onclick="signInWithGoogle()" style="width:100%;padding:0.75rem;background:#4285f4;color:white;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;margin-bottom:0.75rem;">Continue with Google</button>
+      <div style="text-align:center;margin-bottom:1rem;color:#999;">or</div>
       <div style="margin-bottom:1rem;">
         <label style="display:block;margin-bottom:0.5rem;font-weight:500;">Email</label>
         <input type="email" id="email" required style="width:100%;padding:0.75rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;">
@@ -202,9 +203,35 @@
       </div>
       <button type="submit" style="width:100%;padding:0.75rem;background:#2a9d8f;color:white;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;">Sign In</button>
     </form>
-    <p style="margin-top:1rem;text-align:center;color:#666;font-size:0.9rem;">
-      <a href="#" style="color:#2a9d8f;text-decoration:none;">Forgot password?</a>
-    </p>
+  </main>
+    
+    <h2 class="section-title">🍽️ Latest</h2>
+    <section class="features" id="recipe-grid">
+      <div class="feature-card">
+        <h2>Loading recipes...</h2>
+        <p>Fetching from community contributions.</p>
+      </div>
+    </section>
+    
+    <h2 class="section-title" style="margin-top: 2rem;">📝 Community Highlights</h2>
+    <section class="features">
+      <a href="submit-recipe.html" class="feature-card">
+        <h2>Submit Your Recipes</h2>
+        <p>Share your family favorites, secret ingredients, and cooking hacks. Help others cook better.</p>
+      </a>
+      <a href="category.html?cat=main-dishes" class="feature-card">
+        <h2>🔀 MiMO - Make it My Own</h2>
+        <p>Found a recipe you like? MiMO it, tweak the ingredients, and make it your own. Your version stays linked to the original.</p>
+      </a>
+      <a href="category.html?cat=main-dishes" class="feature-card">
+        <h2>Vote & Improve</h2>
+        <p>Upvote the recipes you love. MiMO and improve on others' creations to make them your own.</p>
+      </a>
+      <a href="login.html?redirect=index.html" class="feature-card">
+        <h2>Join the Community</h2>
+        <p>Connect with fellow food lovers. Learn, share, and grow together.</p>
+      </a>
+    </section>
   </main>
   
   <footer>
@@ -343,27 +370,38 @@
     
     loadRecipes();
   </script>
-<script>function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}</script><script>
+<script>function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}</script><script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js"></script>
+<script>
+var firebaseConfig = {
+  apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
+  authDomain: "crowdsourcedcooking.firebaseapp.com"
+};
+firebase.initializeApp(firebaseConfig);
+
+function signInWithGoogle() {
+  var provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider).then(function() {
+    var redirect = new URLSearchParams(window.location.search).get("redirect") || "index.html";
+    window.location.href = redirect;
+  }).catch(function(error) {
+    alert("Google login failed: " + error.message);
+  });
+}
+
 document.getElementById("login-form").addEventListener("submit", function(e) {
   e.preventDefault();
   var email = document.getElementById("email").value;
   var password = document.getElementById("password").value;
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(function(userCredential) {
-      var redirect = new URLSearchParams(window.location.search).get("redirect") || "index.html";
-      window.location.href = redirect;
-    })
-    .catch(function(error) {
-      alert("Login failed: " + error.message);
-    });
+  firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
+    var redirect = new URLSearchParams(window.location.search).get("redirect") || "index.html";
+    window.location.href = redirect;
+  }).catch(function(error) {
+    alert("Login failed: " + error.message);
+  });
 });
-</script><script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js"></script>
-<script>
-firebase.initializeApp({
-  apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
-  authDomain: "crowdsourcedcooking.firebaseapp.com"
-});
+
 function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}
-</script></body>
+</script>
+</body>
 </html>
