@@ -1,133 +1,146 @@
-const functions = require('firebase-functions');
-const axios = require('axios');
+const functions = require("firebase-functions");
+const admin = require("firebase-admin");
+admin.initializeApp();
 
-exports.importRecipe = functions.https.onRequest(async (req, res) => {
-  // Add CORS headers
-  res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.set('Access-Control-Allow-Headers', 'Content-Type');
+exports.getRecipe = functions.https.onRequest((req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
   
-  if (req.method === 'OPTIONS') {
-    res.status(204).send('');
+  if (req.method === "OPTIONS") {
+    res.status(204).send("");
     return;
   }
-  console.log('Function called with:', req.body);
   
-  const { url } = req.body;
-  
-  if (!url) {
-    res.status(400).json({ error: 'URL is required' });
+  const recipeId = req.query.id || (req.body && req.body.id);
+  if (!recipeId) {
+    res.status(400).json({error: "No recipe ID"});
     return;
   }
-
-  try {
-    console.log('Fetching URL:', url);
-    const response = await axios.get(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; CrowdSourcedCooking/1.0)' },
-      timeout: 15000
-    });
-
-    const html = response.data;
-    const jsonLdMatch = html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/i);
-    
-    console.log('Found JSON-LD:', !!jsonLdMatch);
-    
-    if (jsonLdMatch) {
-      const jsonData = JSON.parse(jsonLdMatch[1]);
-      console.log('JSON type:', jsonData['@type']);
-      console.log('Has graph:', !!jsonData['@graph']);
-      
-      // More flexible matching
-      let recipe = null;
-      if (jsonData['@graph'] && Array.isArray(jsonData['@graph'])) {
-        recipe = jsonData['@graph'].find(g => 
-          g['@type'] === 'Recipe' || 
-          (typeof g['@type'] === 'string' && g['@type'].includes('Recipe'))
-        );
-      } else if (jsonData['@type'] === 'Recipe') {
-        recipe = jsonData;
-      }
-      
-      console.log('Found recipe:', recipe ? recipe.name : 'none');
-      
-      if (recipe) {
-        res.json({
-          recipe: {
-            title: recipe.name || '',
-            description: recipe.description || '',
-            ingredients: Array.isArray(recipe.recipeIngredient) ? recipe.recipeIngredient : [],
-            instructions: typeof recipe.recipeInstructions === 'string' ? recipe.recipeInstructions : 
-                         Array.isArray(recipe.recipeInstructions) ? recipe.recipeInstructions.map(s => s.text || s).join('\n') : '',
-            image: Array.isArray(recipe.image) ? recipe.image[0] : recipe.image?.url || recipe.image || ''
-          }
-        });
+  
+  db = admin.firestore();
+  db.collection("recipes").doc(recipeId).get()
+    .then(doc => {
+      if (!doc.exists) {
+        res.status(404).json({error: "Recipe not found"});
         return;
       }
-    }
-    
-    res.status(404).json({ error: 'Could not find recipe data' });
-  } catch (error) {
-    console.error('Error:', error.message);
-    res.status(500).json({ error: error.message });
-  }
+      res.json(doc.data());
+    })
+    .catch(err => {
+      res.status(500).json({error: err.toString()});
+    });
 });
 
-exports.saveRecipe = functions.https.onRequest(async (req, res) => {
-  // Add CORS headers
-  res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.set('Access-Control-Allow-Headers', 'Content-Type');
+exports.saveRecipe = functions.https.onRequest((req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
   
-  if (req.method === 'OPTIONS') {
-    res.status(204).send('');
+  if (req.method === "OPTIONS") {
+    res.status(204).send("");
     return;
   }
   
-  const admin = require('firebase-admin');
-  if (!admin.apps.length) admin.initializeApp();
-  const db = admin.firestore();
-  
-  const recipe = req.body;
-  console.log('Saving recipe:', recipe.title);
-  
-  try {
-    const docRef = await db.collection('recipes').add(recipe);
-    console.log('Saved:', docRef.id);
-    res.json({ id: docRef.id, name: docRef.path });
-  } catch(err) {
-    console.error('Error:', err);
-    res.status(500).json({ error: err.message });
+  if (req.method !== "POST") {
+    res.status(405).json({error: "Method not allowed"});
+    return;
   }
+  
+  const data = req.body;
+  if (!data || !data.title) {
+    res.status(400).json({error: "Missing title"});
+    return;
+  }
+  
+  db = admin.firestore();
+  db.collection("recipes").add(data)
+    .then(docRef => {
+      res.json({id: docRef.id});
+    })
+    .catch(err => {
+      res.status(500).json({error: err.toString()});
+    });
 });
 
-exports.getRecipe = functions.https.onRequest(async (req, res) => {
-  res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.set('Access-Control-Allow-Headers', 'Content-Type');
+exports.importRecipe = functions.https.onRequest((req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
   
-  if (req.method === 'OPTIONS') {
-    res.status(204).send('');
+  if (req.method === "OPTIONS") {
+    res.status(204).send("");
     return;
   }
   
-  const recipeId = req.query.id;
-  if (!recipeId) {
-    res.status(400).json({ error: 'No recipe ID' });
+  const url = req.body && req.body.url;
+  if (!url) {
+    res.status(400).json({error: "Missing URL"});
     return;
   }
   
-  const admin = require('firebase-admin');
-  admin.initializeApp();
-  const db = admin.firestore();
+  // Use axios to fetch the page and extract recipe data
+  const axios = require('axios');
   
-  try {
-    const doc = await db.collection('recipes').doc(recipeId).get();
-    if (!doc.exists) {
-      res.status(404).json({ error: 'Recipe not found' });
-      return;
-    }
-    res.json(doc.data());
-  } catch(err) {
-    res.status(500).json({ error: err.message });
-  }
+  axios.get(url, { timeout: 10000 })
+    .then(function(html) {
+      const cheerio = require('cheerio');
+      const $ = cheerio.load(html.data);
+      
+      // Try to find JSON-LD schema
+      let recipe = null;
+      $('script[type="application/ld+json"]').each(function(i, el) {
+        try {
+          const json = JSON.parse($(el).html());
+          if (json['@type'] === 'Recipe' || (Array.isArray(json) && json.find(function(x){return x['@type'] === 'Recipe'}))) {
+            recipe = Array.isArray(json) ? json.find(function(x){return x['@type'] === 'Recipe'}) : json;
+          }
+        } catch(e) {}
+      });
+      
+      // If no JSON-LD, try to extract from meta tags
+      if (!recipe) {
+        const title = $('meta[property="og:title"]').attr('content') || $('title').text() || 'Imported Recipe';
+        const desc = $('meta[property="og:description"]').attr('content') || '';
+        
+        recipe = {
+          title: title.trim(),
+          description: desc.trim(),
+          ingredients: [],
+          instructions: ''
+        };
+        
+        // Try to find ingredients
+        $('[class*="ingredient"], .ingredients, [itemprop="recipeIngredient"]').each(function(i, el) {
+          const text = $(el).text().trim();
+          if (text) recipe.ingredients.push(text);
+        });
+        
+        // Try to find instructions
+        $('[class*="instruction"], .instructions, [itemprop="recipeInstructions"]').each(function(i, el) {
+          const text = $(el).text().trim();
+          if (text && !recipe.instructions) recipe.instructions = text;
+        });
+      }
+      
+      if (!recipe) {
+        res.json({error: "Could not extract recipe from this site"});
+        return;
+      }
+      
+      // Add image if found
+      const img = $('meta[property="og:image"]').attr('content') || $('meta[name="twitter:image"]').attr('content') || $('meta[itemprop="image"]').attr('content') || '';
+      if (img) recipe.image = img;
+      
+      // Add author from domain
+      try {
+        const urlObj = new URL(url);
+        recipe.author = urlObj.hostname.replace('www.', '');
+      } catch(e) {}
+      
+      res.json({recipe: recipe});
+    })
+    .catch(function(err) {
+      res.json({error: "Could not fetch URL: " + err.message});
+    });
 });
