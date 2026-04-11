@@ -417,12 +417,20 @@ function saveRecipe() {
   
   console.log('Saving recipe:', recipeData);
   var db = firebase.firestore();
+  // Add timeout
+  var timeout = setTimeout(function() {
+    document.getElementById('submit-status').textContent = 'Error: Timed out';
+    document.getElementById('submit-status').style.color = '#e53e3e';
+  }, 10000);
+  
   db.collection('recipes').add(recipeData).then(function(docRef) {
     console.log('Saved with ID:', docRef.id);
+    clearTimeout(timeout);
     document.getElementById('submit-status').textContent = '✓ Saved!';
     document.getElementById('submit-status').style.color = '#38a169';
     window.location.href = 'recipe.html?id=' + docRef.id;
   }).catch(function(err) {
+    clearTimeout(timeout);
     document.getElementById('submit-status').textContent = 'Error: ' + err.message;
     document.getElementById('submit-status').style.color = '#e53e3e';
   });
