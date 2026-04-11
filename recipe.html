@@ -24,6 +24,7 @@ main { max-width: 800px; margin: 2rem auto; padding: 1rem; }
 <ol id="instrs"></ol>
 </main>
 <script>
+// Support both ?id= and ?recipeid= from cleanUrls redirects
 var params = new URLSearchParams(window.location.search);
 var id = params.get("id") || params.get("recipeid");
 if(!id) { document.getElementById("title").innerHTML = "<p class=\"error\">No recipe ID</p>"; }
