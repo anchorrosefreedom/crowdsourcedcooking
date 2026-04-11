@@ -403,6 +403,31 @@ function saveRecipe() {
   var tags = [];
   document.querySelectorAll('input[name="tags"]:checked').forEach(function(cb) { tags.push(cb.value); });
   
+  // Cloud Function call
+  var timeout = setTimeout(function() {
+    document.getElementById('submit-status').textContent = 'Error: Timed out';
+    document.getElementById('submit-status').style.color = '#e53e3e';
+  }, 10000);
+  
+  fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(recipeData)
+  }).then(function(res) { return res.json(); }).then(function(docRef) {
+    clearTimeout(timeout);
+    var newId = docRef.id || docRef.name || 'unknown';
+    document.getElementById('submit-status').textContent = '✓ Saved!';
+    document.getElementById('submit-status').style.color = '#38a169';
+    window.location.href = 'recipe.html?id=' + newId;
+  }).catch(function(err) {
+    clearTimeout(timeout);
+    document.getElementById('submit-status').textContent = 'Error: ' + err.message;
+    document.getElementById('submit-status').style.color = '#e53e3e';
+  });
+  return;
+  
+  // Legacy (commented out)
+  /*
   var recipeData = {
     title: title,
     description: description,
