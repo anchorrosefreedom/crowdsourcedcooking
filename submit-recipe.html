@@ -277,7 +277,7 @@
             </div>
           </div>
         </div>
-        <button type="submit" style="background:#2a9d8f;color:white;border:none;padding:1rem 2rem;border-radius:8px;font-size:1.1rem;font-weight:600;cursor:pointer;width:100%">Submit Recipe</button>
+        <button type="button" onclick="saveRecipe()" style="background:#2a9d8f;color:white;border:none;padding:1rem 2rem;border-radius:8px;font-size:1.1rem;font-weight:600;cursor:pointer;width:100%">Submit Recipe</button>
       </form>
     </div>
   </main>
@@ -356,5 +356,5 @@ function importRecipe() {
       }
     });
   </script>
-</body>
+<script>function saveRecipe(){var t=document.getElementById("title").value;if(!t){alert("Title required");return}i=document.getElementById("ingredients").value.split("\n").filter(x=>x.trim());ins=document.getElementById("instructions").value;a=document.getElementById("author").value||"Anon";d=document.getElementById("description").value;tags=[];document.querySelectorAll("input[name="tags"]:checked").forEach(x=>tags.push(x.value));data={title:t,description:d,ingredients:i,instructions:ins,author:a,tags:tags,createdAt:new Date().toISOString(),upvotes:0};fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}).then(r=>r.json()).then(x=>window.location.href="recipe.html?id="+(x.id||x.name)).catch(e=>alert("Error:"+e.message))}</script></body>
 </html>
