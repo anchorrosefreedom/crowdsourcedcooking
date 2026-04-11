@@ -358,45 +358,16 @@ function importRecipe() {
   </script>
 <script>
 function saveRecipe() {
-  var title = document.getElementById('title').value;
-  if(!title) { alert('Please enter a recipe title'); return; }
-  
-  var ingredients = document.getElementById('ingredients').value.split('\n').filter(function(i) { return i.trim(); });
-  var instructions = document.getElementById('instructions').value;
-  var author = document.getElementById('author').value || 'Anonymous';
-  var description = document.getElementById('description').value;
-  var time = document.getElementById('time').value;
-  
+  var title = document.getElementById("title").value;
+  if(!title) { alert("Please enter recipe title"); return; }
+  var ingredients = document.getElementById("ingredients").value.split("\n").filter(function(i){return i.trim();});
+  var instructions = document.getElementById("instructions").value;
+  var author = document.getElementById("author").value || "Anonymous";
+  var description = document.getElementById("description").value;
   var tags = [];
-  document.querySelectorAll('input[name="tags"]:checked').forEach(function(cb) { tags.push(cb.value); });
-  
-  var recipeData = {
-    title: title,
-    description: description,
-    ingredients: ingredients,
-    instructions: instructions,
-    author: author,
-    time: time,
-    tags: tags,
-    createdAt: new Date().toISOString(),
-    upvotes: 0
-  };
-  
-  var status = document.getElementById('submit-status') || document.createElement('div');
-  status.id = 'submit-status';
-  status.textContent = 'Saving...';
-  document.querySelector('button[onclick="saveRecipe()"]').parentNode.appendChild(status);
-  
-  fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(recipeData)
-  }).then(function(res) { return res.json(); }).then(function(docRef) {
-    status.textContent = '✓ Saved!';
-    window.location.href = 'recipe.html?id=' + (docRef.id || docRef.name);
-  }).catch(function(err) {
-    status.textContent = 'Error: ' + err.message;
-  });
+  document.querySelectorAll("input[name=\"tags"]:checked").forEach(function(cb){tags.push(cb.value);});
+  var data = {title:title, description:description, ingredients:ingredients, instructions:instructions, author:author, tags:tags, createdAt:new Date().toISOString(), upvotes:0};
+  fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(data)}).then(function(r){return r.json();}).then(function(d){window.location.href="recipe.html?id="+(d.id||d.name);}).catch(function(e){alert("Error: "+e.message);});
 }
 </script>
 </body>
