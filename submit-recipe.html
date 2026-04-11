@@ -403,6 +403,19 @@ function saveRecipe() {
   var tags = [];
   document.querySelectorAll('input[name="tags"]:checked').forEach(function(cb) { tags.push(cb.value); });
   
+  // Build recipe data first
+  var recipeData = {
+    title: title,
+    description: description,
+    ingredients: ingredients,
+    instructions: instructions,
+    author: author,
+    time: time,
+    tags: tags,
+    createdAt: new Date().toISOString(),
+    upvotes: 0
+  };
+  
   // Cloud Function call
   var timeout = setTimeout(function() {
     document.getElementById('submit-status').textContent = 'Error: Timed out';
@@ -425,22 +438,7 @@ function saveRecipe() {
     document.getElementById('submit-status').style.color = '#e53e3e';
   });
   return;
-  
-  // Legacy (commented out)
-  /*
-  var recipeData = {
-    title: title,
-    description: description,
-    ingredients: ingredients,
-    instructions: instructions,
-    author: author,
-    time: time,
-    tags: tags,
-    createdAt: new Date().toISOString(),
-    upvotes: 0
-  };
-  
-  console.log('Starting save...');
+  */
   try {
     var db = firebase.firestore();
     console.log('Firestore:', db);
