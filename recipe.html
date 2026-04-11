@@ -57,8 +57,8 @@ var config = {apiKey:"AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",authDomain:"crowd
 firebase.initializeApp(config);
 var db = firebase.firestore();
 console.log("Page loaded");var params = new URLSearchParams(window.location.search);
-var id = params.get("id");
-if(!id) id = params.get("recipeid");
+var id = window.location.hash.substring(1);
+// Hash-based id
 console.log("Looking for id:", id); if(!id) { document.getElementById("title").innerHTML = "<p class=\"error\">No recipe ID</p>"; }
 else {
 db.collection("recipes").doc(id).get().then(function(doc) {
