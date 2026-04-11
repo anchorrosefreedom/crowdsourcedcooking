@@ -417,15 +417,13 @@ document.getElementById('recipe-form').addEventListener('submit', function(e) {
     upvotes: 0
   };
   
+  console.log('Saving recipe:', recipeData);
   var db = firebase.firestore();
   db.collection('recipes').add(recipeData).then(function(docRef) {
-    window.location.href = 'recipe.html?id=' + docRef.id;
-  }).then(function(docRef) {
+    console.log('Saved with ID:', docRef.id);
     document.getElementById('submit-status').textContent = '✓ Saved!';
     document.getElementById('submit-status').style.color = '#38a169';
-    setTimeout(function() {
-      window.location.href = 'recipe.html?id=' + docRef.id;
-    }, 1000);
+    window.location.href = 'recipe.html?id=' + docRef.id;
   }).catch(function(err) {
     document.getElementById('submit-status').textContent = 'Error: ' + err.message;
     document.getElementById('submit-status').style.color = '#e53e3e';
