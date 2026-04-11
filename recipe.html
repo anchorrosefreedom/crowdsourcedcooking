@@ -193,14 +193,14 @@
           <div class="section">
             <h2>📝 Ingredients</h2>
             <ul class="ingredients-list">
-              ${(recipe.ingredients || []).map(ing => `<li><input type="checkbox"> ${ing}</li>`).join('') || '<li>No ingredients listed</li>'}
+              ${Array.isArray(recipe.ingredients) ? recipe.ingredients.map(ing => \`<li><input type="checkbox"> \${ing}</li>\`).join('') : \`<li>\${recipe.ingredients || 'No ingredients listed'}</li>\`}'
             </ul>
           </div>
           
           <div class="section">
             <h2>👨‍🍳 Instructions</h2>
             <ol class="instructions">
-              ${(recipe.instructions || []).map((step, i) => `<li>${step}</li>`).join('') || '<li>No instructions listed</li>'}
+              ${Array.isArray(recipe.instructions) ? recipe.instructions.map((step, i) => \`<li>\${step}</li>\`).join('') : \`<li>\${recipe.instructions || ''}</li>\`}'
             </ol>
           </div>
           
