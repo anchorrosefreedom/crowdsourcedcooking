@@ -315,6 +315,41 @@ function toggleDropdown(id) {
   var el = document.getElementById(id + '-dropdown');
   el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
+document.getElementById('recipe-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  var title = document.getElementById('title').value;
+  if(!title) { alert('Please enter a recipe title'); return; }
+  
+  var ingredients = document.getElementById('ingredients').value.split('\n').filter(i => i.trim());
+  var instructions = document.getElementById('instructions').value;
+  var author = document.getElementById('author').value || 'Anonymous';
+  var description = document.getElementById('description').value;
+  var time = document.getElementById('time').value;
+  
+  var tags = [];
+  document.querySelectorAll('input[name="tags"]:checked').forEach(function(cb) { tags.push(cb.value); });
+  
+  var recipeData = {
+    title: title,
+    description: description,
+    ingredients: ingredients,
+    instructions: instructions,
+    author: author,
+    time: time,
+    tags: tags,
+    createdAt: new Date().toISOString(),
+    upvotes: 0
+  };
+  
+  try {
+    var db = firebase.firestore();
+    var docRef = await db.collection('recipes').add(recipeData);
+    window.location.href = 'recipe.html?id=' + docRef.id;
+  } catch(err) {
+    alert('Error saving: ' + err.message);
+  }
+});
+
 function importRecipe() {
   var url = document.getElementById('sourceUrl').value.trim();
   if(!url) { document.getElementById('import-status').textContent = 'Enter URL'; return; }
