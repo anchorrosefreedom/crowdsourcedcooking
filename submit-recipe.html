@@ -335,6 +335,15 @@ function toggleDropdown(id) {
 }
 document.getElementById('recipe-form').addEventListener('submit', async function(e) {
   e.preventDefault();
+  
+  // Import Firestore dynamically
+  if(!window.firebaseFirestore) {
+    var script = document.createElement('script');
+    script.src = 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
+    document.head.appendChild(script);
+    await new Promise(r => script.onload = r);
+  }
+  
   var title = document.getElementById('title').value;
   if(!title) { alert('Please enter a recipe title'); return; }
   
@@ -360,7 +369,7 @@ document.getElementById('recipe-form').addEventListener('submit', async function
   };
   
   try {
-    var db = firebase.firestore();
+    var db = window.firebaseFirestore || firebase.firestore;
     var docRef = await db.collection('recipes').add(recipeData);
     window.location.href = 'recipe.html?id=' + docRef.id;
   } catch(err) {
