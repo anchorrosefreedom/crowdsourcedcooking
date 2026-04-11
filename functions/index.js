@@ -84,7 +84,7 @@ exports.saveRecipe = functions.https.onRequest(async (req, res) => {
   }
   
   const admin = require('firebase-admin');
-  admin.initializeApp();
+  if (!admin.apps.length) admin.initializeApp();
   const db = admin.firestore();
   
   const recipe = req.body;
