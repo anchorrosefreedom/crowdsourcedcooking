@@ -379,7 +379,15 @@ function importRecipe() {
       document.getElementById('description').value = r.description || '';
       document.getElementById('ingredients').value = r.ingredients ? r.ingredients.join('\n') : '';
       document.getElementById('instructions').value = r.instructions || '';
-      if(r.author) document.getElementById('author').value = r.author;
+      // Use domain as author fallback
+      var author = r.author || '';
+      if(!author) {
+        try {
+          var url = new URL(document.getElementById('sourceUrl').value);
+          author = url.hostname.replace('www.', '');
+        } catch(e) { author = 'Unknown'; }
+      }
+      document.getElementById('author').value = author;
       document.getElementById('import-status').textContent = '✓ Imported';
       if (r.image) { photoUrls.push(r.image); currentPhotoIndex = 0; updatePhotoCarousel(); }
     } else {
