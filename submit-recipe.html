@@ -395,9 +395,12 @@ document.getElementById('recipe-form').addEventListener('submit', function(e) {
   var db = firebase.firestore();
   db.collection('recipes').add(recipeData).then(function(docRef) {
     window.location.href = 'recipe.html?id=' + docRef.id;
-  }).then(function() {
+  }).then(function(docRef) {
     document.getElementById('submit-status').textContent = '✓ Saved!';
     document.getElementById('submit-status').style.color = '#38a169';
+    setTimeout(function() {
+      window.location.href = 'recipe.html?id=' + docRef.id;
+    }, 1000);
   }).catch(function(err) {
     document.getElementById('submit-status').textContent = 'Error: ' + err.message;
     document.getElementById('submit-status').style.color = '#e53e3e';
