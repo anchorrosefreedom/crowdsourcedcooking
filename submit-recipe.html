@@ -172,9 +172,10 @@
       <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
+        <li><a href="submit-recipe.html" class="active">Submit Recipe</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="categories.html">Recipes</a></li>
-        <li><a href="submit-recipe.html" class="active">Submit Recipe</a></li>
+        <li><a href="submit-recipe.html">Submit Recipe</a></li>
         <li><a href="keto.html">Diets</a></li>
         <li><a href="blog.html">Blog</a></li>
         <li><a href="login.html?redirect=index.html" id="auth-link">Login</a></li>
@@ -182,288 +183,240 @@
     </nav>
   </header>
   
-  <main>
-    <div class="form-card" style="max-width:600px;margin:2rem auto;padding:2rem;background:white;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.08);">
-      <h1 style="margin-bottom:1rem">Submit Your Recipe</h1>
-      <form id="recipe-form">
-        <div class="form-group">
-          <label>Recipe Photos (max 10)</label>
-          <div id="photo-carousel" style="position:relative;min-height:200px;background:#f8f9fa;border:2px dashed #ddd;border-radius:12px;padding:1rem;margin-bottom:0.5rem;overflow:hidden">
-            <div id="photo-counter" style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.7);color:white;padding:4px 10px;border-radius:12px;font-size:0.9rem;z-index:10;display:none">0/10</div>
-            <div id="photo-container" style="display:flex;align-items:center;justify-content:center;min-height:180px">
-              <div onclick="document.getElementById('image-input').click()" style="text-align:center;cursor:pointer;padding:2rem">
-                <span style="font-size:3rem">📷</span>
-                <div style="margin-top:0.5rem;color:#666">Click to add photos</div>
-              </div>
-            </div>
-          </div>
-          <input type="file" id="image-input" accept="image/*" multiple style="display:none" onchange="handleImageSelect(event)">
-        </div>
-        <div class="form-group">
-          <label>Original Recipe URL</label>
-          <div style="display:flex;gap:0.5rem;align-items:center">
-            <input type="url" id="sourceUrl" placeholder="Link to original recipe" style="flex:1;padding:0.5rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;height:40px">
-            <button type="button" onclick="importRecipe()" style="padding:0.5rem 1rem;background:#2a9d8f;color:white;border:none;border-radius:8px;cursor:pointer;white-space:nowrap">Import</button>
-          </div>
-          <div id="import-status" style="margin-top:0.25rem;font-size:0.85rem;color:#2a9d8f;min-height:1rem"></div>
-        </div>
-        <div class="form-group">
-          <label>Recipe Title *</label>
-          <input type="text" id="title" required style="width:100%;padding:0.5rem;font-size:1rem;border:1px solid #ddd;border-radius:8px">
-        </div>
-        <div class="form-group">
-          <label>Author Name</label>
-          <input type="text" id="author" value="Unknown" readonly style="width:100%;padding:0.5rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;background:#f0f0f0;color:#666">
-        </div>
-        <div class="form-group">
-          <label>Description</label>
-          <textarea id="description" style="width:100%;padding:0.5rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;min-height:80px"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Category *</label>
-          <select id="category" required style="width:100%;padding:0.5rem;font-size:1rem;border:1px solid #ddd;border-radius:8px">
-            <option value="">Select category</option>
-            <option value="Main Dishes">Main Dishes</option>
-            <option value="Meats">Meats</option>
-            <option value="Side Dishes">Side Dishes</option>
-            <option value="Breakfasts">Breakfasts</option>
-            <option value="Breads">Breads</option>
-            <option value="Desserts">Desserts</option>
-            <option value="Drinks">Drinks</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Ingredients *</label>
-          <textarea id="ingredients" required style="width:100%;padding:0.5rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;min-height:120px"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Instructions *</label>
-          <textarea id="instructions" required style="width:100%;padding:0.5rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;min-height:120px"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Tags</label>
-          <div style="margin-bottom:0.5rem">
-            <button type="button" onclick="toggleDropdown('proteins')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Proteins ▼</button>
-            <div id="proteins-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
-              <label style="display:block"><input type="checkbox" name="tags" value="Beef"> Beef</label>
-              <label style="display:block"><input type="checkbox" name="tags" value="Chicken"> Chicken</label>
-              <label style="display:block"><input type="checkbox" name="tags" value="Pork"> Pork</label>
-              <label style="display:block"><input type="checkbox" name="tags" value="Fish"> Fish</label>
-              <input type="text" placeholder="+ Add custom..." onblur="addCustomTag(this)" style="width:100%;padding:0.25rem;border:1px solid #ddd;border-radius:4px;font-size:0.85rem;margin-top:0.25rem">
-            </div>
-          </div>
-          <div style="margin-bottom:0.5rem">
-            <button type="button" onclick="toggleDropdown('vegetables')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Vegetables ▼</button>
-            <div id="vegetables-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
-              <label style="display:block"><input type="checkbox" name="tags" value="Broccoli"> Broccoli</label>
-              <label style="display:block"><input type="checkbox" name="tags" value="Leafy Greens"> Leafy Greens</label>
-              <input type="text" placeholder="+ Add custom..." onblur="addCustomTag(this)" style="width:100%;padding:0.25rem;border:1px solid #ddd;border-radius:4px;font-size:0.85rem;margin-top:0.25rem">
-            </div>
-          </div>
-          <div style="margin-bottom:0.5rem">
-            <button type="button" onclick="toggleDropdown('fruits')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Fruits ▼</button>
-            <div id="fruits-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
-              <label style="display:block"><input type="checkbox" name="tags" value="Apples"> Apples</label>
-              <input type="text" placeholder="+ Add custom..." onblur="addCustomTag(this)" style="width:100%;padding:0.25rem;border:1px solid #ddd;border-radius:4px;font-size:0.85rem;margin-top:0.25rem">
-            </div>
-          </div>
-          <div style="margin-bottom:0.5rem">
-            <button type="button" onclick="toggleDropdown('dairy')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Dairy ▼</button>
-            <div id="dairy-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
-              <label style="display:block"><input type="checkbox" name="tags" value="Butter"> Butter</label>
-              <input type="text" placeholder="+ Add custom..." onblur="addCustomTag(this)" style="width:100%;padding:0.25rem;border:1px solid #ddd;border-radius:4px;font-size:0.85rem;margin-top:0.25rem">
-            </div>
-          </div>
-          <div style="margin-bottom:0.5rem">
-            <button type="button" onclick="toggleDropdown('nuts')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Nuts/Seeds ▼</button>
-            <div id="nuts-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
-              <label style="display:block"><input type="checkbox" name="tags" value="Almonds"> Almonds</label>
-              <input type="text" placeholder="+ Add custom..." onblur="addCustomTag(this)" style="width:100%;padding:0.25rem;border:1px solid #ddd;border-radius:4px;font-size:0.85rem;margin-top:0.25rem">
-            </div>
-          </div>
-        </div>
-        <button type="button" onclick="saveRecipe()" style="background:#2a9d8f;color:white;border:none;padding:1rem 2rem;border-radius:8px;font-size:1.1rem;font-weight:600;cursor:pointer;width:100%">Submit Recipe</button>
-          <div id="submit-status" style="margin-top:0.5rem;font-size:0.9rem;color:#2a9d8f;min-height:1rem"></div>
-      </form>
-    </div>
+  <main style="max-width:600px;margin:2rem auto;padding:2rem;background:white;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.08)">
+    <h1 style="margin-bottom:1.5rem;text-align:center;color:#264653">Submit Your Recipe</h1>
+    <form id="recipe-form">
+      <div style="margin-bottom:1rem">
+        <label style="display:block;margin-bottom:0.5rem;font-weight:500">Recipe Title *</label>
+        <input type="text" id="title" required style="width:100%;padding:0.75rem;font-size:1rem;border:1px solid #ddd;border-radius:8px">
+      </div>
+      <div style="margin-bottom:1rem">
+        <label style="display:block;margin-bottom:0.5rem;font-weight:500">Author</label>
+        <input type="text" id="author" value="Unknown" style="width:100%;padding:0.75rem;font-size:1rem;border:1px solid #ddd;border-radius:8px">
+      </div>
+      <div style="margin-bottom:1rem">
+        <label style="display:block;margin-bottom:0.5rem;font-weight:500">Description</label>
+        <textarea id="description" style="width:100%;padding:0.75rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;min-height:80px"></textarea>
+      </div>
+      <div style="margin-bottom:1rem">
+        <label style="display:block;margin-bottom:0.5rem;font-weight:500">Ingredients * (one per line)</label>
+        <textarea id="ingredients" required style="width:100%;padding:0.75rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;min-height:100px"></textarea>
+      </div>
+      <div style="margin-bottom:1rem">
+        <label style="display:block;margin-bottom:0.5rem;font-weight:500">Instructions *</label>
+        <textarea id="instructions" required style="width:100%;padding:0.75rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;min-height:100px"></textarea>
+      </div>
+      <div id="status" style="margin-bottom:1rem;min-height:1.5rem"></div>
+      <button type="button" onclick="submitRecipe()" style="width:100%;padding:1rem;background:#2a9d8f;color:white;border:none;border-radius:8px;font-size:1.1rem;font-weight:600;cursor:pointer">Submit Recipe</button>
+    </form>
   </main>
+    
+    <h2 class="section-title">🍽️ Latest</h2>
+    <section class="features" id="recipe-grid">
+      <div class="feature-card">
+        <h2>Loading recipes...</h2>
+        <p>Fetching from community contributions.</p>
+      </div>
+    </section>
+    
+    <h2 class="section-title" style="margin-top: 2rem;">📝 Community Highlights</h2>
+    <section class="features">
+      <a href="submit-recipe.html" class="feature-card">
+        <h2>Submit Your Recipes</h2>
+        <p>Share your family favorites, secret ingredients, and cooking hacks. Help others cook better.</p>
+      </a>
+      <a href="category.html?cat=main-dishes" class="feature-card">
+        <h2>🔀 MiMO - Make it My Own</h2>
+        <p>Found a recipe you like? MiMO it, tweak the ingredients, and make it your own. Your version stays linked to the original.</p>
+      </a>
+      <a href="category.html?cat=main-dishes" class="feature-card">
+        <h2>Vote & Improve</h2>
+        <p>Upvote the recipes you love. MiMO and improve on others' creations to make them your own.</p>
+      </a>
+      <a href="login.html?redirect=index.html" class="feature-card">
+        <h2>Join the Community</h2>
+        <p>Connect with fellow food lovers. Learn, share, and grow together.</p>
+      </a>
+    </section>
+  </main>
+  
   <footer>
     <p>© 2026 CrowdSourced Cooking — Made by cooks, for cooks</p>
   </footer>
-  <script>
-var photoUrls = [];
-var currentPhotoIndex = 0;
-function handleImageSelect(event) {
-  var files = event.target.files;
-  if (!files || files.length === 0) return;
-  var remainingSlots = 10 - photoUrls.length;
-  var filesToAdd = Array.from(files).slice(0, remainingSlots);
-  filesToAdd.forEach(function(file) {
-    var reader = new FileReader();
-    reader.onload = function(e) { photoUrls.push(e.target.result); updatePhotoCarousel(); };
-    reader.readAsDataURL(file);
-  });
-}
-function updatePhotoCarousel() {
-  var container = document.getElementById('photo-container');
-  var counter = document.getElementById('photo-counter');
-  if (photoUrls.length === 0) {
-    container.innerHTML = '<div onclick="document.getElementById(\'image-input\').click()" style="text-align:center;cursor:pointer;padding:2rem"><span style="font-size:3rem">📷</span><div style="margin-top:0.5rem;color:#666">Click to add photos</div></div>';
-    counter.style.display = 'none';
-  } else {
-    container.innerHTML = '<img id="current-photo" style="max-width:100%;max-height:180px;border-radius:8px">';
-    document.getElementById('current-photo').src = photoUrls[currentPhotoIndex];
-    counter.textContent = (currentPhotoIndex + 1) + '/' + photoUrls.length;
-    counter.style.display = 'block';
-  }
-}
-function addCustomTag(input) {
-  var val = input.value.trim();
-  if(!val) return;
-  val = val.toLowerCase().split(' ').map(function(w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join(' ');
-  var label = document.createElement('label');
-  label.style.display = 'block';
-  label.innerHTML = '<input type="checkbox" name="tags" value="' + val + '" checked> ' + val;
-  input.parentNode.insertBefore(label, input);
-  input.value = '';
-}
-
-function toggleDropdown(id) {
-  var el = document.getElementById(id + '-dropdown');
-  el.style.display = el.style.display === 'none' ? 'block' : 'none';
-}
-function importRecipe() {
-  var url = document.getElementById('sourceUrl').value.trim();
-  if(!url) { document.getElementById('import-status').textContent = 'Enter URL'; return; }
-  document.getElementById('import-status').textContent = 'Importing...';
-  fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/importRecipe', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({url: url})
-  }).then(function(r) { return r.json(); }).then(function(d) {
-    var r = d.result ? d.result.recipe : d.recipe;
-    if(r && r.title) {
-      document.getElementById('title').value = r.title || '';
-      // Use domain as author
-      var author = r.author || '';
-      if(!author) {
-        try {
-          var srcUrl = new URL(document.getElementById('sourceUrl').value);
-          author = srcUrl.hostname.replace('www.', '');
-        } catch(e) { author = 'Unknown'; }
-      }
-      document.getElementById('author').value = author;
-      document.getElementById('description').value = r.description || '';
-      document.getElementById('ingredients').value = r.ingredients ? r.ingredients.join('\n') : '';
-      document.getElementById('instructions').value = r.instructions || '';
-      if(r.author) document.getElementById('author').value = r.author;
-      document.getElementById('import-status').textContent = '✓ Imported';
-      if (r.image) { photoUrls.push(r.image); currentPhotoIndex = 0; updatePhotoCarousel(); }
-    } else {
-      document.getElementById('import-status').textContent = 'This site does not allow importing -Please enter recipe manually';
-    }
-  }).catch(function(e) { document.getElementById('import-status').textContent = 'Error'; });
-}
-  </script>
+  
   <script type="module">
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-    const firebaseConfig = { apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk", authDomain: "crowdsourcedcooking.firebaseapp.com", projectId: "crowdsourcedcooking", storageBucket: "crowdsourcedcooking.firebasestorage.app", messagingSenderId: "1025589287082", appId: "1:1025589287082:web:15569e323aa2781ab858d3" };
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
+    import { getFirestore, collection, query, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
+      authDomain: "crowdsourcedcooking.firebaseapp.com",
+      projectId: "crowdsourcedcooking",
+      storageBucket: "crowdsourcedcooking.firebasestorage.app",
+      messagingSenderId: "1025589287082",
+      appId: "1:1025589287082:web:15569e323aa2781ab858d3"
+    };
+    
     const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
     const auth = getAuth(app);
-    onAuthStateChanged(auth, function(user) {
-      var authLink = document.getElementById("auth-link");
+    
+    // Force session persistence explicitly
+    setPersistence(auth, browserLocalPersistence)
+      .then(() => console.log('Auth persistence set to session'))
+      .catch(err => console.log('Persistence error:', err.message));
+    
+    // Custom session management - works with our REST API login
+    function getSession() {
+      const session = localStorage.getItem('firebase-session');
+      return session ? JSON.parse(session) : null;
+    }
+
+    // Update nav based on auth state
+    function updateNavAuthUI(user) {
+      const authLink = document.getElementById('auth-link');
       if (user) {
-        authLink.href = "logout.html";
-        authLink.textContent = "Log Off";
+        authLink.href = 'logout.html';
+        authLink.textContent = 'Log Off';
+        console.log('User logged in:', user.email || user.uid);
       } else {
-        authLink.href = "login.html?redirect=submit-recipe.html";
-        authLink.textContent = "Login";
+        authLink.href = 'login.html';
+        authLink.textContent = 'Login';
+        console.log('User logged out');
+      }
+    }
+
+    // Listen for Firebase auth state changes
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is logged in via Firebase
+        updateNavAuthUI(user);
+      } else {
+        // No Firebase user - check localStorage as fallback
+        const session = getSession();
+        if (session && session.idToken) {
+          // Has localStorage session but Firebase doesn't know about it
+          // This shouldn't happen normally, but handle it gracefully
+          updateNavAuthUI({ email: session.email });
+        } else {
+          updateNavAuthUI(null);
+        }
       }
     });
+
+    // Also listen for storage events (from other tabs/windows)
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'firebase-session') {
+        const newSession = e.newValue ? JSON.parse(e.newValue) : null;
+        if (newSession) {
+          console.log('User logged in via another tab:', newSession.email);
+          updateNavAuthUI({ email: newSession.email });
+        } else {
+          console.log('User logged out via another tab');
+          updateNavAuthUI(null);
+        }
+      }
+    });
+    
+    // Set active nav link based on current page
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      const href = link.getAttribute('href');
+      if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+        link.classList.add('active');
+      }
+    });
+    
+    const emojiMap = {
+      'beef': '🥩', 'chicken': '🍗', 'pork': '🐷', 'fish': '🐟',
+      'keto': '🥑', 'carnivore': '🥩', 'main-dishes': '🍝',
+      'side-dishes': '🥗', 'breakfasts': '🍳', 'desserts': '🍰',
+      'breads': '🍞', 'drinks': '🥤'
+    };
+    
+    function getEmoji(tags) {
+      for (const tag of tags || []) {
+        if (emojiMap[tag.toLowerCase()]) return emojiMap[tag.toLowerCase()];
+      }
+      return '🍽️';
+    }
+    
+    async function loadRecipes() {
+      try {
+        const q = query(collection(db, 'recipes'), orderBy('createdAt', 'desc'), limit(4));
+        const snapshot = await getDocs(q);
+        const grid = document.getElementById('recipe-grid');
+        
+        if (snapshot.empty) {
+          grid.innerHTML = '<div class="feature-card"><h2>No recipes yet</h2><p>Be the first to contribute!</p></div>';
+          return;
+        }
+        
+        let html = '';
+        snapshot.forEach(doc => {
+          const recipe = doc.data();
+          html += `
+            <a href="recipe.html?id=${doc.id}" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
+              <div style="font-size:3rem;text-align:center;margin-bottom:0.5rem;">${getEmoji(recipe.tags)}</div>
+              <h2 style="font-size:1.1rem;margin-bottom:0.5rem;color:#264653;">${recipe.title}</h2>
+              <p style="color:#666;font-size:0.9rem;margin-bottom:0.75rem;">${recipe.description || ''}</p>
+              <div style="display:flex;gap:1rem;color:#888;font-size:0.8rem;">
+                <span>⏱️ ${recipe.time || ''}</span>
+                <span>👍 ${recipe.upvotes || 0}</span>
+              </div>
+            </a>
+          `;
+        });
+        grid.innerHTML = html;
+      } catch (error) {
+        console.error('Error loading recipes:', error);
+      }
+    }
+    
+    loadRecipes();
   </script>
-  <script>
-function saveRecipe() {
-  var title = document.getElementById('title').value;
-  if(!title) { 
-    document.getElementById('submit-status').textContent = 'Please enter a recipe title';
-    document.getElementById('submit-status').style.color = '#e53e3e';
-    return; 
+<script>
+function submitRecipe() {
+  var title = document.getElementById("title").value;
+  var author = document.getElementById("author").value || "Unknown";
+  var description = document.getElementById("description").value;
+  var ingredients = document.getElementById("ingredients").value.split("\n").filter(function(x) { return x.trim(); });
+  var instructions = document.getElementById("instructions").value;
+  
+  if(!title || !ingredients.length || !instructions) {
+    document.getElementById("status").textContent = "Please fill in title, ingredients, and instructions";
+    document.getElementById("status").style.color = "#e53e3e";
+    return;
   }
-  document.getElementById('submit-status').textContent = 'Saving...';
-  document.getElementById('submit-status').style.color = '#2a9d8f';
   
-  var ingredients = document.getElementById('ingredients').value.split('\n').filter(function(i) { return i.trim(); });
-  var instructions = document.getElementById('instructions').value;
-  var author = document.getElementById('author').value || 'Anonymous';
-  var description = document.getElementById('description').value;
-  var time = document.getElementById('time').value;
+  document.getElementById("status").textContent = "Saving...";
+  document.getElementById("status").style.color = "#2a9d8f";
   
-  var tags = [];
-  document.querySelectorAll('input[name="tags"]:checked').forEach(function(cb) { tags.push(cb.value); });
-  
-  // Build recipe data first
-  var recipeData = {
+  var data = {
     title: title,
+    author: author,
     description: description,
     ingredients: ingredients,
     instructions: instructions,
-    author: author,
-    time: time,
-    tags: tags,
     createdAt: new Date().toISOString(),
     upvotes: 0
   };
   
-  // Cloud Function call
-  var timeout = setTimeout(function() {
-    document.getElementById('submit-status').textContent = 'Error: Timed out';
-    document.getElementById('submit-status').style.color = '#e53e3e';
-  }, 10000);
-  
-  fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(recipeData)
-  }).then(function(res) { return res.json(); }).then(function(docRef) {
-    clearTimeout(timeout);
-    var newId = docRef.id || docRef.name || 'unknown';
-    document.getElementById('submit-status').textContent = '✓ Saved!';
-    document.getElementById('submit-status').style.color = '#38a169';
-    window.location.href = 'recipe.html?id=' + newId;
+  fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(data)
+  }).then(function(res) { return res.json(); }).then(function(doc) {
+    document.getElementById("status").textContent = "✓ Saved!";
+    document.getElementById("status").style.color = "#38a169";
+    setTimeout(function() {
+      window.location.href = "recipe.html?id=" + (doc.id || doc.name);
+    }, 500);
   }).catch(function(err) {
-    clearTimeout(timeout);
-    document.getElementById('submit-status').textContent = 'Error: ' + err.message;
-    document.getElementById('submit-status').style.color = '#e53e3e';
-  });
-  return;
-  */
-  try {
-    var db = firebase.firestore();
-    console.log('Firestore:', db);
-    console.log('Collection:', db.collection('recipes'));
-  } catch(e) {
-    console.error('Init error:', e);
-  }
-  var db = firebase.firestore();
-  // Add timeout
-  var timeout = setTimeout(function() {
-    document.getElementById('submit-status').textContent = 'Error: Timed out';
-    document.getElementById('submit-status').style.color = '#e53e3e';
-  }, 10000);
-  
-  db.collection('recipes').add(recipeData).then(function(docRef) {
-    console.log('Saved with ID:', docRef.id);
-    clearTimeout(timeout);
-    document.getElementById('submit-status').textContent = '✓ Saved!';
-    document.getElementById('submit-status').style.color = '#38a169';
-    window.location.href = 'recipe.html?id=' + docRef.id;
-  }).catch(function(err) {
-    clearTimeout(timeout);
-    document.getElementById('submit-status').textContent = 'Error: ' + err.message;
-    document.getElementById('submit-status').style.color = '#e53e3e';
+    document.getElementById("status").textContent = "Error: " + err.message;
+    document.getElementById("status").style.color = "#e53e3e";
   });
 }
-</script>
-</body>
+</script></body>
 </html>
