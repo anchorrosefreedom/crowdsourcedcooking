@@ -341,7 +341,7 @@ document.getElementById('recipe-form').addEventListener('submit', async function
     var script = document.createElement('script');
     script.src = 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
     document.head.appendChild(script);
-    await new Promise(r => script.onload = r);
+    await new Promise(function(resolve) { script.onload = resolve; });
   }
   
   var title = document.getElementById('title').value;
@@ -368,11 +368,13 @@ document.getElementById('recipe-form').addEventListener('submit', async function
     upvotes: 0
   };
   
+  console.log('Submitting recipe...');
   try {
     var db = window.firebaseFirestore || firebase.firestore;
     var docRef = await db.collection('recipes').add(recipeData);
     window.location.href = 'recipe.html?id=' + docRef.id;
   } catch(err) {
+    console.error(err);
     alert('Error saving: ' + err.message);
   }
 });
@@ -395,7 +397,8 @@ function importRecipe() {
       // Use domain as author fallback
       var author = r.author || '';
       if(!author) {
-        try {
+        console.log('Submitting recipe...');
+  try {
           var url = new URL(document.getElementById('sourceUrl').value);
           author = url.hostname.replace('www.', '');
         } catch(e) { author = 'Unknown'; }
