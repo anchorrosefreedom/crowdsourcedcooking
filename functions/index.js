@@ -71,3 +71,31 @@ exports.importRecipe = functions.https.onRequest(async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+exports.saveRecipe = functions.https.onRequest(async (req, res) => {
+  // Add CORS headers
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type');
+  
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+  
+  const admin = require('firebase-admin');
+  admin.initializeApp();
+  const db = admin.firestore();
+  
+  const recipe = req.body;
+  console.log('Saving recipe:', recipe.title);
+  
+  try {
+    const docRef = await db.collection('recipes').add(recipe);
+    console.log('Saved:', docRef.id);
+    res.json({ id: docRef.id, name: docRef.path });
+  } catch(err) {
+    console.error('Error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
