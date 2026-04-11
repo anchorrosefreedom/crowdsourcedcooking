@@ -20,7 +20,7 @@
     .diet-tile:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
     .diet-tile h2 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #264653; }
     .diet-tile p { color: #666; font-size: 0.9rem; }
-    .diet-section { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+    .diet-section { display: none; }
     .diet-section.active { display: block; }
     .section-card { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
     .section-card h2 { font-size: 1.3rem; margin-bottom: 0.75rem; color: #264653; }
@@ -37,10 +37,6 @@
     .stat-box .label { font-size: 0.85rem; opacity: 0.9; }
     footer { text-align: center; padding: 2rem; color: #666; background: white; margin-top: 2rem; }
     @media (max-width: 768px) {
-      button[onclick="toggleNav()"] { display: block; }
-      #nav-list { display: none; width: 100%; }
-      #nav-list.show { display: flex; flex-wrap: wrap; }
-       }
       .nav-links { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 0.25rem; }
       .nav-links a { white-space: nowrap; font-size: 0.85rem; }
       .stats-grid { grid-template-columns: 1fr; }
@@ -58,8 +54,7 @@
   <header>
     <nav>
       <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
-      <button onclick="toggleNav()" style="display:none;font-size:1.5rem;background:none;border:none;cursor:pointer;padding:0.5rem">☰</button>
-      <ul class="nav-links" id="nav-list">
+      <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="categories.html">Recipes</a></li>
@@ -404,5 +399,5 @@
       }
     });
   </script>
-<script>function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}</script></body>
+</body>
 </html>

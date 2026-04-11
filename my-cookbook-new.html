@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Cookbook - CrowdSourced Cooking</title>
+  <title>CrowdSourced Cooking</title>
   <style>
     * {
       margin: 0;
@@ -140,7 +140,6 @@
       background: white;
       margin-top: 3rem;
     }
-    .show { display: flex !important; flex-wrap: wrap; }
     @media (max-width: 768px) {
       button[onclick="toggleNav()"] { display: block; }
       #nav-list { display: none; width: 100%; }
@@ -177,8 +176,7 @@
       <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
       <button onclick="toggleNav()" style="display:none;font-size:1.5rem;background:none;border:none;cursor:pointer;padding:0.5rem">☰</button>
       <ul class="nav-links" id="nav-list">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="my-cookbook.html" class="active">My Cookbook</a></li>
+        <li><a href="index.html" class="active">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="categories.html">Recipes</a></li>
         <li><a href="submit-recipe.html">Submit Recipe</a></li>
@@ -189,18 +187,11 @@
     </nav>
   </header>
   
-  <main style="max-width:900px;margin:0 auto;padding:1rem;">
-    <h1>My Cookbook</h1>
-    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;border-bottom:2px solid #2a9d8f;padding-bottom:0.5rem;">
-      <button onclick="showTab('created')" id="tab-created" style="padding:0.5rem 1rem;background:#2a9d8f;color:white;border:none;border-radius:8px 8px 0 0;cursor:pointer;font-weight:500">Created</button>
-      <button onclick="showTab('imported')" id="tab-imported" style="padding:0.5rem 1rem;background:#eee;color:#333;border:none;border-radius:8px 8px 0 0;cursor:pointer;font-weight:500">Imported</button>
-      <button onclick="showTab('mimo')" id="tab-mimo" style="padding:0.5rem 1rem;background:#eee;color:#333;border:none;border-radius:8px 8px 0 0;cursor:pointer;font-weight:500">MiMO</button>
-      <button onclick="showTab('saved')" id="tab-saved" style="padding:0.5rem 1rem;background:#eee;color:#333;border:none;border-radius:8px 8px 0 0;cursor:pointer;font-weight:500">Saved</button>
-    </div>
-    <div id="created" class="tab-content"><p style="color:#666;">Loading your created recipes...</p></div>
-    <div id="imported" class="tab-content" style="display:none;"><p style="color:#666;">No imported recipes yet</p></div>
-    <div id="mimo" class="tab-content" style="display:none;"><p style="color:#666;">No MiMO recipes yet</p></div>
-    <div id="saved" class="tab-content" style="display:none;"><p style="color:#666;">No saved recipes yet</p></div>
+  <main>
+    <section class="hero">
+      <img src="2026-03-31-14-58-01-crowdsourced-cooking-banner-v3.png" alt="Community of cooks sharing recipe suggestions" class="hero-banner">
+      <div class="hero-content">
+        <h1>Cook Together, Eat Better</h1>
         <p>Join our community of home cooks sharing recipes, tips, and kitchen secrets. From comfort food to healthy keto meals — everyone's welcome.</p>
         <a href="categories.html" class="cta-button">Browse Recipes</a>
       </div>
@@ -371,16 +362,5 @@
     
     loadRecipes();
   </script>
-<script>function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}</script><script>
-function showTab(tabId) {
-  var tabs = document.querySelectorAll("[id^=\"tab-"]");
-  tabs.forEach(function(btn){btn.style.background="#eee";btn.style.color="#333";});
-  document.getElementById("tab-"+tabId).style.background="#2a9d8f";
-  document.getElementById("tab-"+tabId).style.color="white";
-  var contents = document.querySelectorAll(".tab-content");
-  contents.forEach(function(el){el.style.display="none";});
-  document.getElementById(tabId).style.display="block";
-}
-function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}
-</script></body>
+<script>function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}</script></body>
 </html>

@@ -81,8 +81,7 @@
   <header>
     <nav>
       <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
-      <button onclick="toggleNav()" style="display:none;font-size:1.5rem;background:none;border:none;cursor:pointer;padding:0.5rem">☰</button>
-      <ul class="nav-links" id="nav-list">
+      <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="categories.html">Recipes</a></li>
@@ -98,7 +97,7 @@
     <div class="blog-header">
       <h1>🍽️ Community Blog</h1>
       <p>Thoughts on cooking, recipes, techniques, and kitchen adventures</p>
-      <a href="new-blog-post.html" class="new-post-btn" id="new-post-link" style="display: flex; flex-wrap: wrap; gap: 0.25rem;">✏️ New Blog Post</a>
+      <a href="new-blog-post.html" class="new-post-btn" id="new-post-link" style="display: none;">✏️ New Blog Post</a>
     </div>
     
     <div id="posts-container" class="blog-posts">
@@ -361,5 +360,5 @@
     // Initial load
     loadBlogPosts();
   </script>
-<script>function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}</script></body>
+</body>
 </html>
