@@ -56,10 +56,10 @@ ul li:before { content: "• "; color: #2a9d8f; margin-right: 0.5rem; }
 var config = {apiKey:"AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",authDomain:"crowdsourcedcooking.firebaseapp.com",projectId:"crowdsourcedcooking",storageBucket:"crowdsourcedcooking.firebasestorage.app",messagingSenderId:"1025589287082",appId:"1:1025589287082:web:15569e323aa2781ab858d3"};
 firebase.initializeApp(config);
 var db = firebase.firestore();
-var params = new URLSearchParams(window.location.search);
+console.log("Page loaded");var params = new URLSearchParams(window.location.search);
 var id = params.get("id");
 if(!id) id = params.get("recipeid");
-if(!id) { document.getElementById("title").innerHTML = "<p class=\"error\">No recipe ID</p>"; }
+console.log("Looking for id:", id); if(!id) { document.getElementById("title").innerHTML = "<p class=\"error\">No recipe ID</p>"; }
 else {
 db.collection("recipes").doc(id).get().then(function(doc) {
   if(!doc.exists) { document.getElementById("title").innerHTML = "<p class=\"error\">Recipe not found</p>"; return; }
