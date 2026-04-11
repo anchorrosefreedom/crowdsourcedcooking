@@ -371,7 +371,7 @@ function doSave() {
     .then(function(r){return r.json()})
     .then(function(x){
       btn.textContent = "Saved!";
-      setTimeout(function(){window.location.href = "recipe.html?id=" + x.id;}, 500);
+      setTimeout(function(){window.location.href = "index.html?recipe=" + x.id;}, 500);
     })
     .catch(function(e){
       btn.textContent = "Error";
@@ -386,4 +386,4 @@ function doSave() {
       var title = document.getElementById("title").value;
       var author = document.getElementById("author").value;
       var form = document.querySelector("form");
-      form.innerHTML = '<div style="background:white;padding:2rem;border-radius:12px;text-align:center"><h2 style="color:#2a9d8f;font-size:1.5rem;margin-bottom:1rem">✓ Recipe Saved!</h2><p style="margin-bottom:1rem">Your recipe has been submitted successfully.</p><a href="recipe.html?id='+x.id+'" style="background:#2a9d8f;color:white;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;display:inline-block">View Recipe</a></div>';}).catch(function(e){btn.textContent="Error";alert(e.message)})}</script></body>
+      form.innerHTML = '<div style="background:white;padding:2rem;border-radius:12px;text-align:center"><h2 style="color:#2a9d8f;font-size:1.5rem;margin-bottom:1rem">✓ Recipe Saved!</h2><p style="margin-bottom:1rem">Your recipe has been submitted successfully.</p><a href="index.html?recipe='+x.id+'" style="background:#2a9d8f;color:white;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;display:inline-block">View Recipe</a></div>';}).catch(function(e){btn.textContent="Error";alert(e.message)})}</script></body>

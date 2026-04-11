@@ -20,7 +20,21 @@
       }
     ],
     "cleanUrls": false,
-    "trailingSlash": false
+    "trailingSlash": false,
+    "rewrites": [
+      {
+        "source": "recipe",
+        "destination": "/recipe.html"
+      },
+      {
+        "source": "recipe.html",
+        "destination": "/recipe.html"
+      },
+      {
+        "source": "recipe/**",
+        "destination": "/recipe.html"
+      }
+    ]
   },
   "firestore": {
     "rules": "firestore.rules"

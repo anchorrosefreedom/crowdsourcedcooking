@@ -357,5 +357,9 @@
     
     loadRecipes();
   </script>
-</body>
+<script>
+var params = new URLSearchParams(window.location.search);
+var recipeId = params.get("recipe");
+if(recipeId) window.location.href = "recipe.html?id="+recipeId;
+</script></body>
 </html>
