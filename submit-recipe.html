@@ -365,9 +365,8 @@ function importRecipe() {
   }).catch(function(e) { document.getElementById('import-status').textContent = 'Error'; });
 }
   </script>
-  <script>
-    // Auth functions
-    import { getAuth, onAuthStateChanged } = window; // Simplified
+  <script type="module">
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
     const firebaseConfig = { apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk", authDomain: "crowdsourcedcooking.firebaseapp.com", projectId: "crowdsourcedcooking", storageBucket: "crowdsourcedcooking.firebasestorage.app", messagingSenderId: "1025589287082", appId: "1:1025589287082:web:15569e323aa2781ab858d3" };
     const app = initializeApp(firebaseConfig);
