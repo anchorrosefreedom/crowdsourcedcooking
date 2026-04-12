@@ -217,7 +217,8 @@ exports.importRecipe = functions.https.onRequest((req, res) => {
           description: desc.trim(),
           ingredients: ing.length ? ing : [],
           instructions: inst.length ? inst.join('\n') : '',
-          image: $('meta[property="og:image"]').attr('content') || ''
+          image: $('meta[property="og:image"]').attr('content') || '',
+          sourceUrl: url
         }
       });
     })
