@@ -80,16 +80,16 @@ exports.saveRecipe = functions.https.onRequest((req, res) => {
   }
   
   // Always use domain as author
-  let author = data.author;
+  let author = '';
   if (data.url) {
     try {
       const u = new URL(data.url);
       author = u.hostname.replace('www.', '');
     } catch(e) {}
   }
-  data.author = author;
+  data.author = ''; // Will be overwritten by domain below
   // Always use domain from sourceUrl if available
-  if (!data.author && data.sourceUrl) {
+  data.author = data.sourceUrl ? new URL(data.sourceUrl).hostname.replace('www.', '') : (data.author || 'Anonymous');
     try {
       data.author = new URL(data.sourceUrl).hostname.replace('www.', '');
     } catch(e) {}
