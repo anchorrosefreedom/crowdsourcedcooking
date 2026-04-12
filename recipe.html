@@ -61,6 +61,17 @@ ol li { padding: 0.75rem 0; border-bottom: 1px solid #eee; }
 <h2>📝 Instructions</h2>
 <ol id="instrs"></ol>
 </div>
+
+<div style="margin:2rem 0">
+<button onclick="mimoRecipe()" style="background:#e76f51;color:white;border:none;padding:0.75rem 1.5rem;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer">🔀 MiMO - Make it My Own</button>
+<p style="margin-top:0.5rem;color:#666;font-size:0.9rem">Fork this recipe and make it your own</p>
+</div>
+<script>
+function mimoRecipe() {
+var id = new URLSearchParams(window.location.search).get("id");
+window.location.href = "submit-recipe.html?mimo=" + id;
+}
+</script>
 </main>
 <script>
 var params = new URLSearchParams(window.location.search);
