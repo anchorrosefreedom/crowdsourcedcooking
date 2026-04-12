@@ -346,6 +346,10 @@ function importRecipe() {
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     onAuthStateChanged(auth, function(user) {
+      if (!user) {
+        window.location.href = "login.html?redirect=submit-recipe.html";
+        return;
+      }
       var authLink = document.getElementById("auth-link");
       if (user) {
         authLink.href = "logout.html";
@@ -394,7 +398,7 @@ function doSave() {
     </script></body>
 </html>
 <script>function doSave(){var t=document.getElementById("title").value;if(!t){alert("Enter title");return}var i=document.getElementById("ingredients").value.split("\n").filter(function(x){return x.trim()});var ins=document.getElementById("instructions").value;var a=document.getElementById("author").value||"Anon";var d=document.getElementById("description").value;var cat=document.getElementById("category").value;
-var custom=document.getElementById("customTags").value.split(",").map(function(x){return x.trim()}).filter(function(x){return x});
+var custom=document.document.querySelector(".customTags").value.split(",").map(function(x){return x.trim()}).filter(function(x){return x});
 var selectedTags=Array.from(document.querySelectorAll("input[name=tags]:checked")).map(function(cb){return cb.value});
 var allTags=selectedTags.concat(custom);
 var data={title:t,description:d,ingredients:i,instructions:ins,author:a,category:cat,tags:allTags,createdAt:new Date().toISOString()};var btn=document.querySelector("button[onclick=\"doSave()\"]");btn.textContent="Saving...";fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}).then(function(r){return r.json()}).then(function(x){btn.textContent="✓ Saved!";
