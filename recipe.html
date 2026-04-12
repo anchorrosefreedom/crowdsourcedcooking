@@ -84,5 +84,10 @@ else if(!Array.isArray(ins)) ins = [];
         });
 }
 </script>
-</body>
+<script>
+var page = window.location.pathname.split("/").pop().replace(".html","") || "index";
+document.querySelectorAll(".nav-links a").forEach(function(a) {
+  if(a.getAttribute("href").replace(".html","") === page) a.classList.add("active");
+});
+</script></body>
 </html>
