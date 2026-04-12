@@ -402,7 +402,9 @@ function doSave() {
     </script></body>
 </html>
 <script>function doSave(){var t=document.getElementById("title").value;if(!t){alert("Enter title");return}var i=document.getElementById("ingredients").value.split("\n").filter(function(x){return x.trim()});var ins=document.getElementById("instructions").value;var a=document.getElementById("author").value||"Anon";var d=document.getElementById("description").value;var cat=document.getElementById("category").value;
-var custom=document.document.querySelector(".customTags").value.split(",").map(function(x){return x.trim()}).filter(function(x){return x});
+var customInputs=document.querySelectorAll(".custom-tags");
+var custom=[];
+customInputs.forEach(function(input){if(input.value.trim())custom.push(input.value.trim())});;
 var selectedTags=Array.from(document.querySelectorAll("input[name=tags]:checked")).map(function(cb){return cb.value});
 var allTags=selectedTags.concat(custom);
 var data={title:t,description:d,ingredients:i,instructions:ins,author:a,category:cat,tags:allTags,createdAt:new Date().toISOString()};var btn=document.querySelector("button[onclick=\"doSave()\"]");btn.textContent="Saving...";fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}).then(function(r){return r.json()}).then(function(x){btn.textContent="✓ Saved!";
