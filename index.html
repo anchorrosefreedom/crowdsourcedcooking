@@ -365,5 +365,10 @@
 var params = new URLSearchParams(window.location.search);
 var recipeId = params.get("recipe");
 if(recipeId) window.location.href = "recipe.html?id="+recipeId;
+</script><script>
+var page = window.location.pathname.split("/").pop().replace(".html","") || "index";
+document.querySelectorAll(".nav-links a").forEach(function(a) {
+  if(a.getAttribute("href").replace(".html","") === page) a.classList.add("active");
+});
 </script></body>
 </html>
