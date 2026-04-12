@@ -88,6 +88,12 @@ exports.saveRecipe = functions.https.onRequest((req, res) => {
     } catch(e) {}
   }
   data.author = author;
+  // Always use domain from sourceUrl if available
+  if (!data.author && data.sourceUrl) {
+    try {
+      data.author = new URL(data.sourceUrl).hostname.replace('www.', '');
+    } catch(e) {}
+  }
   if (!data || !data.title) {
     res.status(400).json({error: "Missing title"});
     return;
@@ -187,7 +193,8 @@ exports.importRecipe = functions.https.onRequest((req, res) => {
             description: (recipe.description || '').trim(),
             ingredients: ingredients,
             instructions: instructions,
-            image: (Array.isArray(recipe.image) ? recipe.image[0] : recipe.image) || ''
+            image: (Array.isArray(recipe.image) ? recipe.image[0] : recipe.image) || '',
+            sourceUrl: url,
           }
         });
         return;
