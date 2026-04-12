@@ -289,6 +289,22 @@
     <p>© 2026 CrowdSourced Cooking — Made by cooks, for cooks</p>
   </footer>
   <script>
+
+// Check for MiMO parameter
+var mimoId = new URLSearchParams(window.location.search).get("mimo");
+if(mimoId) {
+    document.getElementById("title").value = "Loading...";
+    fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getRecipe?id=" + mimoId).then(function(r){return r.json()}).then(function(data){
+        if(data.title) {
+            document.getElementById("title").value = data.title || "";
+            document.getElementById("description").value = data.description || "";
+            document.getElementById("ingredients").value = (data.ingredients || []).join("\n");
+            document.getElementById("instructions").value = data.instructions || "";
+            document.getElementById("author").value = data.author || "";
+        }
+    });
+}
+
 var photoUrls = [];
 var currentPhotoIndex = 0;
 function handleImageSelect(event) {
@@ -365,6 +381,22 @@ function importRecipe() {
     });
   </script>
 <script>
+
+// Check for MiMO parameter
+var mimoId = new URLSearchParams(window.location.search).get("mimo");
+if(mimoId) {
+    document.getElementById("title").value = "Loading...";
+    fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getRecipe?id=" + mimoId).then(function(r){return r.json()}).then(function(data){
+        if(data.title) {
+            document.getElementById("title").value = data.title || "";
+            document.getElementById("description").value = data.description || "";
+            document.getElementById("ingredients").value = (data.ingredients || []).join("\n");
+            document.getElementById("instructions").value = data.instructions || "";
+            document.getElementById("author").value = data.author || "";
+        }
+    });
+}
+
 function doSave() {
   var t = document.getElementById("title").value;
   if(!t){alert("Enter recipe title");return}
@@ -387,6 +419,22 @@ function doSave() {
     });
 }
 </script><script>
+
+// Check for MiMO parameter
+var mimoId = new URLSearchParams(window.location.search).get("mimo");
+if(mimoId) {
+    document.getElementById("title").value = "Loading...";
+    fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getRecipe?id=" + mimoId).then(function(r){return r.json()}).then(function(data){
+        if(data.title) {
+            document.getElementById("title").value = data.title || "";
+            document.getElementById("description").value = data.description || "";
+            document.getElementById("ingredients").value = (data.ingredients || []).join("\n");
+            document.getElementById("instructions").value = data.instructions || "";
+            document.getElementById("author").value = data.author || "";
+        }
+    });
+}
+
     var page = window.location.pathname.split("/").pop().replace(".html","") || "index";
     document.querySelectorAll(".nav-links a").forEach(function(a) {
       var href = a.getAttribute("href").replace(".html","").replace("?redirect="+page,"");
@@ -394,6 +442,22 @@ function doSave() {
     });
     </script></body>
 </script><script>
+
+// Check for MiMO parameter
+var mimoId = new URLSearchParams(window.location.search).get("mimo");
+if(mimoId) {
+    document.getElementById("title").value = "Loading...";
+    fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getRecipe?id=" + mimoId).then(function(r){return r.json()}).then(function(data){
+        if(data.title) {
+            document.getElementById("title").value = data.title || "";
+            document.getElementById("description").value = data.description || "";
+            document.getElementById("ingredients").value = (data.ingredients || []).join("\n");
+            document.getElementById("instructions").value = data.instructions || "";
+            document.getElementById("author").value = data.author || "";
+        }
+    });
+}
+
     var page = window.location.pathname.split("/").pop().replace(".html","") || "index";
     document.querySelectorAll(".nav-links a").forEach(function(a) {
       var href = a.getAttribute("href").replace(".html","").replace("?redirect="+page,"");
@@ -401,7 +465,23 @@ function doSave() {
     });
     </script></body>
 </html>
-<script>function doSave(){var t=document.getElementById("title").value;if(!t){alert("Enter title");return}var i=document.getElementById("ingredients").value.split("\n").filter(function(x){return x.trim()});var ins=document.getElementById("instructions").value;var a=document.getElementById("author").value||"Anon";var d=document.getElementById("description").value;var cat=document.getElementById("category").value;
+<script>
+
+// Check for MiMO parameter
+var mimoId = new URLSearchParams(window.location.search).get("mimo");
+if(mimoId) {
+    document.getElementById("title").value = "Loading...";
+    fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getRecipe?id=" + mimoId).then(function(r){return r.json()}).then(function(data){
+        if(data.title) {
+            document.getElementById("title").value = data.title || "";
+            document.getElementById("description").value = data.description || "";
+            document.getElementById("ingredients").value = (data.ingredients || []).join("\n");
+            document.getElementById("instructions").value = data.instructions || "";
+            document.getElementById("author").value = data.author || "";
+        }
+    });
+}
+function doSave(){var t=document.getElementById("title").value;if(!t){alert("Enter title");return}var i=document.getElementById("ingredients").value.split("\n").filter(function(x){return x.trim()});var ins=document.getElementById("instructions").value;var a=document.getElementById("author").value||"Anon";var d=document.getElementById("description").value;var cat=document.getElementById("category").value;
 var customInputs=document.querySelectorAll(".custom-tags");
 var custom=[];
 customInputs.forEach(function(input){if(input.value.trim())custom.push(input.value.trim())});;
@@ -413,6 +493,22 @@ var data={title:t,description:d,ingredients:i,instructions:ins,author:a,category
       var author = document.getElementById("author").value;
       var form = document.querySelector("form");
       form.innerHTML = '<div style="background:white;padding:2rem;border-radius:12px;text-align:center"><h2 style="color:#2a9d8f;font-size:1.5rem;margin-bottom:1rem">✓ Recipe Saved!</h2><p style="margin-bottom:1rem">Your recipe has been submitted successfully.</p><a href="index.html?recipe='+x.id+'" style="background:#2a9d8f;color:white;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;display:inline-block">View Recipe</a></div>';}).catch(function(e){btn.textContent="Error";alert(e.message)})}</script><script>
+
+// Check for MiMO parameter
+var mimoId = new URLSearchParams(window.location.search).get("mimo");
+if(mimoId) {
+    document.getElementById("title").value = "Loading...";
+    fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getRecipe?id=" + mimoId).then(function(r){return r.json()}).then(function(data){
+        if(data.title) {
+            document.getElementById("title").value = data.title || "";
+            document.getElementById("description").value = data.description || "";
+            document.getElementById("ingredients").value = (data.ingredients || []).join("\n");
+            document.getElementById("instructions").value = data.instructions || "";
+            document.getElementById("author").value = data.author || "";
+        }
+    });
+}
+
     var page = window.location.pathname.split("/").pop().replace(".html","") || "index";
     document.querySelectorAll(".nav-links a").forEach(function(a) {
       var href = a.getAttribute("href").replace(".html","").replace("?redirect="+page,"");
