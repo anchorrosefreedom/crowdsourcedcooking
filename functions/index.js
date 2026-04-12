@@ -47,7 +47,45 @@ exports.saveRecipe = functions.https.onRequest((req, res) => {
     return;
   }
   
-  const data = req.body;
+  let data = req.body;
+  // Flatten nested recipe if imported
+  if (data.recipe) {
+    data = { ...data.recipe, ...data };
+    delete data.recipe;
+  }
+  // Ensure ingredients is array
+  if (Array.isArray(data.ingredients)) {
+    data.ingredients = data.ingredients.map(i => {
+      if (typeof i !== 'string') return JSON.stringify(i);
+      return i;
+    });
+  }
+  // Flatten instructions into array of steps
+  if (typeof data.instructions === 'object') {
+    if (data.instructions.text) data.instructions = [data.instructions.text];
+    else if (Array.isArray(data.instructions)) {
+      data.instructions = data.instructions.map(s => {
+        if (typeof s === 'string') return s;
+        if (s.text) return s.text;
+        if (s['@type'] === 'HowToStep') return s.text || '';
+        return '';
+      }).filter(s => s);
+    } else data.instructions = [];
+  } else if (typeof data.instructions === 'string') {
+    // Split by newlines or numbered patterns
+    data.instructions = data.instructions
+      .split(/\n|(?=\d+\.\s)/)
+      .map(s => s.replace(/^\d+\.\s*/, '').trim())
+      .filter(s => s.length > 5);
+  }
+  
+  // Add author from URL if not provided
+  if (!data.author && data.url) {
+    try {
+      const u = new URL(data.url);
+      data.author = u.hostname.replace('www.', '');
+    } catch(e) {}
+  }
   if (!data || !data.title) {
     res.status(400).json({error: "Missing title"});
     return;
@@ -78,67 +116,107 @@ exports.importRecipe = functions.https.onRequest((req, res) => {
     res.status(400).json({error: "Missing URL"});
     return;
   }
-  
-  // Use axios to fetch the page and extract recipe data
+
   const axios = require('axios');
+  const cheerio = require('cheerio');
   
   axios.get(url, { timeout: 10000 })
     .then(function(html) {
-      const cheerio = require('cheerio');
       const $ = cheerio.load(html.data);
-      
-      // Try to find JSON-LD schema
       let recipe = null;
+      
+      // Parse JSON-LD properly
       $('script[type="application/ld+json"]').each(function(i, el) {
         try {
           const json = JSON.parse($(el).html());
-          if (json['@type'] === 'Recipe' || (Array.isArray(json) && json.find(function(x){return x['@type'] === 'Recipe'}))) {
-            recipe = Array.isArray(json) ? json.find(function(x){return x['@type'] === 'Recipe'}) : json;
+          
+          // Handle @graph format (WordPress Yoast)
+          if (json['@graph']) {
+            for (const item of json['@graph']) {
+              if (item['@type'] === 'Recipe') {
+                recipe = item;
+                break;
+              }
+            }
+          }
+          // Handle direct Recipe
+          if (!recipe && json['@type'] === 'Recipe') {
+            recipe = json;
+          }
+          // Handle array of types
+          if (!recipe && Array.isArray(json)) {
+            recipe = json.find(x => x['@type'] === 'Recipe');
           }
         } catch(e) {}
       });
       
-      // If no JSON-LD, try to extract from meta tags
-      if (!recipe) {
-        const title = $('meta[property="og:title"]').attr('content') || $('title').text() || 'Imported Recipe';
-        const desc = $('meta[property="og:description"]').attr('content') || '';
+      // Extract clean data from recipe
+      if (recipe) {
+        let ingredients = recipe.recipeIngredient || [];
+        // Join array elements, don't split strings
+        if (Array.isArray(ingredients)) {
+          // Each element should be a full ingredient line
+          ingredients = ingredients.map(i => String(i).trim()).filter(i => i);
+        }
         
-        recipe = {
-          title: title.trim(),
-          description: desc.trim(),
-          ingredients: [],
-          instructions: ''
-        };
+        let instructions = recipe.recipeInstructions || '';
+        if (typeof instructions === 'object' && instructions !== null) {
+          // HowToStep or HowToSection
+          if (instructions['@type'] === 'HowToStep') {
+            instructions = instructions.text || '';
+          } else if (instructions['@type'] === 'HowToSection') {
+            const steps = instructions.itemListElement || [];
+            instructions = steps.map(s => s.itemListElement ? s.itemListElement.map(ss => ss.text || ss).join('\n') : (s.text || s)).join('\n');
+          } else if (Array.isArray(instructions)) {
+            // List of steps
+            instructions = instructions.map((s, idx) => {
+              if (typeof s === 'string') return s;
+              if (s.text) return s.text;
+              if (s['@type'] === 'HowToStep') return s.text || '';
+              return String(idx + 1) + '. ' + JSON.stringify(s);
+            }).join('\n');
+          }
+        }
         
-        // Try to find ingredients
-        $('[class*="ingredient"], .ingredients, [itemprop="recipeIngredient"]').each(function(i, el) {
-          const text = $(el).text().trim();
-          if (text) recipe.ingredients.push(text);
+        res.json({
+          recipe: {
+          author: recipe.author || "",
+            title: (recipe.name || '').trim(),
+            description: (recipe.description || '').trim(),
+            ingredients: ingredients,
+            instructions: instructions,
+            image: (Array.isArray(recipe.image) ? recipe.image[0] : recipe.image) || ''
+          }
         });
-        
-        // Try to find instructions
-        $('[class*="instruction"], .instructions, [itemprop="recipeInstructions"]').each(function(i, el) {
-          const text = $(el).text().trim();
-          if (text && !recipe.instructions) recipe.instructions = text;
-        });
-      }
-      
-      if (!recipe) {
-        res.json({error: "Could not extract recipe from this site"});
         return;
       }
       
-      // Add image if found
-      const img = $('meta[property="og:image"]').attr('content') || $('meta[name="twitter:image"]').attr('content') || $('meta[itemprop="image"]').attr('content') || '';
-      if (img) recipe.image = img;
+      // Fallback: try clean scraping
+      const title = $('meta[property="og:title"]').attr('content') || $('title').text() || 'Imported Recipe';
+      const desc = $('meta[property="og:description"]').attr('content') || '';
       
-      // Add author from domain
-      try {
-        const urlObj = new URL(url);
-        recipe.author = urlObj.hostname.replace('www.', '');
-      } catch(e) {}
+      const ing = [];
+      $('[itemprop="recipeIngredient"], .recipe-ingredient, .ingredients li, [class*="ingredient"]').each(function(i, el) {
+        const t = $(el).text().trim();
+        if (t && t.length > 3 && t.length < 200) ing.push(t);
+      });
       
-      res.json({recipe: recipe});
+      const inst = [];
+      $('[itemprop="recipeInstructions"], .recipe-instruction, .instructions li, [class*="instruction"]').each(function(i, el) {
+        const t = $(el).text().trim();
+        if (t && t.length > 3) inst.push(t);
+      });
+      
+      res.json({
+        recipe: {
+          author: recipe.author || "",
+          title: title.trim(),
+          description: desc.trim(),
+          ingredients: ing.length ? ing : [],
+          instructions: inst.length ? inst.join('\n') : '',
+          image: $('meta[property="og:image"]').attr('content') || ''
+        }
+      });
     })
     .catch(function(err) {
       res.json({error: "Could not fetch URL: " + err.message});
