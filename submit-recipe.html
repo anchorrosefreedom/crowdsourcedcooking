@@ -174,7 +174,7 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="categories.html">Recipes</a></li>
-        <li><a href="submit-recipe.html" class="active">Submit Recipe</a></li>
+        <li><a href="submit-recipe.html">Submit Recipe</a></li>
         <li><a href="keto.html">Diets</a></li>
         <li><a href="blog.html">Blog</a></li>
         <li><a href="login.html?redirect=index.html" id="auth-link">Login</a></li>
@@ -378,12 +378,30 @@ function doSave() {
       alert(e.message);
     });
 }
-</script></body>
-</script></body>
+</script><script>
+    var page = window.location.pathname.split("/").pop().replace(".html","") || "index";
+    document.querySelectorAll(".nav-links a").forEach(function(a) {
+      var href = a.getAttribute("href").replace(".html","").replace("?redirect="+page,"");
+      if(href === page) a.classList.add("active");
+    });
+    </script></body>
+</script><script>
+    var page = window.location.pathname.split("/").pop().replace(".html","") || "index";
+    document.querySelectorAll(".nav-links a").forEach(function(a) {
+      var href = a.getAttribute("href").replace(".html","").replace("?redirect="+page,"");
+      if(href === page) a.classList.add("active");
+    });
+    </script></body>
 </html>
 <script>function doSave(){var t=document.getElementById("title").value;if(!t){alert("Enter title");return}var i=document.getElementById("ingredients").value.split("\n").filter(function(x){return x.trim()});var ins=document.getElementById("instructions").value;var a=document.getElementById("author").value||"Anon";var d=document.getElementById("description").value;var data={title:t,description:d,ingredients:i,instructions:ins,author:a,createdAt:new Date().toISOString()};var btn=document.querySelector("button[onclick=\"doSave()\"]");btn.textContent="Saving...";fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}).then(function(r){return r.json()}).then(function(x){btn.textContent="✓ Saved!";
       // Show confirmation card
       var title = document.getElementById("title").value;
       var author = document.getElementById("author").value;
       var form = document.querySelector("form");
-      form.innerHTML = '<div style="background:white;padding:2rem;border-radius:12px;text-align:center"><h2 style="color:#2a9d8f;font-size:1.5rem;margin-bottom:1rem">✓ Recipe Saved!</h2><p style="margin-bottom:1rem">Your recipe has been submitted successfully.</p><a href="index.html?recipe='+x.id+'" style="background:#2a9d8f;color:white;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;display:inline-block">View Recipe</a></div>';}).catch(function(e){btn.textContent="Error";alert(e.message)})}</script></body>
+      form.innerHTML = '<div style="background:white;padding:2rem;border-radius:12px;text-align:center"><h2 style="color:#2a9d8f;font-size:1.5rem;margin-bottom:1rem">✓ Recipe Saved!</h2><p style="margin-bottom:1rem">Your recipe has been submitted successfully.</p><a href="index.html?recipe='+x.id+'" style="background:#2a9d8f;color:white;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;display:inline-block">View Recipe</a></div>';}).catch(function(e){btn.textContent="Error";alert(e.message)})}</script><script>
+    var page = window.location.pathname.split("/").pop().replace(".html","") || "index";
+    document.querySelectorAll(".nav-links a").forEach(function(a) {
+      var href = a.getAttribute("href").replace(".html","").replace("?redirect="+page,"");
+      if(href === page) a.classList.add("active");
+    });
+    </script></body>

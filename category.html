@@ -197,15 +197,14 @@
   <header>
     <nav>
       <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
-      <button onclick="toggleNav()" style="display:none;font-size:1.5rem;background:none;border:none;cursor:pointer;padding:0.5rem">☰</button>
-      <ul class="nav-links" id="nav-list">
+      <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
-        <li><a href="categories.html" class="active">Recipes</a></li>
+        <li><a href="categories.html">Recipes</a></li>
         <li><a href="submit-recipe.html">Submit Recipe</a></li>
         <li><a href="keto.html">Diets</a></li>
         <li><a href="blog.html">Blog</a></li>
-        <li><a href="login.html?redirect=category.html" id="auth-link">Login</a></li>
+        <li><a href="login.html?redirect=index.html" id="auth-link">Login</a></li>
       </ul>
     </nav>
   </header>
@@ -360,7 +359,13 @@
     
     loadRecipes();
   </script>
-<script>function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}</script></body>
+<script>function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}</script><script>
+    var page = window.location.pathname.split("/").pop().replace(".html","") || "index";
+    document.querySelectorAll(".nav-links a").forEach(function(a) {
+      var href = a.getAttribute("href").replace(".html","").replace("?redirect="+page,"");
+      if(href === page) a.classList.add("active");
+    });
+    </script></body>
 
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
@@ -399,5 +404,11 @@
       }
     });
   </script>
-<script>function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}</script></body>
+<script>function toggleNav(){document.getElementById("nav-list").classList.toggle("show");}</script><script>
+    var page = window.location.pathname.split("/").pop().replace(".html","") || "index";
+    document.querySelectorAll(".nav-links a").forEach(function(a) {
+      var href = a.getAttribute("href").replace(".html","").replace("?redirect="+page,"");
+      if(href === page) a.classList.add("active");
+    });
+    </script></body>
 </html>

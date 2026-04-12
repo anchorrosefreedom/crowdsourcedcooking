@@ -1,4 +1,17 @@
-<!DOCTYPE html>
+<header>
+    <nav>
+      <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="categories.html">Recipes</a></li>
+        <li><a href="submit-recipe.html">Submit Recipe</a></li>
+        <li><a href="keto.html">Diets</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="login.html?redirect=index.html" id="auth-link">Login</a></li>
+      </ul>
+    </nav>
+  </header><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -211,5 +224,11 @@
       }
     });
   </script>
-</body>
+<script>
+    var page = window.location.pathname.split("/").pop().replace(".html","") || "index";
+    document.querySelectorAll(".nav-links a").forEach(function(a) {
+      var href = a.getAttribute("href").replace(".html","").replace("?redirect="+page,"");
+      if(href === page) a.classList.add("active");
+    });
+    </script></body>
 </html>
