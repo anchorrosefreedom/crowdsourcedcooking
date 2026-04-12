@@ -79,13 +79,15 @@ exports.saveRecipe = functions.https.onRequest((req, res) => {
       .filter(s => s.length > 5);
   }
   
-  // Add author from URL if not provided
-  if (!data.author && data.url) {
+  // Always use domain as author
+  let author = data.author;
+  if (data.url) {
     try {
       const u = new URL(data.url);
-      data.author = u.hostname.replace('www.', '');
+      author = u.hostname.replace('www.', '');
     } catch(e) {}
   }
+  data.author = author;
   if (!data || !data.title) {
     res.status(400).json({error: "Missing title"});
     return;
