@@ -80,14 +80,20 @@ exports.saveRecipe = functions.https.onRequest((req, res) => {
   }
   
   // Always use domain as author
-  let author = data.author;
+  let author = '';
   if (data.url) {
     try {
       const u = new URL(data.url);
       author = u.hostname.replace('www.', '');
     } catch(e) {}
   }
-  data.author = author;
+  data.author = ''; // Will be overwritten by domain below
+  // Always use domain from sourceUrl if available
+  data.author = data.sourceUrl ? new URL(data.sourceUrl).hostname.replace('www.', '') : (data.author || 'Anonymous');
+    try {
+      data.author = new URL(data.sourceUrl).hostname.replace('www.', '');
+    } catch(e) {}
+  }
   if (!data || !data.title) {
     res.status(400).json({error: "Missing title"});
     return;
@@ -182,12 +188,13 @@ exports.importRecipe = functions.https.onRequest((req, res) => {
         
         res.json({
           recipe: {
-          author: recipe.author || "",
+          author: (typeof recipe.author === "object" && recipe.author.name) ? recipe.author.name : (recipe.author || ""),
             title: (recipe.name || '').trim(),
             description: (recipe.description || '').trim(),
             ingredients: ingredients,
             instructions: instructions,
-            image: (Array.isArray(recipe.image) ? recipe.image[0] : recipe.image) || ''
+            image: (Array.isArray(recipe.image) ? recipe.image[0] : recipe.image) || '',
+            sourceUrl: url,
           }
         });
         return;
@@ -211,7 +218,7 @@ exports.importRecipe = functions.https.onRequest((req, res) => {
       
       res.json({
         recipe: {
-          author: recipe.author || "",
+          author: (typeof recipe.author === "object" && recipe.author.name) ? recipe.author.name : (recipe.author || ""),
           title: title.trim(),
           description: desc.trim(),
           ingredients: ing.length ? ing : [],
