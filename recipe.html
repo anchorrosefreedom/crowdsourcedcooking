@@ -59,7 +59,9 @@ if(!id) {
             document.getElementById("desc").textContent = data.description || "";
             var ing = data.ingredients || [];
             document.getElementById("ings").innerHTML = ing.map(function(i){return"<li>"+i+"</li>"}).join("");
-            var ins = data.instructions || [];
+            var ins = data.instructions;
+if(typeof ins === "string") ins = ins ? [ins] : [];
+else if(!Array.isArray(ins)) ins = [];
             document.getElementById("instrs").innerHTML = ins.map(function(i,idx){return"<li>"+(idx+1)+". "+i+"</li>"}).join("");
         })
         .catch(function(e) {
