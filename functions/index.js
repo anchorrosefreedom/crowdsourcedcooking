@@ -187,7 +187,7 @@ exports.importRecipe = functions.https.onRequest((req, res) => {
             description: (recipe.description || '').trim(),
             ingredients: ingredients,
             instructions: instructions,
-            image: (Array.isArray(recipe.image) ? recipe.image[0] : recipe.image) || ''
+            image: (Array.isArray(recipe.image) ? recipe.image[0] : recipe.image) || '',
             sourceUrl: url,
           }
         });
