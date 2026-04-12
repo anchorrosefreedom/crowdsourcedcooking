@@ -212,7 +212,7 @@ exports.importRecipe = functions.https.onRequest((req, res) => {
       
       res.json({
         recipe: {
-          author: recipe.author || "",
+          author: (typeof recipe.author === "object" && recipe.author.name) ? recipe.author.name : (recipe.author || ""),
           title: title.trim(),
           description: desc.trim(),
           ingredients: ing.length ? ing : [],
