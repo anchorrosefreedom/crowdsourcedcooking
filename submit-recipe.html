@@ -407,12 +407,7 @@ function doSave() {
   var data = {title:t,description:d,ingredients:i,instructions:ins,author:a,createdAt:new Date().toISOString(),upvotes:0};
   var btn = document.querySelector("button[type=\"button"]");
   btn.textContent = "Saving...";
-  fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe", {method:"POST", headers:{"Content-Type":"application/json"}, // Save new tags to Firestore
-var newTags = data.tags || [];
-newTags.forEach(function(tag){
-  if(tag) db.collection("tags").doc(tag).set({usedAt: new Date().toISOString()});
-});
-body:JSON.stringify({...data, userId: (typeof firebase !== "undefined" && firebase.auth && firebase.auth().currentUser) ? firebase.auth().currentUser.uid : "anonymous"})})
+  fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({...data, userId: (typeof firebase !== "undefined" && firebase.auth && firebase.auth().currentUser) ? firebase.auth().currentUser.uid : "anonymous"})})
     .then(function(r){return r.json()})
     .then(function(x){
       btn.textContent = "Saved!";
@@ -492,12 +487,7 @@ var custom=[];
 customInputs.forEach(function(input){if(input.value.trim())custom.push(input.value.trim())});;
 var selectedTags=Array.from(document.querySelectorAll("input[name=tags]:checked")).map(function(cb){return cb.value});
 var allTags=selectedTags.concat(custom);
-var data={title:t,description:d,ingredients:i,instructions:ins,author:a,category:cat,tags:allTags,createdAt:new Date().toISOString()};var btn=document.querySelector("button[onclick=\"doSave()\"]");btn.textContent="Saving...";fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe",{method:"POST",headers:{"Content-Type":"application/json"},// Save new tags to Firestore
-var newTags = data.tags || [];
-newTags.forEach(function(tag){
-  if(tag) db.collection("tags").doc(tag).set({usedAt: new Date().toISOString()});
-});
-body:JSON.stringify({...data, userId: (typeof firebase !== "undefined" && firebase.auth && firebase.auth().currentUser) ? firebase.auth().currentUser.uid : "anonymous"})}).then(function(r){return r.json()}).then(function(x){btn.textContent="✓ Saved!";
+var data={title:t,description:d,ingredients:i,instructions:ins,author:a,category:cat,tags:allTags,createdAt:new Date().toISOString()};var btn=document.querySelector("button[onclick=\"doSave()\"]");btn.textContent="Saving...";fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...data, userId: (typeof firebase !== "undefined" && firebase.auth && firebase.auth().currentUser) ? firebase.auth().currentUser.uid : "anonymous"})}).then(function(r){return r.json()}).then(function(x){btn.textContent="✓ Saved!";
       // Show confirmation card
       var title = document.getElementById("title").value;
       var author = document.getElementById("author").value;
