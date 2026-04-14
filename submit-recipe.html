@@ -255,8 +255,9 @@
             <div id="proteins-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
               <label style="display:block"><input type="checkbox" name="tags" value="Beef"> Beef</label>
               <label style="display:block"><input type="checkbox" name="tags" value="Chicken"> Chicken</label>
-              <label style="display:block"><input type="checkbox" name="tags" value="Pork"> Pork</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Eggs"> Eggs</label>
               <label style="display:block"><input type="checkbox" name="tags" value="Fish"> Fish</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Pork"> Pork</label>
               <input type="text" class="custom-tags" placeholder="Custom tags..." style="width:100%;padding:0.25rem;font-size:0.8rem;border:1px solid #ddd;border-radius:4px;margin-top:0.25rem">
           </div>
           <div style="margin-bottom:1.5rem;margin-top:1.5rem">
@@ -264,6 +265,10 @@
             <div id="vegetables-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
               <label style="display:block"><input type="checkbox" name="tags" value="Leafy Greens"> Leafy Greens</label>
               <label style="display:block"><input type="checkbox" name="tags" value="Broccoli"> Broccoli</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Carrots"> Carrots</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Garlic"> Garlic</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Leafy Greens"> Leafy Greens</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Onions"> Onions</label>
               <input type="text" class="custom-tags" placeholder="Custom tags..." style="width:100%;padding:0.25rem;font-size:0.8rem;border:1px solid #ddd;border-radius:4px;margin-top:0.25rem">
             </div>
           </div>
@@ -271,6 +276,10 @@
             <button type="button" onclick="toggleDropdown('fruits')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Fruits ▼</button>
             <div id="fruits-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
               <label style="display:block"><input type="checkbox" name="tags" value="Apples"> Apples</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Berries"> Berries</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Lemons"> Lemons</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Limes"> Limes</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Oranges"> Oranges</label>
               <input type="text" class="custom-tags" placeholder="Custom tags..." style="width:100%;padding:0.25rem;font-size:0.8rem;border:1px solid #ddd;border-radius:4px;margin-top:0.25rem">
             </div>
           </div>
@@ -278,6 +287,10 @@
             <button type="button" onclick="toggleDropdown('dairy')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Dairy ▼</button>
             <div id="dairy-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
               <label style="display:block"><input type="checkbox" name="tags" value="Butter"> Butter</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Cheese"> Cheese</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Cream"> Cream</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Milk"> Milk</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Yogurt"> Yogurt</label>
               <input type="text" class="custom-tags" placeholder="Custom tags..." style="width:100%;padding:0.25rem;font-size:0.8rem;border:1px solid #ddd;border-radius:4px;margin-top:0.25rem">
             </div>
           </div>
@@ -285,252 +298,41 @@
             <button type="button" onclick="toggleDropdown('nuts')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Nuts/Seeds ▼</button>
             <div id="nuts-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
               <label style="display:block"><input type="checkbox" name="tags" value="Almonds"> Almonds</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Peanuts"> Peanuts</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Pecans"> Pecans</label>
+              <label style="display:block"><input type="checkbox" name="tags" value="Walnuts"> Walnuts</label>
               <input type="text" class="custom-tags" placeholder="Custom tags..." style="width:100%;padding:0.25rem;font-size:0.8rem;border:1px solid #ddd;border-radius:4px;margin-top:0.25rem">
             </div>
           </div>
           <div style="margin-bottom:1.5rem;margin-top:1.5rem">
-            <button type="button" onclick="toggleDropdown('\'general\'')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Other ▼</button>
+            <button type="button" onclick="toggleDropdown('general')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Other ▼</button>
             <div id="general-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
+              <label style="display:block;font-size:0.9rem;color:#666;margin-bottom:0.5rem">Custom tags that don't fit elsewhere</label>
               <input type="text" class="custom-tags" placeholder="Custom tags..." style="width:100%;padding:0.25rem;font-size:0.8rem;border:1px solid #ddd;border-radius:4px;margin-top:0.25rem">
             </div>
           </div>
         </div>
-        <button type="button" onclick="doSave()" style="background:#2a9d8f;color:white;border:none;padding:1rem 2rem;border-radius:8px;font-size:1.1rem;font-weight:600;cursor:pointer;width:100%">Submit Recipe</button>
-      </form>
-    </div>
-  </main>
-  <footer>
-    <p>© 2026 CrowdSourced Cooking — Made by cooks, for cooks</p>
-  </footer>
-  <script>
-
-// Check for MiMO parameter
-var mimoId = new URLSearchParams(window.location.search).get("mimo");
-if(mimoId) {
-    document.getElementById("title").value = "Loading...";
-    fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getRecipe?id=" + mimoId).then(function(r){return r.json()}).then(function(data){
-        if(data.title) {
-            document.getElementById("title").value = data.title || "";
-            document.getElementById("description").value = data.description || "";
-            document.getElementById("ingredients").value = (data.ingredients || []).join("\n");
-            document.getElementById("instructions").value = data.instructions || "";
-            document.getElementById("author").value = data.author || "";
-        }
-    });
-}
-
-var photoUrls = [];
-var currentPhotoIndex = 0;
-function handleImageSelect(event) {
-  var files = event.target.files;
-  if (!files || files.length === 0) return;
-  var remainingSlots = 10 - photoUrls.length;
-  var filesToAdd = Array.from(files).slice(0, remainingSlots);
-  filesToAdd.forEach(function(file) {
-    var reader = new FileReader();
-    reader.onload = function(e) { photoUrls.push(e.target.result); updatePhotoCarousel(); };
-    reader.readAsDataURL(file);
-  });
-}
-function updatePhotoCarousel() {
-  var container = document.getElementById('photo-container');
-  var counter = document.getElementById('photo-counter');
-  if (photoUrls.length === 0) {
-    container.innerHTML = '<div onclick="document.getElementById(\'image-input\').click()" style="text-align:center;cursor:pointer;padding:2rem"><span style="font-size:3rem">📷</span><div style="margin-top:0.5rem;color:#666">Click to add photos</div></div>';
-    counter.style.display = 'none';
-  } else {
-    container.innerHTML = '<img id="current-photo" style="max-width:100%;max-height:180px;border-radius:8px">';
-    document.getElementById('current-photo').src = photoUrls[currentPhotoIndex];
-    counter.textContent = (currentPhotoIndex + 1) + '/' + photoUrls.length;
-    counter.style.display = 'block';
-  }
-}
+        <script>
 function toggleDropdown(id) {
-  var el = document.getElementById(id + '-dropdown');
-  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  console.log('toggleDropdown called with:', id);
+  var dropdown = document.getElementById(id+'-dropdown');
+  if (!dropdown) {
+    console.log('dropdown not found for:', id);
+    alert('Toggle: ' + id);
+    return;
+  }
+  console.log('dropdown found:', dropdown);
+  var current = dropdown.style.display;
+  console.log('current display:', current);
+  if (current === 'none' || current === '') {
+    dropdown.style.display = 'block';
+  } else {
+    dropdown.style.display = 'none';
+  }
+  console.log('new display:', dropdown.style.display);
 }
-function importRecipe() {
-  var url = document.getElementById('sourceUrl').value.trim();
-  if(!url) { document.getElementById('import-status').textContent = 'Enter URL'; return; }
-  document.getElementById('import-status').textContent = 'Importing...';
-  fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/importRecipe', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({url: url})
-  }).then(function(r) { return r.json(); }).then(function(d) {
-    var r = d.result ? d.result.recipe : d.recipe;
-    if(r && r.title) {
-      document.getElementById('title').value = r.title || '';
-      document.getElementById('description').value = r.description || '';
-      document.getElementById('ingredients').value = r.ingredients ? r.ingredients.join('\n') : '';
-      document.getElementById('instructions').value = r.instructions || '';
-      if(r.author) document.getElementById('author').value = r.author;
-      document.getElementById('import-status').textContent = '✓ Imported';
-      if (r.image) { photoUrls.push(r.image); currentPhotoIndex = 0; updatePhotoCarousel(); }
-    } else {
-      document.getElementById('import-status').textContent = 'This site does not allow importing -Please enter recipe manually';
-    }
-  }).catch(function(e) { document.getElementById('import-status').textContent = 'Error'; });
-}
-  </script>
-  <script type="module">
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-    const firebaseConfig = { apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk", authDomain: "crowdsourcedcooking.firebaseapp.com", projectId: "crowdsourcedcooking", storageBucket: "crowdsourcedcooking.firebasestorage.app", messagingSenderId: "1025589287082", appId: "1:1025589287082:web:15569e323aa2781ab858d3" };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    onAuthStateChanged(auth, function(user) {
-      if (!user) {
-        window.location.href = "login.html?redirect=submit-recipe.html";
-        return;
-      }
-      var authLink = document.getElementById("auth-link");
-      if (user) {
-        authLink.href = "logout.html";
-        authLink.textContent = "Log Off";
-      } else {
-        authLink.href = "login.html?redirect=submit-recipe.html";
-        authLink.textContent = "Login";
-      }
-    });
-  </script>
-<script>
-
-// Check for MiMO parameter
-var mimoId = new URLSearchParams(window.location.search).get("mimo");
-if(mimoId) {
-    document.getElementById("title").value = "Loading...";
-    fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getRecipe?id=" + mimoId).then(function(r){return r.json()}).then(function(data){
-        if(data.title) {
-            document.getElementById("title").value = data.title || "";
-            document.getElementById("description").value = data.description || "";
-            document.getElementById("ingredients").value = (data.ingredients || []).join("\n");
-            document.getElementById("instructions").value = data.instructions || "";
-            document.getElementById("author").value = data.author || "";
-        }
-    });
-}
-
-function doSave() {
-  var t = document.getElementById("title").value;
-  if(!t){alert("Enter recipe title");return}
-  var i = document.getElementById("ingredients").value.split("\n").filter(function(x){return x.trim()});
-  var ins = document.getElementById("instructions").value;
-  var a = document.getElementById("author").value || "Anonymous";
-  var d = document.getElementById("description").value;
-  var data = {title:t,description:d,ingredients:i,instructions:ins,author:a,createdAt:new Date().toISOString(),upvotes:0};
-  var btn = document.querySelector("button[type=\"button"]");
-  btn.textContent = "Saving...";
-  fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({...data, userId: (typeof firebase !== "undefined" && firebase.auth && firebase.auth().currentUser) ? firebase.auth().currentUser.uid : "anonymous"})})
-    .then(function(r){return r.json()})
-    .then(function(x){
-      btn.textContent = "Saved!";
-      setTimeout(function(){window.location.href = "index.html?recipe=" + x.id;}, 500);
-    })
-    .catch(function(e){
-      btn.textContent = "Error";
-      alert(e.message);
-    });
-}
-</script><script>
-
-// Check for MiMO parameter
-var mimoId = new URLSearchParams(window.location.search).get("mimo");
-if(mimoId) {
-    document.getElementById("title").value = "Loading...";
-    fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getRecipe?id=" + mimoId).then(function(r){return r.json()}).then(function(data){
-        if(data.title) {
-            document.getElementById("title").value = data.title || "";
-            document.getElementById("description").value = data.description || "";
-            document.getElementById("ingredients").value = (data.ingredients || []).join("\n");
-            document.getElementById("instructions").value = data.instructions || "";
-            document.getElementById("author").value = data.author || "";
-        }
-    });
-}
-
-    var page = window.location.pathname.split("/").pop().replace(".html","") || "index";
-    document.querySelectorAll(".nav-links a").forEach(function(a) {
-      var href = a.getAttribute("href").replace(".html","").replace("?redirect="+page,"");
-      if(href === page) a.classList.add("active");
-    });
-    </script></body>
-</script><script>
-
-// Check for MiMO parameter
-var mimoId = new URLSearchParams(window.location.search).get("mimo");
-if(mimoId) {
-    document.getElementById("title").value = "Loading...";
-    fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getRecipe?id=" + mimoId).then(function(r){return r.json()}).then(function(data){
-        if(data.title) {
-            document.getElementById("title").value = data.title || "";
-            document.getElementById("description").value = data.description || "";
-            document.getElementById("ingredients").value = (data.ingredients || []).join("\n");
-            document.getElementById("instructions").value = data.instructions || "";
-            document.getElementById("author").value = data.author || "";
-        }
-    });
-}
-
-    var page = window.location.pathname.split("/").pop().replace(".html","") || "index";
-    document.querySelectorAll(".nav-links a").forEach(function(a) {
-      var href = a.getAttribute("href").replace(".html","").replace("?redirect="+page,"");
-      if(href === page) a.classList.add("active");
-    });
-    </script></body>
-</html>
-<script>
-
-// Check for MiMO parameter
-var mimoId = new URLSearchParams(window.location.search).get("mimo");
-if(mimoId) {
-    document.getElementById("title").value = "Loading...";
-    fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getRecipe?id=" + mimoId).then(function(r){return r.json()}).then(function(data){
-        if(data.title) {
-            document.getElementById("title").value = data.title || "";
-            document.getElementById("description").value = data.description || "";
-            document.getElementById("ingredients").value = (data.ingredients || []).join("\n");
-            document.getElementById("instructions").value = data.instructions || "";
-            document.getElementById("author").value = data.author || "";
-        }
-    });
-}
-function doSave(){var t=document.getElementById("title").value;if(!t){alert("Enter title");return}var i=document.getElementById("ingredients").value.split("\n").filter(function(x){return x.trim()});var ins=document.getElementById("instructions").value;var a=document.getElementById("author").value||"Anon";var d=document.getElementById("description").value;var cat=document.getElementById("category").value;
-var customInputs=document.querySelectorAll(".custom-tags");
-var custom=[];
-customInputs.forEach(function(input){if(input.value.trim())custom.push(input.value.trim())});;
-var selectedTags=Array.from(document.querySelectorAll("input[name=tags]:checked")).map(function(cb){return cb.value});
-var allTags=selectedTags.concat(custom);
-var data={title:t,description:d,ingredients:i,instructions:ins,author:a,category:cat,tags:allTags,createdAt:new Date().toISOString()};var btn=document.querySelector("button[onclick='doSave()']");btn.textContent="Saving...";fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...data, userId: (typeof firebase !== "undefined" && firebase.auth && firebase.auth().currentUser) ? firebase.auth().currentUser.uid : "anonymous"})}).then(function(r){return r.json()}).then(function(x){btn.textContent="✓ Saved!";
-      // Show confirmation card
-      var title = document.getElementById("title").value;
-      var author = document.getElementById("author").value;
-      var form = document.querySelector("form");
-      form.innerHTML = '<div style="background:white;padding:2rem;border-radius:12px;text-align:center"><h2 style="color:#2a9d8f;font-size:1.5rem;margin-bottom:1rem">✓ Recipe Saved!</h2><p style="margin-bottom:1rem">Your recipe has been submitted successfully.</p><a href="index.html?recipe='+x.id+'" style="background:#2a9d8f;color:white;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;display:inline-block">View Recipe</a></div>';}).catch(function(e){btn.textContent="Error";alert(e.message)})}</script><script>
-
-// Check for MiMO parameter
-var mimoId = new URLSearchParams(window.location.search).get("mimo");
-if(mimoId) {
-    document.getElementById("title").value = "Loading...";
-    fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getRecipe?id=" + mimoId).then(function(r){return r.json()}).then(function(data){
-        if(data.title) {
-            document.getElementById("title").value = data.title || "";
-            document.getElementById("description").value = data.description || "";
-            document.getElementById("ingredients").value = (data.ingredients || []).join("\n");
-            document.getElementById("instructions").value = data.instructions || "";
-            document.getElementById("author").value = data.author || "";
-        }
-    });
-}
-
-    var page = window.location.pathname.split("/").pop().replace(".html","") || "index";
-    document.querySelectorAll(".nav-links a").forEach(function(a) {
-      var href = a.getAttribute("href").replace(".html","").replace("?redirect="+page,"");
-      if(href === page) a.classList.add("active");
-    });
-    </script></body>
-<script>
-(function(){if(window._tl)return;window._tl=1;var c=["proteins","vegetables","fruits","dairy","nuts","general"];c.forEach(function(x){fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getCustomTags?category="+x).then(function(r){return r.json()}).then(function(d){if(d.tags&&d.tags.length){var e=document.getElementById(x+"-dropdown");if(e){d.tags.sort().forEach(function(t){var l=document.createElement("label");l.style.display="block";l.innerHTML='<input type="checkbox" name="tags" value="'+t+'"> '+t;e.appendChild(l)})}}).catch(function(){})})})();})();
 </script>
-
+<script>
+(function(){if(window._tl)return;window._tl=1;var c=["proteins","vegetables","fruits","dairy","nuts","general"];c.forEach(function(x){fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getCustomTags?category="+x).then(function(r){return r.json()}).then(function(d){if(d.tags&&d.tags.length){var e=document.getElementById(x+"-dropdown");if(e){d.tags.sort().forEach(function(t){var l=document.createElement("label");l.style.display="block";l.innerHTML="<input type=\"checkbox\" name=\"tags\" value="+t+"> "+t;e.appendChild(l)})}}).catch(function(){})})})();})();
+</script>
 </body>
