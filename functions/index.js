@@ -28,6 +28,7 @@ exports.getRecipe = functions.https.onRequest((req, res) => {
       res.json(doc.data());
     })
     .catch(err => {
+      console.error("SAVE ERROR:", err);
       res.status(500).json({error: err.toString()});
     });
 });
@@ -99,6 +100,78 @@ exports.saveRecipe = functions.https.onRequest((req, res) => {
       res.json({id: docRef.id});
     })
     .catch(err => {
+      console.error("SAVE ERROR:", err);
+      res.status(500).json({error: err.toString()});
+    });
+});
+
+exports.saveCustomTags = functions.https.onRequest((req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  
+  if (req.method === "OPTIONS") {
+    res.status(204).send("");
+    return;
+  }
+  
+  const data = req.body;
+  const tags = data.tags || [];
+  const category = data.category || "general";
+  
+  if (!tags.length) {
+    res.status(400).json({error: "No tags provided"});
+    return;
+  }
+  
+  db = admin.firestore();
+  const batch = db.batch();
+  const tagRef = db.collection("customTags").doc(category);
+  
+  db.collection("customTags").doc(category).get()
+    .then(doc => {
+      let existingTags = [];
+      if (doc.exists) {
+        existingTags = doc.data().tags || [];
+      }
+      // Add new unique tags
+      const newTags = tags.filter(t => !existingTags.includes(t));
+      const allTags = [...existingTags, ...newTags];
+      
+      batch.set(tagRef, {tags: allTags, updated: admin.firestore.FieldValue.serverTimestamp()});
+      return batch.commit();
+    })
+    .then(() => {
+      res.json({success: true, added: tags.length});
+    })
+    .catch(err => {
+      console.error("SAVE TAGS ERROR:", err);
+      res.status(500).json({error: err.toString()});
+    });
+});
+
+exports.getCustomTags = functions.https.onRequest((req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  
+  if (req.method === "OPTIONS") {
+    res.status(204).send("");
+    return;
+  }
+  
+  const category = req.query.category || "general";
+  
+  db = admin.firestore();
+  db.collection("customTags").doc(category).get()
+    .then(doc => {
+      if (doc.exists) {
+        res.json({tags: doc.data().tags || []});
+      } else {
+        res.json({tags: []});
+      }
+    })
+    .catch(err => {
       res.status(500).json({error: err.toString()});
     });
 });
@@ -121,6 +194,21 @@ exports.importRecipe = functions.https.onRequest((req, res) => {
 
   const axios = require('axios');
   const cheerio = require('cheerio');
+
+// Decode HTML entities
+function decodeHtmlEntities(str) {
+  if (!str || typeof str !== 'string') return str;
+  return str
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")
+    .replace(/&#39;/g, "'")
+    .replace(/&#(\d+);/g, function(m, code) {
+      return String.fromCharCode(code);
+    });
+}
   
   axios.get(url, { timeout: 10000 })
     .then(function(html) {
@@ -158,23 +246,23 @@ exports.importRecipe = functions.https.onRequest((req, res) => {
         // Join array elements, don't split strings
         if (Array.isArray(ingredients)) {
           // Each element should be a full ingredient line
-          ingredients = ingredients.map(i => String(i).trim()).filter(i => i);
+          ingredients = ingredients.map(i => decodeHtmlEntities(String(i).trim())).filter(i => i);
         }
         
         let instructions = recipe.recipeInstructions || '';
         if (typeof instructions === 'object' && instructions !== null) {
           // HowToStep or HowToSection
           if (instructions['@type'] === 'HowToStep') {
-            instructions = instructions.text || '';
+            instructions = decodeHtmlEntities(instructions.text) || '';
           } else if (instructions['@type'] === 'HowToSection') {
             const steps = instructions.itemListElement || [];
-            instructions = steps.map(s => s.itemListElement ? s.itemListElement.map(ss => ss.text || ss).join('\n') : (s.text || s)).join('\n');
+            instructions = steps.map(s => s.itemListElement ? s.itemListElement.map(ss => decodeHtmlEntities(ss.text || ss)).join('\n') : decodeHtmlEntities(s.text || s)).join('\n');
           } else if (Array.isArray(instructions)) {
             // List of steps
             instructions = instructions.map((s, idx) => {
               if (typeof s === 'string') return s;
-              if (s.text) return s.text;
-              if (s['@type'] === 'HowToStep') return s.text || '';
+              if (s.text) return decodeHtmlEntities(s.text);
+              if (s['@type'] === 'HowToStep') return decodeHtmlEntities(s.text) || '';
               return String(idx + 1) + '. ' + JSON.stringify(s);
             }).join('\n');
           }
@@ -182,9 +270,9 @@ exports.importRecipe = functions.https.onRequest((req, res) => {
         
         res.json({
           recipe: {
-          author: (typeof recipe.author === "object" && recipe.author.name) ? recipe.author.name : (recipe.author || ""),
-            title: (recipe.name || '').trim(),
-            description: (recipe.description || '').trim(),
+          author: (function() { try { return new URL(url).hostname.replace('www.', ''); } catch(e) { return decodeHtmlEntities((typeof recipe.author === "object" && recipe.author.name) ? recipe.author.name : (recipe.author || "")); } })(),
+            title: decodeHtmlEntities((recipe.name || '').trim()),
+            description: decodeHtmlEntities((recipe.description || '').trim()),
             ingredients: ingredients,
             instructions: instructions,
             image: (Array.isArray(recipe.image) ? recipe.image[0] : recipe.image) || '',
@@ -212,9 +300,9 @@ exports.importRecipe = functions.https.onRequest((req, res) => {
       
       res.json({
         recipe: {
-          author: (typeof recipe.author === "object" && recipe.author.name) ? recipe.author.name : (recipe.author || ""),
+          author: (function() { try { return new URL(url).hostname.replace('www.', ''); } catch(e) { return (typeof recipe.author === "object" && recipe.author.name) ? recipe.author.name : (recipe.author || ""); } })(),
           title: title.trim(),
-          description: desc.trim(),
+          description: decodeHtmlEntities(desc.trim()),
           ingredients: ing.length ? ing : [],
           instructions: inst.length ? inst.join('\n') : '',
           image: $('meta[property="og:image"]').attr('content') || '',

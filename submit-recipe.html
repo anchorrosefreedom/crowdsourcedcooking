@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Submit Recipe - CrowdSourced Cooking</title>
   <style>
+.tag-category { margin-bottom: 2rem !important; display: block !important; clear: both; }
+
+.tag-group { margin-bottom: 1.5rem; display: block; }
+
     * {
       margin: 0;
       padding: 0;
@@ -238,11 +242,19 @@
         </div>
         <div class="form-group">
           <label>Instructions *</label>
-          <textarea id="instructions" required style="width:100%;padding:0.5rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;min-height:120px"></textarea>
+          <div class="form-group">
+          <label>Recipe Source Link</label>
+          <input type="url" id="recipeSourceLink" placeholder="https://youtube.com/watch?v=..." style="width:100%;padding:0.5rem;font-size:1rem;border:1px solid #ddd;border-radius:8px">
         </div>
         <div class="form-group">
+          <label>Technique Resource URL</label>
+          <input type="url" id="techniqueSourceLink" placeholder="https://youtube.com/watch?v=..." style="width:100%;padding:0.5rem;font-size:1rem;border:1px solid #ddd;border-radius:8px">
+        </div>
+        <textarea id="instructions" required style="width:100%;padding:0.5rem;font-size:1rem;border:1px solid #ddd;border-radius:8px;min-height:120px"></textarea>
+        </div>
+        <div class="form-group" style="padding:1rem 0">
           <label>Tags</label>
-          <div style="margin-bottom:0.5rem">
+          <div class="tag-category" style="margin-bottom:2rem;margin-top:1rem">
             <button type="button" onclick="toggleDropdown('proteins')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Proteins ▼</button>
             <div id="proteins-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
               <label style="display:block"><input type="checkbox" name="tags" value="Beef"> Beef</label>
@@ -251,7 +263,7 @@
               <label style="display:block"><input type="checkbox" name="tags" value="Fish"> Fish</label>
               <input type="text" class="custom-tags" placeholder="Custom tags..." style="width:100%;padding:0.25rem;font-size:0.8rem;border:1px solid #ddd;border-radius:4px;margin-top:0.25rem">
           </div>
-          <div style="margin-bottom:0.5rem">
+          <div class="tag-category" style="margin-bottom:2rem;margin-top:1rem">
             <button type="button" onclick="toggleDropdown('vegetables')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Vegetables ▼</button>
             <div id="vegetables-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
               <label style="display:block"><input type="checkbox" name="tags" value="Leafy Greens"> Leafy Greens</label>
@@ -259,25 +271,32 @@
               <input type="text" class="custom-tags" placeholder="Custom tags..." style="width:100%;padding:0.25rem;font-size:0.8rem;border:1px solid #ddd;border-radius:4px;margin-top:0.25rem">
             </div>
           </div>
-          <div style="margin-bottom:0.5rem">
+          <div class="tag-category" style="margin-bottom:2rem;margin-top:1rem">
             <button type="button" onclick="toggleDropdown('fruits')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Fruits ▼</button>
             <div id="fruits-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
               <label style="display:block"><input type="checkbox" name="tags" value="Apples"> Apples</label>
               <input type="text" class="custom-tags" placeholder="Custom tags..." style="width:100%;padding:0.25rem;font-size:0.8rem;border:1px solid #ddd;border-radius:4px;margin-top:0.25rem">
             </div>
           </div>
-          <div style="margin-bottom:0.5rem">
+          <div class="tag-category" style="margin-bottom:2rem;margin-top:1rem">
             <button type="button" onclick="toggleDropdown('dairy')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Dairy ▼</button>
             <div id="dairy-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
               <label style="display:block"><input type="checkbox" name="tags" value="Butter"> Butter</label>
               <input type="text" class="custom-tags" placeholder="Custom tags..." style="width:100%;padding:0.25rem;font-size:0.8rem;border:1px solid #ddd;border-radius:4px;margin-top:0.25rem">
             </div>
           </div>
-          <div style="margin-bottom:0.5rem">
+          <div class="tag-category" style="margin-bottom:2rem;margin-top:1rem">
             <button type="button" onclick="toggleDropdown('nuts')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Nuts/Seeds ▼</button>
             <div id="nuts-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
               <label style="display:block"><input type="checkbox" name="tags" value="Almonds"> Almonds</label>
               <input type="text" class="custom-tags" placeholder="Custom tags..." style="width:100%;padding:0.25rem;font-size:0.8rem;border:1px solid #ddd;border-radius:4px;margin-top:0.25rem">
+            </div>
+          </div>
+          <div class="tag-category" style="margin-bottom:2rem;margin-top:1rem">
+            <button type="button" onclick="toggleDropdown('general')" style="width:100%;padding:0.75rem;background:white;border:1px solid #ddd;border-radius:8px;text-align:left;cursor:pointer;font-weight:500">Other ▼</button>
+            <div id="general-dropdown" style="display:none;background:#f8f9fa;padding:0.5rem;border-radius:4px">
+              <label style="display:block;font-size:0.9rem;color:#666;margin-bottom:0.5rem">Custom tags that don't fit elsewhere</label>
+              <input type="text" class="custom-tags" placeholder="Custom tags..." data-cat="general" style="width:100%;padding:0.25rem;font-size:0.8rem;border:1px solid #ddd;border-radius:4px;margin-top:0.25rem">
             </div>
           </div>
         </div>
@@ -515,3 +534,8 @@ if(mimoId) {
       if(href === page) a.classList.add("active");
     });
     </script></body>
+<script>
+(function(){if(window._tL)return;window._tL=1;var c=["proteins","vegetables","fruits","dairy","nuts","general"];c.forEach(function(x){fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getCustomTags?category="+x).then(function(r){return r.json()}).then(function(d){if(d.tags&&d.tags.length){var e=document.getElementById(x+"-dropdown");if(e){d.tags.sort().forEach(function(t){var l=document.createElement("label");l.style.display="block";l.innerHTML='<input type="checkbox" name="tags" value="'+t+'"> '+t;e.appendChild(l)})}}).catch(function(){})})})();})();
+</script>
+
+</body>
