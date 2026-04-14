@@ -43,7 +43,7 @@ else
 fi
 
 # Check custom tag loading code
-if echo "$HTML" | grep -q "_tL"; then
+if echo "$HTML" | grep -q "_tl"; then
     echo "✓ Custom tag loader exists"
 else
     echo "✗ Custom tag loader missing"
