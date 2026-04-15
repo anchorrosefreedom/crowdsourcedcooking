@@ -459,7 +459,7 @@ function toggleDropdown(id) {
         
         var mimoNote = document.createElement('div');
         mimoNote.style = 'background:#fff3cd;padding:1rem;border-radius:8px;margin-bottom:1rem;color:#856404';
-        mimoNote.textContent = 'You are customizing an existing recipe. Make your changes below.';
+        mimoNote.textContent = 'You are editing a COPY of this recipe. Your changes will create a new MiMO recipe that only you can see.';
         var form = document.querySelector('form');
         if (form) form.insertBefore(mimoNote, form.firstChild);
         
