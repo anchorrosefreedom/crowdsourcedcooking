@@ -182,7 +182,7 @@
 </head>
 <body>
   <header>
-    <nav>
+        <nav>
       <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
@@ -192,7 +192,7 @@
         <li><a href="keto.html">Diets</a></li>
         <li><a href="privacy.html">Privacy</a></li>
         <li><a href="blog.html">Blog</a></li>
-        <li><a href="login.html?redirect=index.html" id="auth-link">Login</a></li>
+        <li><a href="login.html" id="auth-link">Login</a></li>
       </ul>
     </nav>
   </header>
@@ -238,15 +238,12 @@
   
   <footer>
     <p>© 2026 CrowdSourced Cooking — Made by cooks, for cooks</p>
-  </footer>
-  
+  </footer><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3902398240024866"
+     crossorigin="anonymous"></script>
+
   <script type="module">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3902398240024866"
-     crossorigin="anonymous"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3902398240024866"
-     crossorigin="anonymous"></script>
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
-    import { getFirestore, collection, query, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
+    import { getFirestore, collection, query, where, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
     import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
     
     const firebaseConfig = {
@@ -344,7 +341,7 @@
     
     async function loadRecipes() {
       try {
-        const q = query(collection(db, 'recipes'), where('isMimo', '!=', true), orderBy('createdAt', 'desc'), limit(4));
+        const q = query(collection(db, 'recipes'), orderBy('createdAt', 'desc'), limit(4));
         const snapshot = await getDocs(q);
         const grid = document.getElementById('recipe-grid');
         
