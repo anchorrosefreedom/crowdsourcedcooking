@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="description" content="Browse and search community recipes on CrowdSourced Cooking. Find keto, carnivore, and more.">
+  <meta name="keywords" content="recipe search, cooking, keto recipes, healthy eating">
+  <meta property="og:title" content="Browse Recipes - CrowdSourced Cooking">
+  <meta property="og:description" content="Search our community recipe collection">
+  <link rel="canonical" href="https://crowdsourcedcooking.com/categories.html">
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Categories - CrowdSourced Cooking</title>
@@ -483,7 +489,7 @@ a.feature-card ul li, a.feature-card ol li { list-style: none; }
     // Load recipes from Firestore
     async function loadRecipes() {
       try {
-        const q = query(collection(db, 'recipes'), orderBy('upvotes', 'desc'));
+        const q = query(collection(db, 'recipes'), where('isMimo', '!=', true), orderBy('upvotes', 'desc'));
         const snapshot = await getDocs(q);
         
         allRecipes = [];

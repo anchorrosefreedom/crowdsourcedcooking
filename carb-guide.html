@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keto Carb Guide - CrowdSourced Cooking</title>
+  <meta name="description" content="Complete keto carb guide for vegetables, fruits, nuts, seeds, dairy, and meats.">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f8f9fa;
+      min-height: 100vh;
+    }
+    header {
+      background: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .nav-brand { font-size: 1.25rem; font-weight: bold; color: #264653; text-decoration: none; }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .nav-links a.active {
+      color: #2a9d8f;
+      border-bottom: 2px solid #2a9d8f;
+      padding-bottom: 4px;
+    }
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    h1 { color: #264653; margin-bottom: 0.5rem; }
+    .subtitle { color: #666; margin-bottom: 2rem; }
+    .search-box {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .search-box input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .search-box input:focus {
+      outline: none;
+      border-color: #2a9d8f;
+    }
+    .category {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    .category h2 { color: #264653; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .category-icon { font-size: 1.5rem; }
+    .food-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .food-table th, .food-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e9ecef;
+    }
+    .food-table th {
+      background: #f8f9fa;
+      font-weight: 600;
+      color: #666;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+    }
+    .food-table tr:hover { background: #f8f9fa; }
+    .carb-low { color: #28a745; font-weight: 600; }
+    .carb-medium { color: #ffc107; font-weight: 600; }
+    .carb-high { color: #dc3545; font-weight: 600; }
+    .serving { color: #666; font-size: 0.875rem; }
+    .note {
+      background: #e7f5ff;
+      border-left: 4px solid #2a9d8f;
+      padding: 1rem;
+      border-radius: 0 8px 8px 0;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+    }
+    .category-toggle {
+      display: none;
+    }
+    @media (max-width: 600px) {
+      .food-table { font-size: 0.875rem; }
+      .food-table th, .food-table td { padding: 0.5rem; }
+    }
+  </style>
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUB_ID" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html" class="nav-brand">🥄 CrowdSourced Cooking</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="keto.html">Keto Recipes</a></li>
+        <li><a href="keto-calculator.html">Calculator</a></li>
+        <li><a href="carb-guide.html" class="active">Carb Guide</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>🥑 Complete Keto Carb Guide</h1>
+    <p class="subtitle">Net carbs per serving - green (0-3g) = go crazy • yellow (4-6g) = moderate • red (7g+) = watch out</p>
+
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Search foods..." onkeyup="filterFoods()">
+    </div>
+
+    <!-- VEGETABLES -->
+    <div class="category" data-category="vegetables">
+      <h2><span class="category-icon">🥬</span> Vegetables</h2>
+      <table class="food-table">
+        <thead>
+          <tr><th>Food</th><th>Serving</th><th>Net Carbs</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Spinach, raw</td><td>1 cup (30g)</td><td class="carb-low">0.1g</td></tr>
+          <tr><td>Spinach, cooked</td><td>1 cup (180g)</td><td class="carb-low">2.5g</td></tr>
+          <tr><td>Kale, raw</td><td>1 cup (67g)</td><td class="carb-low">0.3g</td></tr>
+          <tr><td>Romaine Lettuce</td><td>1 cup (47g)</td><td class="carb-low">0.5g</td></tr>
+          <tr><td>Arugula</td><td>1 cup (20g)</td><td class="carb-low">0.5g</td></tr>
+          <tr><td>Broccoli</td><td>1 cup (91g)</td><td class="carb-low">2.4g</td></tr>
+          <tr><td>Cauliflower</td><td>1 cup (100g)</td><td class="carb-low">3g</td></tr>
+          <tr><td>Zucchini</td><td>1 cup (124g)</td><td class="carb-low">2.5g</td></tr>
+          <tr><td>Yellow Squash</td><td>1 cup (121g)</td><td class="carb-low">2.7g</td></tr>
+          <tr><td>Asparagus</td><td>1 cup (134g)</td><td class="carb-low">2.4g</td></tr>
+          <tr><td>Green Beans</td><td>1 cup (100g)</td><td class="carb-low">3.3g</td></tr>
+          <tr><td>Cabbage</td><td>1 cup (89g)</td><td class="carb-low">2.2g</td></tr>
+          <tr><td>Celery</td><td>1 cup (101g)</td><td class="carb-low">1.4g</td></tr>
+          <tr><td>Cucumber</td><td>1 cup (104g)</td><td class="carb-low">3.8g</td></tr>
+          <tr><td>Bell Pepper</td><td>1 cup (149g)</td><td class="carb-low">4.2g</td></tr>
+          <tr><td>Avocado</td><td>1/2 fruit (100g)</td><td class="carb-low">3g</td></tr>
+          <tr><td>Tomatoes</td><td>1 medium (123g)</td><td class="carb-low">2.8g</td></tr>
+          <tr><td>Eggplant</td><td>1 cup (82g)</td><td class="carb-low">2.5g</td></tr>
+          <tr><td>Brussels Sprouts</td><td>1 cup (88g)</td><td class="carb-medium">5g</td></tr>
+          <tr><td>Artichoke Hearts</td><td>1 cup (168g)</td><td class="carb-medium">6g</td></tr>
+          <tr><td>Parsnips</td><td>1 cup (133g)</td><td class="carb-high">12g</td></tr>
+          <tr><td>Corn</td><td>1 cup (164g)</td><td class="carb-high">14g</td></tr>
+          <tr><td>Peas</td><td>1 cup (145g)</td><td class="carb-high">11g</td></tr>
+          <tr><td>Sweet Potato</td><td>1 medium (114g)</td><td class="carb-high">20g</td></tr>
+          <tr><td>Potato</td><td>1 medium (173g)</td><td class="carb-high">30g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FRUITS -->
+    <div class="category" data-category="fruits">
+      <h2><span class="category-icon">🍒</span> Fruits</h2>
+      <table class="food-table">
+        <thead>
+          <tr><th>Food</th><th>Serving</th><th>Net Carbs</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Raspberries</td><td>1 cup (123g)</td><td class="carb-low">3.3g</td></tr>
+          <tr><td>Strawberries</td><td>1 cup (152g)</td><td class="carb-low">5.7g</td></tr>
+          <tr><td>Blackberries</td><td>1 cup (144g)</td><td class="carb-low">4.3g</td></tr>
+          <tr><td>Cranberries (fresh)</td><td>1 cup (100g)</td><td class="carb-low">4g</td></tr>
+          <tr><td>Lemon</td><td>1 medium (58g)</td><td class="carb-low">2.5g</td></tr>
+          <tr><td>Lime</td><td>1 medium (67g)</td><td class="carb-low">3g</td></tr>
+          <tr><td>Grapefruit</td><td>1/2 medium (123g)</td><td class="carb-medium">5g</td></tr>
+          <tr><td>Peach</td><td>1 medium (150g)</td><td class="carb-medium">5g</td></tr>
+          <tr><td>Watermelon</td><td>1 cup (152g)</td><td class="carb-medium">5.5g</td></tr>
+          <tr><td>Cantaloupe</td><td>1 cup (160g)</td><td class="carb-medium">6g</td></tr>
+          <tr><td>Blueberries</td><td>1 cup (148g)</td><td class="carb-high">11g</td></tr>
+          <tr><td>Apple</td><td>1 medium (182g)</td><td class="carb-high">21g</td></tr>
+          <tr><td>Banana</td><td>1 medium (118g)</td><td class="carb-high">23g</td></tr>
+          <tr><td>Orange</td><td>1 medium (131g)</td><td class="carb-high">12g</td></tr>
+          <tr><td>Grapes</td><td>1 cup (151g)</td><td class="carb-high">26g</td></tr>
+          <tr><td>Mango</td><td>1 cup (165g)</td><td class="carb-high">25g</td></tr>
+          <tr><td>Pineapple</td><td>1 cup (165g)</td><td class="carb-high">22g</td></tr>
+          <tr><td>Dried Fruit</td><td>Any</td><td class="carb-high">Very High</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- NUTS -->
+    <div class="category" data-category="nuts">
+      <h2><span class="category-icon">🥜</span> Nuts</h2>
+      <table class="food-table">
+        <thead>
+          <tr><th>Food</th><th>Serving</th><th>Net Carbs</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Macadamia Nuts</td><td>1 oz (28g)</td><td class="carb-low">1.9g</td></tr>
+          <tr><td>Pecans</td><td>1 oz (28g)</td><td class="carb-low">1.2g</td></tr>
+          <tr><td>Walnuts</td><td>1 oz (28g)</td><td class="carb-low">1.8g</td></tr>
+          <tr><td>Brazil Nuts</td><td>1 oz (28g)</td><td class="carb-low">1.3g</td></tr>
+          <tr><td>Hazel Nuts</td><td>1 oz (28g)</td><td class="carb-low">1.7g</td></tr>
+          <tr><td>Almonds</td><td>1 oz (28g)</td><td class="carb-low">2.6g</td></tr>
+          <tr><td>Sunflower Seeds</td><td>1 oz (28g)</td><td class="carb-low">2.5g</td></tr>
+          <tr><td>Pumpkin Seeds</td><td>1 oz (28g)</td><td class="carb-low">2g</td></tr>
+          <tr><td>Chia Seeds</td><td>1 oz (28g)</td><td class="carb-low">2g</td></tr>
+          <tr><td>Flax Seeds</td><td>1 oz (28g)</td><td class="carb-low">1g</td></tr>
+          <tr><td>Cashews</td><td>1 oz (28g)</td><td class="carb-medium">5g</td></tr>
+          <tr><td>Pistachios</td><td>1 oz (28g)</td><td class="carb-medium">5g</td></tr>
+          <tr><td>Pine Nuts</td><td>1 oz (28g)</td><td class="carb-medium">4g</td></tr>
+          <tr><td>Peanuts</td><td>1 oz (28g)</td><td class="carb-medium">4g</td></tr>
+          <tr><td>Almond Butter</td><td>1 tbsp (16g)</td><td class="carb-low">1.5g</td></tr>
+          <tr><td>Peanut Butter (no sugar)</td><td>1 tbsp (16g)</td><td class="carb-low">2g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- DAIRY -->
+    <div class="category" data-category="dairy">
+      <h2><span class="category-icon">🧀</span> Dairy & Eggs</h2>
+      <table class="food-table">
+        <thead>
+          <tr><th>Food</th><th>Serving</th><th>Net Carbs</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Cheddar Cheese</td><td>1 oz (28g)</td><td class="carb-low">0.4g</td></tr>
+          <tr><td>Mozzarella</td><td>1 oz (28g)</td><td class="carb-low">0.6g</td></tr>
+          <tr><td>Parmesan</td><td>1 oz (28g)</td><td class="carb-low">0.9g</td></tr>
+          <tr><td>Swiss Cheese</td><td>1 oz (28g)</td><td class="carb-low">1.5g</td></tr>
+          <tr><td>Brie</td><td>1 oz (28g)</td><td class="carb-low">0.1g</td></tr>
+          <tr><td>Cream Cheese</td><td>1 tbsp (14g)</td><td class="carb-low">0.8g</td></tr>
+          <tr><td>Heavy Cream</td><td>1 tbsp (15g)</td><td class="carb-low">0.4g</td></tr>
+          <tr><td>Sour Cream</td><td>2 tbsp (30g)</td><td class="carb-low">1g</td></tr>
+          <tr><td>Butter</td><td>1 tbsp (14g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Greek Yogurt (full fat)</td><td>1 cup (227g)</td><td class="carb-low">3g</td></tr>
+          <tr><td>Cottage Cheese</td><td>1 cup (226g)</td><td class="carb-low">5g</td></tr>
+          <tr><td>Ricotta</td><td>1/2 cup (124g)</td><td class="carb-low">2g</td></tr>
+          <tr><td>Mascarpone</td><td>1 oz (28g)</td><td class="carb-low">1g</td></tr>
+          <tr><td>Egg (whole)</td><td>1 large (50g)</td><td class="carb-low">0.2g</td></tr>
+          <tr><td>Egg Whites</td><td>1 cup (243g)</td><td class="carb-low">1.7g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- MEATS -->
+    <div class="category" data-category="meats">
+      <h2><span class="category-icon">🥩</span> Meats & Protein</h2>
+      <table class="food-table">
+        <thead>
+          <tr><th>Food</th><th>Serving</th><th>Net Carbs</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Beef (ground, 80/20)</td><td>4 oz (113g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Beef (ground, 90/10)</td><td>4 oz (113g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Steak (ribeye)</td><td>4 oz (113g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Filet Mignon</td><td>4 oz (113g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Pork Chop</td><td>4 oz (113g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Bacon</td><td>2 slices (16g)</td><td class="carb-low">0.2g</td></tr>
+          <tr><td>Ham</td><td>4 oz (113g)</td><td class="carb-low">0.3g</td></tr>
+          <tr><td>Sausage</td><td>4 oz (113g)</td><td class="carb-low">0.5g</td></tr>
+          <tr><td>Chicken Breast</td><td>4 oz (113g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Chicken Thigh</td><td>4 oz (113g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Chicken Wings</td><td>4 oz (113g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Turkey (ground)</td><td>4 oz (113g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Lamb</td><td>4 oz (113g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Venison</td><td>4 oz (113g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Bison</td><td>4 oz (113g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Salmon</td><td>4 oz (113g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Tuna (fresh)</td><td>4 oz (113g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Shrimp</td><td>4 oz (113g)</td><td class="carb-low">0.2g</td></tr>
+          <tr><td>Crab</td><td>4 oz (113g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Lobster</td><td>4 oz (113g)</td><td class="carb-low">0.3g</td></tr>
+          <tr><td>Scallops</td><td>4 oz (113g)</td><td class="carb-low">1.5g</td></tr>
+          <tr><td>Sardines</td><td>4 oz (113g)</td><td class="carb-low">0g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FATS & OILS -->
+    <div class="category" data-category="fats">
+      <h2><span class="category-icon">🫒</span> Fats & Oils</h2>
+      <table class="food-table">
+        <thead>
+          <tr><th>Food</th><th>Serving</th><th>Net Carbs</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Olive Oil</td><td>1 tbsp (14g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Avocado Oil</td><td>1 tbsp (14g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Coconut Oil</td><td>1 tbsp (14g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>MCT Oil</td><td>1 tbsp (14g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Ghee</td><td>1 tbsp (13g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Avocado (whole)</td><td>1 fruit (200g)</td><td class="carb-low">6g</td></tr>
+          <tr><td>Mayo (avocado oil)</td><td>1 tbsp (15g)</td><td class="carb-low">0g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SWEETENERS -->
+    <div class="category" data-category="sweeteners">
+      <h2><span class="category-icon">🍬</span> Sweeteners</h2>
+      <table class="food-table">
+        <thead>
+          <tr><th>Food</th><th>Serving</th><th>Net Carbs</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Monk Fruit</td><td>1 tsp (4g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Stevia</td><td>1 tsp (4g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Erythritol</td><td>1 tsp (4g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Allulose</td><td>1 tsp (4g)</td><td class="carb-medium">4g</td></tr>
+          <tr><td>Xylitol</td><td>1 tsp (4g)</td><td class="carb-low">0.2g</td></tr>
+          <tr><td>Swerve</td><td>1 tsp (4g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Lakanto</td><td>1 tsp (4g)</td><td class="carb-low">0g</td></tr>
+          <tr><td>Honey</td><td>1 tbsp (21g)</td><td class="carb-high">17g</td></tr>
+          <tr><td>Maple Syrup</td><td>1 tbsp (20g)</td><td class="carb-high">13g</td></tr>
+          <tr><td>Agave</td><td>1 tbsp (21g)</td><td class="carb-high">15g</td></tr>
+          <tr><td>Cane Sugar</td><td>1 tsp (4g)</td><td class="carb-high">4g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <strong>💡 Quick Tips:</strong> Net Carbs = Total Carbs - Fiber (or Sugar Alcohols for sweeteners). Most strict keto followers stay under 20g net carbs/day. Green = safe anytime, Yellow = portion control, Red = treat only!
+    </div>
+  </main>
+
+  <!-- Ad slot -->
+  <ins class="adsbygoogle" style="display:block; text-align:center; margin: 2rem 0;" data-ad-client="ca-pub-YOUR_PUB_ID" data-ad-slot="YOUR_AD_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+  <footer>
+    <p>🥄 CrowdSourced Cooking - Recipes by the community, for the community</p>
+  </footer>
+
+  <script>
+    function filterFoods() {
+      const search = document.getElementById('search').value.toLowerCase();
+      const rows = document.querySelectorAll('.food-table tbody tr');
+      
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(search) ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>

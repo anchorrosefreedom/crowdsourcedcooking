@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="description" content="CrowdSourced Cooking - Community recipe platform">
+  <meta name="keywords" content="recipes, cooking, keto, community">
+  <meta property="og:title" content="CrowdSourced Cooking">
+  <meta property="og:description" content="Community recipes by cooks, for cooks">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://crowdsourcedcooking.web.app/2026-03-31-14-48-30-crowdsourced-cooking-logo.png">
+  <link rel="canonical" href="https://crowdsourcedcooking.com/recipe.html">
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Recipe - CrowdSourced Cooking</title>
@@ -73,9 +81,30 @@ ol li { padding: 0.75rem 0; border-bottom: 1px solid #eee; }
   <div id="techniqueSourceLink" style="margin:0.5rem 0"></div>
 </div>
 <button onclick="mimoRecipe()" style="background:#e76f51;color:white;border:none;padding:0.75rem 1.5rem;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer">🔀 MiMO - Make it My Own</button>
+        <button id="promote-btn" onclick="promoteRecipe()" style="display:none;background:#2a9d8f;color:white;border:none;padding:0.75rem 1.5rem;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;margin-left:0.5rem">🌟 Make Public</button>
 <p style="margin-top:0.5rem;color:#666;font-size:0.9rem">Customize this recipe your way</p>
 </div>
 <script>
+
+  function promoteRecipe() {
+    var auth = firebase.auth();
+    var user = auth.currentUser;
+    if (!user) { alert('Please login first'); return; }
+    if (!confirm('Make this recipe public? It will appear in search results and on the homepage.')) return;
+    
+    document.getElementById('promote-btn').textContent = 'Promoting...';
+    db.collection('recipes').doc(id).update({
+      isMimo: false,
+      mimoFrom: firebase.firestore.FieldValue.delete()
+    }).then(function() {
+      alert('Recipe is now public!');
+      location.reload();
+    }).catch(function(e) {
+      alert('Error: ' + e.message);
+      document.getElementById('promote-btn').textContent = '🌟 Make Public';
+    });
+  }
+
 function mimoRecipe() {
 var id = new URLSearchParams(window.location.search).get("id");
 window.location.href = "submit-recipe.html?mimo=" + id;

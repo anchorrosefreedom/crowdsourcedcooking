@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="description" content="Browse and search community recipes on CrowdSourced Cooking. Find keto, carnivore, and more.">
+  <meta name="keywords" content="recipe search, cooking, keto recipes, healthy eating">
+  <meta property="og:title" content="Browse Recipes - CrowdSourced Cooking">
+  <meta property="og:description" content="Search our community recipe collection">
+  <link rel="canonical" href="https://crowdsourcedcooking.com/submit-recipe.html">
+
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -368,7 +374,7 @@ function doSaveActual(user) {
   var imgInput = document.getElementById('photo-container img');
   var imgSrc = document.querySelector('#photo-container img') ? document.querySelector('#photo-container img').src : '';
   var mimoFrom = new URLSearchParams(window.location.search).get('mimo');
-  var data={title:t,description:d,ingredients:i,instructions:ins,author:a,authorId:user.uid,mimoFrom:mimoFrom,category:cat,tags:tags,image:imgSrc,createdAt:new Date().toISOString()};var btn=document.querySelector("button[onclick='doSave()']");btn.textContent="Saving...";
+  var data={title:t,description:d,ingredients:i,instructions:ins,author:a,authorId:user.uid,mimoFrom:mimoFrom,isMimo:!!mimoFrom,category:cat,tags:tags,image:imgSrc,createdAt:new Date().toISOString()};var btn=document.querySelector("button[onclick='doSave()']");btn.textContent="Saving...";
   fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}).then(function(r){return r.json()}).then(function(x){var form = document.querySelector('form'); form.innerHTML = '<div style="background:white;padding:2rem;border-radius:12px;text-align:center"><h2 style="color:#2a9d8f;font-size:1.5rem;margin-bottom:1rem">✓ Recipe Saved!</h2><p style="margin-bottom:1rem">Your recipe has been submitted successfully.</p><a href="recipe.html?id='+x.id+'" style="background:#2a9d8f;color:white;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;display:inline-block">View Recipe</a></div>'}).catch(function(e){alert("Error: "+e.message);btn.textContent="Save Failed"})}
 
 function importRecipe() {
@@ -488,8 +494,10 @@ function toggleDropdown(id) {
             document.getElementById('description').value = r.description || '';
             document.getElementById('ingredients').value = Array.isArray(r.ingredients) ? r.ingredients.join('\n') : (r.ingredients || '');
             document.getElementById('instructions').value = typeof r.instructions === 'string' ? r.instructions : ((r.instructions || []).join('\n'));
+            // Try both field names for source URL
             var srcLink = document.getElementById('recipeSourceLink');
-            if (srcLink) srcLink.value = r.sourceUrl || '';
+            var srcUrl = r.sourceUrl || r.recipeSourceLink || r.sourceUrl || '';
+            if (srcLink) srcLink.value = srcUrl;
             
             // Show original image
             if (r.image) {

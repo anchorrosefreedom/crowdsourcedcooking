@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keto Macro Calculator - CrowdSourced Cooking</title>
+  <meta name="description" content="Calculate your daily keto macros - calories, protein, fat, and net carbs tailored to your body and activity level.">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f8f9fa;
+      min-height: 100vh;
+    }
+    header {
+      background: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .nav-brand { font-size: 1.25rem; font-weight: bold; color: #264653; text-decoration: none; }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .nav-links a.active {
+      color: #2a9d8f;
+      border-bottom: 2px solid #2a9d8f;
+      padding-bottom: 4px;
+    }
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    h1 { color: #264653; margin-bottom: 0.5rem; }
+    .subtitle { color: #666; margin-bottom: 2rem; }
+    .calculator-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
+    }
+    .form-group { margin-bottom: 1.5rem; }
+    label { display: block; font-weight: 600; margin-bottom: 0.5rem; color: #264653; }
+    input, select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #2a9d8f;
+    }
+    .radio-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .radio-option input[type="radio"] { width: auto; }
+    button {
+      background: #2a9d8f;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+    }
+    button:hover { background: #238579; }
+    .results {
+      display: none;
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    .results.show { display: block; }
+    .results h2 { color: #264653; margin-bottom: 1.5rem; }
+    .macros-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .macro-card {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .macro-card.calories { background: #fff3cd; }
+    .macro-card.protein { background: #d4edda; }
+    .macro-card.fat { background: #f8d7da; }
+    .macro-card.carbs { background: #d1ecf1; }
+    .macro-value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #264653;
+    }
+    .macro-label { color: #666; font-size: 0.875rem; }
+    .note {
+      background: #e7f5ff;
+      border-left: 4px solid #2a9d8f;
+      padding: 1rem;
+      border-radius: 0 8px 8px 0;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+    }
+    @media (max-width: 600px) {
+      nav { flex-direction: column; align-items: flex-start; }
+      .nav-links { flex-wrap: wrap; }
+    }
+  </style>
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUB_ID" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html" class="nav-brand">🥄 CrowdSourced Cooking</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="keto.html">Keto Recipes</a></li>
+        <li><a href="keto-calculator.html" class="active">Calculator</a></li>
+        <li><a href="carb-guide.html">Carb Guide</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>🥑 Keto Macro Calculator</h1>
+    <p class="subtitle">Calculate your daily calories and macros for optimal ketosis</p>
+
+    <div class="calculator-card">
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input type="number" id="age" value="40">
+      </div>
+
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select id="gender">
+          <option value="male">Male</option>
+          <option value="female" selected>Female</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="weight">Weight (lbs)</label>
+        <input type="number" id="weight" value="180">
+      </div>
+
+      <div class="form-group">
+        <label for="height">Height</label>
+        <select id="height">
+          <option value="60">5' 0"</option>
+          <option value="61">5' 1"</option>
+          <option value="62">5' 2"</option>
+          <option value="63">5' 3"</option>
+          <option value="64">5' 4"</option>
+          <option value="65">5' 5"</option>
+          <option value="66">5' 6"</option>
+          <option value="67">5' 7"</option>
+          <option value="68">5' 8"</option>
+          <option value="69">5' 9"</option>
+          <option value="70" selected>5' 10"</option>
+          <option value="71">5' 11"</option>
+          <option value="72">6' 0"</option>
+          <option value="73">6' 1"</option>
+          <option value="74">6' 2"</option>
+          <option value="75">6' 3"</option>
+          <option value="76">6' 4"</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Activity Level</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="activity" value="1.2">
+            <span>Sedentary</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="activity" value="1.375" checked>
+            <span>Light</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="activity" value="1.55">
+            <span>Moderate</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="activity" value="1.725">
+            <span>Active</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Goal</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="goal" value="lose" checked>
+            <span>Lose Weight</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="goal" value="maintain">
+            <span>Maintain</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="goal" value="gain">
+            <span>Gain Muscle</span>
+          </label>
+        </div>
+      </div>
+
+      <button onclick="calculateMacros()">Calculate My Macros</button>
+    </div>
+
+    <div class="results" id="results">
+      <h2>📊 Your Daily Macros</h2>
+      <div class="macros-grid">
+        <div class="macro-card calories">
+          <div class="macro-value" id="calories">0</div>
+          <div class="macro-label">Calories</div>
+        </div>
+        <div class="macro-card protein">
+          <div class="macro-value" id="protein">0g</div>
+          <div class="macro-label">Protein</div>
+        </div>
+        <div class="macro-card fat">
+          <div class="macro-value" id="fat">0g</div>
+          <div class="macro-label">Fat</div>
+        </div>
+        <div class="macro-card carbs">
+          <div class="macro-value" id="netCarbs">20g</div>
+          <div class="macro-label">Net Carbs</div>
+        </div>
+      </div>
+      <div class="note">
+        <strong>💡 Pro Tip:</strong> This calculator uses a standard 70/25/5 keto ratio. Net carbs = Total carbs - Fiber. Stay under 20g net carbs to maintain ketosis. Adjust based on your body's response!
+      </div>
+    </div>
+  </main>
+
+  <!-- Ad slot -->
+  <ins class="adsbygoogle" style="display:block; text-align:center; margin: 2rem 0;" data-ad-client="ca-pub-YOUR_PUB_ID" data-ad-slot="YOUR_AD_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+  <footer>
+    <p>🥄 CrowdSourced Cooking - Recipes by the community, for the community</p>
+  </footer>
+
+  <script>
+    function calculateMacros() {
+      const age = parseInt(document.getElementById('age').value);
+      const gender = document.getElementById('gender').value;
+      const weightLbs = parseFloat(document.getElementById('weight').value);
+      const heightInches = parseInt(document.getElementById('height').value);
+      const activity = parseFloat(document.querySelector('input[name="activity"]:checked').value);
+      const goal = document.querySelector('input[name="goal"]:checked').value;
+
+      // Convert weight to kg, height to cm
+      const weightKg = weightLbs * 0.453592;
+      const heightCm = heightInches * 2.54;
+
+      // Mifflin-Storre equation
+      let bmr;
+      if (gender === 'male') {
+        bmr = 10 * weightKg + 6.25 * heightCm - 5 * age + 5;
+      } else {
+        bmr = 10 * weightKg + 6.25 * heightCm - 5 * age - 161;
+      }
+
+      // Apply activity multiplier
+      let tdee = bmr * activity;
+
+      // Adjust for goal
+      let calories;
+      if (goal === 'lose') {
+        calories = tdee - 500;
+      } else if (goal === 'gain') {
+        calories = tdee + 300;
+      } else {
+        calories = tdee;
+      }
+
+      // Ensure minimum
+      calories = Math.max(calories, 1200);
+
+      // Keto ratios: 70% fat, 25% protein, 5% carbs (for ketosis)
+      const proteinCals = calories * 0.25;
+      const fatCals = calories * 0.70;
+      const carbCals = calories * 0.05;
+
+      const protein = Math.round(proteinCals / 4);
+      const fat = Math.round(fatCals / 9);
+      const netCarbs = Math.round(carbCals / 4);
+
+      // Display results
+      document.getElementById('calories').textContent = calories;
+      document.getElementById('protein').textContent = protein + 'g';
+      document.getElementById('fat').textContent = fat + 'g';
+      document.getElementById('netCarbs').textContent = netCarbs + 'g';
+
+      document.getElementById('results').classList.add('show');
+    }
+  </script>
+</body>
+</html>

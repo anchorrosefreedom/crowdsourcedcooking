@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="description" content="CrowdSourced Cooking - Community recipe platform where cooks share, vote, and improve recipes together. Find keto, carnivore, and family favorites.">
+  <meta name="keywords" content="recipes, cooking, keto, carnivore, community, food, home cooking">
+  <meta property="og:title" content="CrowdSourced Cooking">
+  <meta property="og:description" content="Recipes by cooks, for cooks. Join our community to share, vote, and improve recipes together.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://crowdsourcedcooking.com/">
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CrowdSourced Cooking</title>
@@ -332,7 +339,7 @@
     
     async function loadRecipes() {
       try {
-        const q = query(collection(db, 'recipes'), orderBy('createdAt', 'desc'), limit(4));
+        const q = query(collection(db, 'recipes'), where('isMimo', '!=', true), orderBy('createdAt', 'desc'), limit(4));
         const snapshot = await getDocs(q);
         const grid = document.getElementById('recipe-grid');
         
