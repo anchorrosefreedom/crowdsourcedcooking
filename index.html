@@ -341,7 +341,7 @@
     
     async function loadRecipes() {
       try {
-        const q = query(collection(db, 'recipes'), orderBy('createdAt', 'desc'), limit(4));
+        const q = query(collection(db, 'recipes'), orderBy('createdAt', 'desc'), limit(20));
         const snapshot = await getDocs(q);
         const grid = document.getElementById('recipe-grid');
         
@@ -350,20 +350,20 @@
           return;
         }
         
-        let html = '';
+        // Filter out MiMO recipes client-side (field might not exist or be false)
+        let publicRecipes = [];
         snapshot.forEach(doc => {
-          const recipe = doc.data();
-          html += `
-            <a href="recipe.html?id=${doc.id}" class="feature-card" style="text-decoration:none;color:inherit;display:block;">
-              <div style="font-size:3rem;text-align:center;margin-bottom:0.5rem;">${getEmoji(recipe.tags)}</div>
-              <h2 style="font-size:1.1rem;margin-bottom:0.5rem;color:#264653;">${recipe.title}</h2>
-              <p style="color:#666;font-size:0.9rem;margin-bottom:0.75rem;">${recipe.description || ''}</p>
-              <div style="display:flex;gap:1rem;color:#888;font-size:0.8rem;">
-                <span>⏱️ ${recipe.time || ''}</span>
-                <span>👍 ${recipe.upvotes || 0}</span>
-              </div>
-            </a>
-          `;
+          const r = doc.data();
+          if (!r.isMimo) publicRecipes.push({id: doc.id, ...r});
+        });
+        
+        // Take only first 4
+        publicRecipes = publicRecipes.slice(0, 4);
+        
+        let html = '';
+        publicRecipes.forEach(function(doc) {
+          const recipe = doc;
+          html += '<a href="recipe.html?id=' + doc.id + '" class="feature-card" style="text-decoration:none;color:inherit;display:block;"><div style="font-size:3rem;text-align:center;margin-bottom:0.5rem;">' + getEmoji(recipe.tags) + '</div><h2 style="font-size:1.1rem;margin-bottom:0.5rem;color:#264653;">' + (recipe.title || '') + '</h2><p style="color:#666;font-size:0.9rem;margin-bottom:0.75rem;">' + (recipe.description || '') + '</p><div style="display:flex;gap:1rem;color:#888;font-size:0.8rem;"><span>⏱️ ' + (recipe.time || '') + '</span><span>👍 ' + (recipe.upvotes || 0) + '</span></div></a>';
         });
         grid.innerHTML = html;
       } catch (error) {

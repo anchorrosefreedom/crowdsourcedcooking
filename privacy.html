@@ -39,7 +39,7 @@
         <li><a href="categories.html">Recipes</a></li>
         <li><a href="submit-recipe.html">Submit Recipe</a></li>
         <li><a href="keto.html">Diets</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="privacy.html" class="active" style="color:#2a9d8f;font-weight:700;border-bottom:2px solid #2a9d8f;padding-bottom:2px;">Privacy</a></li>
         <li><a href="blog.html">Blog</a></li>
         <li><a href="login.html" id="auth-link">Login</a></li>
       </ul>
@@ -91,5 +91,11 @@
   <footer>
     <p>&copy; 2026 CrowdSourced Cooking. All rights reserved.</p>
   </footer>
-</body>
+<script>
+var page = window.location.pathname.split("/").pop().replace(".html","") || "index";
+document.querySelectorAll(".nav-links a").forEach(function(a) {
+  var href = a.getAttribute("href").replace(".html","");
+  if(href === page) a.classList.add("active");
+});
+</script></body>
 </html>
