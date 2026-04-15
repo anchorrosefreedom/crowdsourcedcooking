@@ -342,20 +342,32 @@
 function doSave() {
   var auth = firebase.auth();
   var user = auth.currentUser;
+  
+  // Force auth state refresh and wait for it
   if (!user) {
-    alert('Please login first');
+    auth.getIdTokenResult(true).then(function() {
+      // User must be logged in now
+      var currentUser = auth.currentUser;
+      if (currentUser) {
+        doSaveActual(currentUser);
+      } else {
+        alert('Please login first');
+      }
+    }).catch(function() {
+      alert('Please login first');
+    });
     return;
   }
-  var t=document.getElementById("title").value;if(!t){alert("Enter title");return}
+  doSaveActual(user);
+}
+
+function doSaveActual(user) {
+  var t=document.getElementById("title").value;if(!t){alert("Enter title");return;}
   var i=document.getElementById("ingredients").value.split("\n").filter(function(x){return x.trim()});var ins=document.getElementById("instructions").value;var a=document.getElementById("author").value||"Anon";var d=document.getElementById("description").value;var cat=document.getElementById("category").value;
   var c=document.querySelectorAll("input[name=tags]:checked");var tags=[];c.forEach(function(el){tags.push(el.value)});var customInputs=document.querySelectorAll(".custom-tags");customInputs.forEach(function(ci){if(ci.value.trim()){tags.push(ci.value.trim())}});
   var imgInput = document.getElementById('photo-container img');
   var imgSrc = document.querySelector('#photo-container img') ? document.querySelector('#photo-container img').src : '';
-  var auth = firebase.auth();
-    var userId = null;
-    auth.onAuthStateChanged(function(u) { userId = u ? u.uid : null; });
-    var mimoFrom = new URLSearchParams(window.location.search).get('mimo');
-    var mimoFrom = new URLSearchParams(window.location.search).get('mimo');
+  var mimoFrom = new URLSearchParams(window.location.search).get('mimo');
   var data={title:t,description:d,ingredients:i,instructions:ins,author:a,authorId:user.uid,mimoFrom:mimoFrom,category:cat,tags:tags,image:imgSrc,createdAt:new Date().toISOString()};var btn=document.querySelector("button[onclick='doSave()']");btn.textContent="Saving...";
   fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}).then(function(r){return r.json()}).then(function(x){var form = document.querySelector('form'); form.innerHTML = '<div style="background:white;padding:2rem;border-radius:12px;text-align:center"><h2 style="color:#2a9d8f;font-size:1.5rem;margin-bottom:1rem">✓ Recipe Saved!</h2><p style="margin-bottom:1rem">Your recipe has been submitted successfully.</p><a href="recipe.html?id='+x.id+'" style="background:#2a9d8f;color:white;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;display:inline-block">View Recipe</a></div>'}).catch(function(e){alert("Error: "+e.message);btn.textContent="Save Failed"})}
 
@@ -379,6 +391,10 @@ function importRecipe() {
       document.getElementById('description').value = r.description || '';
       document.getElementById('ingredients').value = typeof r.ingredients === 'string' ? r.ingredients : (r.ingredients || []).join('\n');
       document.getElementById('instructions').value = typeof r.instructions === 'string' ? r.instructions : (r.instructions || []).join('\n');
+      // Populate Recipe Source Link with import URL
+      if (r.sourceUrl) {
+        document.getElementById('recipeSourceLink').value = r.sourceUrl;
+      }
       // Display imported image
       if (r.image) {
         var imgDiv = document.getElementById('photo-container');
