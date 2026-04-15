@@ -328,6 +328,28 @@ function doSave() {
   var data={title:t,description:d,ingredients:i,instructions:ins,author:a,category:cat,tags:tags,createdAt:new Date().toISOString()};var btn=document.querySelector("button[onclick='doSave()']");btn.textContent="Saving...";
   fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}).then(function(r){return r.json()}).then(function(x){btn.textContent="✓ Saved!";alert("Recipe saved!")}).catch(function(e){alert("Error: "+e.message);btn.textContent="Save Failed"})}
 
+function importRecipe() {
+  var url = document.getElementById('sourceUrl').value.trim();
+  if(!url) { document.getElementById('import-status').textContent = 'Enter URL'; return; }
+  document.getElementById('import-status').textContent = 'Importing...';
+  fetch('https://us-central1-crowdsourcedcooking.cloudfunctions.net/importRecipe', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({url: url})
+  }).then(function(r){return r.json()}).then(function(d){
+    if(d.error) throw new Error(d.error);
+    if(d.title) {
+      document.getElementById('title').value = d.title || '';
+      document.getElementById('description').value = d.description || '';
+      document.getElementById('ingredients').value = (d.ingredients || []).join('\n');
+      document.getElementById('instructions').value = (d.instructions || []).join('\n');
+      document.getElementById('import-status').textContent = 'Imported!';
+    } else {
+      document.getElementById('import-status').textContent = 'No recipe found';
+    }
+  }).catch(function(e){ document.getElementById('import-status').textContent = 'Error: '+e.message; });
+}
+
 function toggleDropdown(id) {
   console.log('toggleDropdown called with:', id);
   var dropdown = document.getElementById(id+'-dropdown');
