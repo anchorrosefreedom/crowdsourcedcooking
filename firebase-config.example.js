@@ -1,6 +1,7 @@
 // Firebase config for CrowdSourced Cooking
+// COPY THIS FILE TO firebase-config.js AND FILL IN YOUR OWN VALUES
 const firebaseConfig = {
-  apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
+  apiKey: "YOUR_API_KEY_HERE",
   authDomain: "crowdsourcedcooking.firebaseapp.com",
   projectId: "crowdsourcedcooking",
   storageBucket: "crowdsourcedcooking.firebasestorage.app",
