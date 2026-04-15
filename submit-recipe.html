@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script>
+    // Firebase config
+    var firebaseConfig = {
+      apiKey: "AIzaSyBk3w4fTG2RZGBJ7VWZg1kKvPBc5bqWlzk",
+      authDomain: "crowdsourcedcooking.firebaseapp.com",
+      projectId: "crowdsourcedcooking",
+      storageBucket: "crowdsourcedcooking.firebasestorage.app",
+      messagingSenderId: "000000000000",
+      appId: "1:000000000000:web:0000000000000000000000"
+    };
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.firestore();
+  </script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Submit Recipe - CrowdSourced Cooking</title>
@@ -323,12 +340,23 @@
   </footer>
 <script>
 function doSave() {
+  var auth = firebase.auth();
+  var user = auth.currentUser;
+  if (!user) {
+    alert('Please login first');
+    return;
+  }
   var t=document.getElementById("title").value;if(!t){alert("Enter title");return}
   var i=document.getElementById("ingredients").value.split("\n").filter(function(x){return x.trim()});var ins=document.getElementById("instructions").value;var a=document.getElementById("author").value||"Anon";var d=document.getElementById("description").value;var cat=document.getElementById("category").value;
   var c=document.querySelectorAll("input[name=tags]:checked");var tags=[];c.forEach(function(el){tags.push(el.value)});var customInputs=document.querySelectorAll(".custom-tags");customInputs.forEach(function(ci){if(ci.value.trim()){tags.push(ci.value.trim())}});
   var imgInput = document.getElementById('photo-container img');
   var imgSrc = document.querySelector('#photo-container img') ? document.querySelector('#photo-container img').src : '';
-  var data={title:t,description:d,ingredients:i,instructions:ins,author:a,category:cat,tags:tags,image:imgSrc,createdAt:new Date().toISOString()};var btn=document.querySelector("button[onclick='doSave()']");btn.textContent="Saving...";
+  var auth = firebase.auth();
+    var userId = null;
+    auth.onAuthStateChanged(function(u) { userId = u ? u.uid : null; });
+    var mimoFrom = new URLSearchParams(window.location.search).get('mimo');
+    var mimoFrom = new URLSearchParams(window.location.search).get('mimo');
+  var data={title:t,description:d,ingredients:i,instructions:ins,author:a,authorId:user.uid,mimoFrom:mimoFrom,category:cat,tags:tags,image:imgSrc,createdAt:new Date().toISOString()};var btn=document.querySelector("button[onclick='doSave()']");btn.textContent="Saving...";
   fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/saveRecipe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}).then(function(r){return r.json()}).then(function(x){var form = document.querySelector('form'); form.innerHTML = '<div style="background:white;padding:2rem;border-radius:12px;text-align:center"><h2 style="color:#2a9d8f;font-size:1.5rem;margin-bottom:1rem">✓ Recipe Saved!</h2><p style="margin-bottom:1rem">Your recipe has been submitted successfully.</p><a href="recipe.html?id='+x.id+'" style="background:#2a9d8f;color:white;padding:0.75rem 1.5rem;border-radius:8px;text-decoration:none;display:inline-block">View Recipe</a></div>'}).catch(function(e){alert("Error: "+e.message);btn.textContent="Save Failed"})}
 
 function importRecipe() {
@@ -419,4 +447,42 @@ function toggleDropdown(id) {
 <script>
 (function(){if(window._tl)return;window._tl=1;var c=["proteins","vegetables","fruits","dairy","nuts","general"];c.forEach(function(x){fetch("https://us-central1-crowdsourcedcooking.cloudfunctions.net/getCustomTags?category="+x).then(function(r){return r.json()}).then(function(d){if(d.tags&&d.tags.length){var e=document.getElementById(x+"-dropdown");if(e){d.tags.sort().forEach(function(t){var l=document.createElement("label");l.style.display="block";l.innerHTML="<input type=\"checkbox\" name=\"tags\" value="+t+"> "+t;e.appendChild(l)})}}).catch(function(){})})})();})();
 </script>
+
+  <script>
+    // Check for MiMO parameter
+    (function() {
+      var mimoId = new URLSearchParams(window.location.search).get('mimo');
+      if (mimoId) {
+        document.title = 'MiMO - Make it My Own - CrowdSourced Cooking';
+        var h1 = document.querySelector('h1');
+        if (h1) h1.textContent = '🔀 MiMO (Make it My Own)';
+        
+        var mimoNote = document.createElement('div');
+        mimoNote.style = 'background:#fff3cd;padding:1rem;border-radius:8px;margin-bottom:1rem;color:#856404';
+        mimoNote.textContent = 'You are customizing an existing recipe. Make your changes below.';
+        var form = document.querySelector('form');
+        if (form) form.insertBefore(mimoNote, form.firstChild);
+        
+        // Fetch original recipe
+        db.collection('recipes').doc(mimoId).get().then(function(doc) {
+          if (doc.exists) {
+            var r = doc.data();
+            document.getElementById('title').value = r.title || '';
+            document.getElementById('author').value = r.author || '';
+            document.getElementById('description').value = r.description || '';
+            document.getElementById('ingredients').value = Array.isArray(r.ingredients) ? r.ingredients.join('\n') : (r.ingredients || '');
+            document.getElementById('instructions').value = typeof r.instructions === 'string' ? r.instructions : ((r.instructions || []).join('\n'));
+            var srcLink = document.getElementById('recipeSourceLink');
+            if (srcLink) srcLink.value = r.sourceUrl || '';
+            
+            // Show original image
+            if (r.image) {
+              var imgDiv = document.getElementById('photo-container');
+              if (imgDiv) imgDiv.innerHTML = '<img src="' + r.image + '" style="max-width:100%;max-height:300px;border-radius:8px">';
+            }
+          }
+        }).catch(function(err) { console.error('Error loading MiMO recipe:', err); });
+      }
+    })();
+  </script>
 </body>
