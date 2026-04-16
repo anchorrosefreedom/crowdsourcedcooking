@@ -129,10 +129,10 @@ if(!id) {
                 var tagsDiv = document.getElementById("tags");
                 tagsDiv.innerHTML = "<strong>Tags:</strong> " + data.tags.map(function(t) { return "<span class='tag'>" + t + "</span>"; }).join(", ");
             if(data.recipeSourceLink) {
-              document.getElementById("recipeSourceLink").innerHTML = "<strong>Recipe Source:</strong> <a href='" + data.recipeSourceLink + "' target='_blank'>" + data.recipeSourceLink + "</a>";
+              document.getElementById("recipeSourceLink").innerHTML = '<strong>Recipe Source:</strong> <a href="' + data.recipeSourceLink + '" target="_blank">' + data.recipeSourceLink + '</a>';
             }
             if(data.techniqueSourceLink) {
-              document.getElementById("techniqueSourceLink").innerHTML = "<strong>Technique:</strong> <a href='" + data.techniqueSourceLink + "' target='_blank'>" + data.techniqueSourceLink + "</a>";
+              document.getElementById("techniqueSourceLink").innerHTML = '<strong>Technique:</strong> <a href="' + data.techniqueSourceLink + '" target="_blank">' + data.techniqueSourceLink + '</a>';
             }
             }
             var ing = data.ingredients;
