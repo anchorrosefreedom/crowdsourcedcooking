@@ -67,6 +67,10 @@ ol li { padding: 0.75rem 0; border-bottom: 1px solid #eee; }
 <img id="recipe-img" style="max-width:100%;border-radius:8px;margin:1rem 0;display:none">
 <strong>Description</strong><p id="desc" class="desc"></p>
 <div class="section">
+<div id="source-links" style="margin:1rem 0">
+  <div id="recipeSourceLink" style="margin:0.5rem 0"></div>
+  <div id="techniqueSourceLink" style="margin:0.5rem 0"></div>
+</div>
 <h2>🥕 Ingredients</h2>
 <ul id="ings"></ul>
 </div>
@@ -75,12 +79,7 @@ ol li { padding: 0.75rem 0; border-bottom: 1px solid #eee; }
 <ol id="instrs"></ol>
 </div>
 
-<div style="margin:2rem 0">
-<div id="tags" class="tags"></div>
-<div id="source-links" style="margin:1rem 0">
-  <div id="recipeSourceLink" style="margin:0.5rem 0"></div>
-  <div id="techniqueSourceLink" style="margin:0.5rem 0"></div>
-</div>
+<div style="margin:2rem 0"><div id="tags" class="tags"></div>
 <button onclick="mimoRecipe()" style="background:#e76f51;color:white;border:none;padding:0.75rem 1.5rem;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer">🔀 MiMO - Make it My Own</button>
         <button id="promote-btn" onclick="promoteRecipe()" style="display:none;background:#2a9d8f;color:white;border:none;padding:0.75rem 1.5rem;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;margin-left:0.5rem">🌟 Make Public</button>
 <p style="margin-top:0.5rem;color:#666;font-size:0.9rem">Customize this recipe your way</p>
@@ -136,7 +135,9 @@ if(!id) {
               document.getElementById("techniqueSourceLink").innerHTML = "<strong>Technique:</strong> <a href='" + data.techniqueSourceLink + "' target='_blank'>" + data.techniqueSourceLink + "</a>";
             }
             }
-            var ing = data.ingredients || [];
+            var ing = data.ingredients;
+if(typeof ing === 'string') ing = ing ? ing.split('\n') : [];
+else if(!Array.isArray(ing)) ing = [];
             document.getElementById("ings").innerHTML = ing.map(function(i){return"<li>"+i+"</li>"}).join("");
             var ins = data.instructions;
 if(typeof ins === "string") ins = ins ? [ins] : [];

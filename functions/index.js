@@ -33,6 +33,40 @@ exports.getRecipe = functions.https.onRequest((req, res) => {
     });
 });
 
+
+// Save custom tags from recipe to Firestore
+function saveCustomTags(tags) {
+  const seen = {};
+  tags.forEach(tag => {
+    if (!seen[tag]) {
+      seen[tag] = true;
+      // Save to appropriate category based on tag
+      let category = 'general';
+      const proteins = ['Beef', 'Chicken', 'Eggs', 'Fish', 'Pork'];
+      const vegetables = ['Broccoli', 'Carrots', 'Garlic', 'Leafy Greens', 'Onions'];
+      const fruits = ['Apples', 'Berries', 'Lemons', 'Limes', 'Oranges'];
+      const dairy = ['Butter', 'Cheese', 'Cream', 'Milk', 'Yogurt'];
+      const nuts = ['Almonds', 'Peanuts', 'Pecans', 'Walnuts'];
+      
+      if (proteins.includes(tag)) category = 'proteins';
+      else if (vegetables.includes(tag)) category = 'vegetables';
+      else if (fruits.includes(tag)) category = 'fruits';
+      else if (dairy.includes(tag)) category = 'dairy';
+      else if (nuts.includes(tag)) category = 'nuts';
+      
+      const docRef = db.collection('customTags').doc(category);
+      docRef.get().then(doc => {
+        let existing = doc.exists ? (doc.data().tags || []) : [];
+        if (!existing.includes(tag)) {
+          existing.push(tag);
+          existing.sort();
+          docRef.set({tags: existing});
+        }
+      });
+    }
+  });
+}
+
 exports.saveRecipe = functions.https.onRequest((req, res) => {
   res.set("Access-Control-Allow-Origin", "*");
   res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -49,6 +83,11 @@ exports.saveRecipe = functions.https.onRequest((req, res) => {
   }
   
   let data = req.body;
+  
+  // Save custom tags to Firestore
+  if (data.tags && Array.isArray(data.tags)) {
+    saveCustomTags(data.tags);
+  }
   // Flatten nested recipe if imported
   if (data.recipe) {
     data = { ...data.recipe, ...data };
