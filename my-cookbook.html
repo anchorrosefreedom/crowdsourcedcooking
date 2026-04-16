@@ -4,45 +4,57 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Cookbook - CrowdSourced Cooking</title>
+  <link rel="canonical" href="https://crowdsourcedcooking.com/my-cookbook.html">
+  <meta name="description" content="Your personal recipe cookbook">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8f9fa; min-height: 100vh; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8f9fa; min-height: 100vh; }
+    header, header ul, header li { list-style: none; margin: 0; padding: 0; }
     header { background: white; padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
-    nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
-    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
-    .nav-links a { color: #333; text-decoration: none; font-weight: 500; transition: color 0.2s; }
-    .nav-links a:hover { color: #2a9d8f; }
-    .nav-links a.active { color: #2a9d8f; font-weight: 700; }
-    .logo { font-size: 1.5rem; font-weight: 700; color: #2a9d8f; }
-    main { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
-    h1 { font-size: 2rem; margin-bottom: 1rem; color: #264653; }
-    .filters { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
-    .filter-btn { padding: 0.5rem 1.5rem; border: none; border-radius: 20px; background: white; cursor: pointer; font-weight: 500; transition: all 0.2s; }
+    nav { max-width: 900px; margin: 0 auto; display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+    .nav-links { display: flex; gap: 1.5rem; }
+    .nav-links a { color: #2a9d8f; text-decoration: none; font-weight: 500; }
+    .nav-links a.active { font-weight: bold; text-decoration: underline; }
+    main { max-width: 900px; margin: 2rem auto; padding: 1rem; }
+    h1 { color: #264653; font-size: 1.8rem; margin-bottom: 1rem; }
+    .filters { display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .filter-btn { padding: 0.5rem 1rem; border: none; border-radius: 20px; background: white; cursor: pointer; font-weight: 500; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: all 0.2s; }
+    .filter-btn:hover { background: #e9f5f4; }
     .filter-btn.active { background: #2a9d8f; color: white; }
-    .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
-    .recipe-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s; text-decoration: none; color: inherit; }
+    .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
+    .recipe-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s; text-decoration: none; color: inherit; display: block; }
     .recipe-card:hover { transform: translateY(-4px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
-    .recipe-card img { width: 100%; height: 200px; object-fit: cover; }
+    .recipe-card img { width: 100%; height: 180px; object-fit: cover; }
     .recipe-card-content { padding: 1rem; }
     .recipe-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; color: #264653; }
-    .recipe-card .author { font-size: 0.9rem; color: #666; margin-bottom: 0.5rem; }
-    .recipe-card .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-    .recipe-card .tag { background: #e9f5f4; color: #2a9d8f; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; }
-    .recipe-card .type { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .recipe-card .meta { font-size: 0.85rem; color: #666; margin-bottom: 0.5rem; }
+    .recipe-card .type { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.5rem; }
     .recipe-card .type.created { background: #2a9d8f; color: white; }
     .recipe-card .type.mimo { background: #e76f51; color: white; }
     .recipe-card .type.saved { background: #f4a261; color: white; }
+    .recipe-card .tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .recipe-card .tag { background: #e9f5f4; color: #2a9d8f; padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.75rem; }
     .empty-state { text-align: center; padding: 4rem 2rem; color: #666; }
-    .empty-state h2 { color: #264653; margin-bottom: 1rem; }
+    .empty-state h2 { color: #264653; margin-bottom: 0.5rem; }
     .login-prompt { text-align: center; padding: 4rem 2rem; background: white; border-radius: 12px; }
-    .login-prompt a { color: #2a9d8f; font-weight: 600; }
+    .login-prompt a { color: #2a9d8f; font-weight: 600; text-decoration: none; }
+    .login-prompt a:hover { text-decoration: underline; }
+    #loading { text-align: center; padding: 2rem; color: #666; }
+    .hamburger { display: none; font-size: 1.5rem; cursor: pointer; background: none; border: none; }
+    @media (max-width: 768px) {
+      .nav-links { display: none; flex-direction: column; width: 100%; position: absolute; top: 100%; left: 0; background: white; padding: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+      .nav-links.open { display: flex; }
+      .hamburger { display: block; }
+      nav { position: relative; }
+    }
   </style>
 </head>
 <body>
   <header>
-            <nav>
+    <nav>
       <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
-      <ul class="nav-links">
+      <button class="hamburger" onclick="toggleMenu()">☰</button>
+      <ul class="nav-links" id="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="categories.html">Recipes</a></li>
@@ -50,24 +62,11 @@
         <li><a href="keto.html">Diets</a></li>
         <li><a href="privacy.html">Privacy</a></li>
         <li><a href="blog.html">Blog</a></li>
+        <li><a href="my-cookbook.html" class="active">My Cookbook</a></li>
         <li><a href="login.html" id="auth-link">Login</a></li>
       </ul>
     </nav>
   </header>
-  <style>
-    .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; }
-    @media (max-width: 768px) {
-      .menu-toggle { display: block; }
-      .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: white; padding: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-      .nav-links.open { display: flex; }
-      .nav-links li { width: 100%; }
-      .nav-links a { display: block; padding: 0.75rem; border-bottom: 1px solid #eee; }
-    }
-    body { overflow-x: hidden; }
-  </style>
-  <script>
-    function toggleMenu() { document.getElementById("nav-links").classList.toggle("open"); }
-  </script>
   <main>
     <h1>📖 My Cookbook</h1>
     <div class="filters">
@@ -76,17 +75,16 @@
       <button class="filter-btn" data-filter="mimo">MiMO'd</button>
       <button class="filter-btn" data-filter="saved">Saved</button>
     </div>
-    <div id="recipe-container" class="recipe-grid">
-      <div class="login-prompt">
-        <p>Please <a href="login.html">login</a> to view your cookbook.</p>
-      </div>
-    </div>
+    <div id="loading">Loading...</div>
+    <div id="recipe-container" class="recipe-grid" style="display:none"></div>
   </main>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script>
-    // Firebase config - same as other pages
+    function toggleMenu() { document.getElementById("nav-links").classList.toggle("open"); }
+    
+    // Firebase config
     var firebaseConfig = {
       apiKey: "AIzaSyA55nT8wJ4wr4YgwqezR9joLoAxk2p3f6U",
       authDomain: "crowdsourcedcooking.firebaseapp.com",
@@ -98,11 +96,12 @@
     firebase.initializeApp(firebaseConfig);
     var db = firebase.firestore();
     var auth = firebase.auth();
-
+    
     var currentFilter = 'all';
-    var userRecipes = [];
-
-    // Filter buttons
+    var allRecipes = [];
+    var userId = null;
+    
+    // Filter button handling
     document.querySelectorAll('.filter-btn').forEach(function(btn) {
       btn.addEventListener('click', function() {
         document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
@@ -111,49 +110,84 @@
         renderRecipes();
       });
     });
-
+    
     function renderRecipes() {
       var container = document.getElementById('recipe-container');
-      var filtered = currentFilter === 'all' ? userRecipes : userRecipes.filter(function(r) { return r.type === currentFilter; });
+      var filtered = currentFilter === 'all' ? allRecipes : allRecipes.filter(function(r) { return r.type === currentFilter; });
       
       if (filtered.length === 0) {
-        container.innerHTML = '<div class="empty-state"><h2>No recipes yet</h2><p>Create, MiMO, or save recipes to see them here.</p></div>';
+        var msg = currentFilter === 'all' ? 'Create, MiMO, or save recipes to see them here.' :
+                  currentFilter === 'created' ? 'You haven't created any recipes yet.' :
+                  currentFilter === 'mimo' ? 'You haven't MiMO'd any recipes yet.' :
+                  'No saved recipes yet.';
+        container.innerHTML = '<div class="empty-state"><h2>No recipes yet</h2><p>' + msg + '</p></div>';
         return;
       }
       
       container.innerHTML = filtered.map(function(r) {
         var tagsHtml = (r.tags || []).slice(0, 3).map(function(t) { return '<span class="tag">' + t + '</span>'; }).join('');
         var imgUrl = r.image || 'https://via.placeholder.com/400x300?text=No+Image';
+        var typeLabel = r.type === 'mimo' ? 'MiMO' : r.type === 'created' ? 'Created' : 'Saved';
         return '<a href="recipe.html?id=' + r.id + '" class="recipe-card">' +
           '<img src="' + imgUrl + '" alt="' + r.title + '">' +
           '<div class="recipe-card-content">' +
-            '<span class="type ' + r.type + '">' + (r.type === 'mimo' ? 'MiMO' : r.type === 'created' ? 'Created' : 'Saved') + '</span>' +
+            '<span class="type ' + r.type + '">' + typeLabel + '</span>' +
             '<h3>' + r.title + '</h3>' +
-            '<p class="author">by ' + (r.author || 'Anonymous') + '</p>' +
+            '<p class="meta">by ' + (r.author || 'Anonymous') + '</p>' +
             '<div class="tags">' + tagsHtml + '</div>' +
           '</div>' +
         '</a>';
       }).join('');
     }
-
-    auth.onAuthStateChanged(function(user) {
-      if (!user) {
-        document.getElementById('recipe-container').innerHTML = '<div class="login-prompt"><p>Please <a href="login.html">login</a> to view your cookbook.</p></div>';
-        return;
-      }
-      
-      // Fetch user's recipes: created, MiMO'd, or saved
-      db.collection("recipes").where("authorId", "==", user.uid).get().then(function(snapshot) {
-        userRecipes = [];
-        snapshot.forEach(function(doc) {
-          var data = doc.data();
-          userRecipes.push({ id: doc.id, title: data.title, author: data.author, image: data.image, tags: data.tags || [], type: 'created' });
+    
+    // Auth state with delay for Firebase init
+    (function() {
+      setTimeout(function() {
+        auth.onAuthStateChanged(function(user) {
+          if (!user) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('recipe-container').style.display = 'block';
+            document.getElementById('recipe-container').innerHTML = '<div class="login-prompt"><p>Please <a href="login.html">login</a> to view your cookbook.</p></div>';
+            return;
+          }
+          
+          userId = user.uid;
+          loadUserRecipes();
         });
-        renderRecipes();
-      }).catch(function(err) {
-        console.error("Error loading cookbook:", err);
-      });
-    });
+      }, 1000);
+    })();
+    
+    function loadUserRecipes() {
+      document.getElementById('loading').textContent = 'Loading your recipes...';
+      
+      // Fetch recipes where authorId matches current user
+      db.collection("recipes").where("authorId", "==", userId).get()
+        .then(function(snapshot) {
+          allRecipes = [];
+          snapshot.forEach(function(doc) {
+            var data = doc.data();
+            // Determine type: if mimoFrom exists, it's MiMO'd, otherwise created
+            var type = data.mimoFrom ? 'mimo' : 'created';
+            allRecipes.push({
+              id: doc.id,
+              title: data.title || 'Untitled',
+              author: data.author || 'Anonymous',
+              image: data.image || '',
+              tags: data.tags || [],
+              type: type,
+              mimoFrom: data.mimoFrom
+            });
+          });
+          
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('recipe-container').style.display = 'grid';
+          renderRecipes();
+        })
+        .catch(function(err) {
+          console.error("Error loading cookbook:", err);
+          document.getElementById('loading').textContent = 'Error loading recipes. Please try again.';
+        });
+    }
   </script>
 </body>
 </html>
