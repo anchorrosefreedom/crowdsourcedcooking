@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>
+  #auth-loading { display: flex; justify-content: center; align-items: center; min-height: 50vh; }
+  #submit-form { display: none; }
+</style>
 <meta name="description" content="Browse and search community recipes on CrowdSourced Cooking. Find keto, carnivore, and more.">
   <meta name="keywords" content="recipe search, cooking, keto recipes, healthy eating">
   <meta property="og:title" content="Browse Recipes - CrowdSourced Cooking">
@@ -22,6 +26,9 @@
     };
     firebase.initializeApp(firebaseConfig);
     var db = firebase.firestore();
+
+  
+
   </script>
 
   <meta charset="UTF-8">
@@ -209,7 +216,8 @@
   <main>
     <div class="form-card" style="max-width:600px;margin:2rem auto;padding:2rem;background:white;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.08);">
       <h1 style="margin-bottom:1rem">Submit Your Recipe</h1>
-      <form id="recipe-form">
+      <div id="auth-loading"><p>Loading...</p></div>
+<form id="recipe-form" style="display:none">
         <div class="form-group">
           <label>Recipe Photos (max 10)</label>
           <div id="photo-carousel" style="position:relative;min-height:200px;background:#f8f9fa;border:2px dashed #ddd;border-radius:12px;padding:1rem;margin-bottom:1.5rem;overflow:hidden">
@@ -510,4 +518,26 @@ function toggleDropdown(id) {
       }
     })();
   </script>
+
+<script>
+// Check auth on page load
+(function() {
+  var checked = false;
+  function checkAuth() {
+    if (checked) return;
+    checked = true;
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        document.getElementById('auth-loading').style.display = 'none';
+        var form = document.getElementById('recipe-form');
+        if (form) form.style.display = 'block';
+      } else {
+        window.location.href = 'login.html?redirect=submit-recipe.html';
+      }
+    });
+  }
+  // Wait for firebase to initialize
+  setTimeout(checkAuth, 1000);
+})();
+</script>
 </body>

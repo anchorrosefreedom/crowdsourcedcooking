@@ -340,10 +340,9 @@ a.feature-card ul li, a.feature-card ol li { list-style: none; }
   <footer>
     <p>© 2026 CrowdSourced Cooking — Made by cooks, for cooks</p>
   </footer>
-  
-  <script type="module">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3902398240024866"
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3902398240024866"
      crossorigin="anonymous"></script>
+  <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
     import { getFirestore, collection, query, getDocs, orderBy } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
     import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
@@ -492,12 +491,13 @@ a.feature-card ul li, a.feature-card ol li { list-style: none; }
     // Load recipes from Firestore
     async function loadRecipes() {
       try {
-        const q = query(collection(db, 'recipes'), where('isMimo', '!=', true), orderBy('upvotes', 'desc'));
+        const q = query(collection(db, 'recipes'));
         const snapshot = await getDocs(q);
         
         allRecipes = [];
         snapshot.forEach(doc => {
-          allRecipes.push({ id: doc.id, ...doc.data() });
+          const r = doc.data();
+          if (!r.isMimo) allRecipes.push({ id: doc.id, ...r });
         });
         
         renderRecipes();
