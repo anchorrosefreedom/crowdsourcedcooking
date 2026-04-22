@@ -2,101 +2,107 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="Privacy Policy for CrowdSourced Cooking">
   <title>Privacy Policy - CrowdSourced Cooking</title>
-  <meta name="description" content="CrowdSourced Cooking Privacy Policy - How we collect, use, and protect your data.">
   <style>
+    html, body { overflow-x: hidden; max-width: 100vw; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; max-width: 100%; }
+    :root { --primary: #E76F51; --secondary: #2A9D8F; --dark: #264653; --cream: #FEF7F4; --text: #333; --text-light: #666; --shadow: 0 4px 20px rgba(0,0,0,0.08); --radius: 12px; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: #333; background: #f8f9fa; }
-    header { background: white; padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
-    nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
-    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
-    .nav-links a { color: #333; text-decoration: none; font-weight: 500; }
-    .nav-links a:hover, .nav-links a.active { color: #2a9d8f; }
-    .logo { font-size: 1.5rem; font-weight: 700; color: #2a9d8f; text-decoration: none; }
-    main { max-width: 800px; margin: 2rem auto; padding: 0 2rem; background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
-    h1 { color: #264653; margin-bottom: 1rem; padding-top: 2rem; }
-    h2 { color: #264653; margin: 1.5rem 0 0.75rem; font-size: 1.3rem; }
-    p, li { color: #555; margin-bottom: 0.75rem; }
-    ul { margin-left: 1.5rem; margin-bottom: 1rem; }
-    .updated { color: #666; font-size: 0.9rem; margin-bottom: 2rem; }
-    footer { text-align: center; padding: 2rem; color: #666; font-size: 0.9rem; }
-    @media (max-width: 768px) {
-      .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: white; padding: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-      .nav-links.open { display: flex; }
-      nav { flex-wrap: wrap; }
-      .menu-toggle { display: block; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
-    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--cream); color: var(--text); line-height: 1.6; }
+    header { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0.75rem 1rem; }
+    header a img { height: 50px; width: auto; flex-shrink: 0; }
+    .nav { display: flex; gap: 0.25rem; align-items: center; }
+    .nav a { color: var(--text); text-decoration: none; font-weight: 500; font-size: 0.95rem; padding: 0.5rem 0.75rem; border-radius: 8px; transition: color 0.2s, background 0.2s; }
+    .nav a:hover { color: var(--primary); background: #fafafa; }
+    .nav a.active { color: var(--primary); }
+    .dropdown { position: relative; }
+    .dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: white; min-width: 160px; border-radius: 8px; box-shadow: var(--shadow); padding: 0.5rem 0; z-index: 101; }
+    .dropdown:hover .dropdown-content { display: block; }
+    .dropdown-content a { display: block; padding: 0.6rem 1rem; }
+    .dropdown-content a:hover { background: #fafafa; }
+    .mobile-toggle { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; }
+    .mobile-menu { display: none; background: white; padding: 1rem; border-top: 1px solid #eee; }
+    .mobile-menu.open { display: block; }
+    .mobile-menu a { display: block; color: var(--text); text-decoration: none; font-weight: 500; padding: 0.75rem 0; border-bottom: 1px solid #f0f0f0; }
+    .mobile-section { margin-bottom: 1rem; }
+    .mobile-section-title { font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; margin-bottom: 0.5rem; }
+    main { max-width: 800px; margin: 0 auto; padding: 3rem 1rem; }
+    h1 { color: var(--dark); font-size: 2rem; margin-bottom: 1rem; }
+    h2 { color: var(--dark); font-size: 1.3rem; margin: 2rem 0 1rem; }
+    p { margin-bottom: 1rem; }
+    footer { background: var(--dark); color: white; padding: 3rem 1rem; text-align: center; margin-top: 4rem; }
+    footer a { color: white; opacity: 0.8; }
+    footer a:hover { opacity: 1; }
+    @media (max-width: 768px) { .nav { display: none; } .mobile-toggle { display: block; } h1 { font-size: 1.6rem; } main { padding: 2rem 1rem; } }
   </style>
 </head>
 <body>
   <header>
-            <nav>
-      <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="categories.html">Recipes</a></li>
-        <li><a href="submit-recipe.html">Submit Recipe</a></li>
-        <li><a href="keto.html">Diets</a></li>
-        <li><a href="privacy.html" class="active" style="color:#2a9d8f;font-weight:700;border-bottom:2px solid #2a9d8f;padding-bottom:2px;">Privacy</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="my-cookbook.html">My Cookbook</a></li>
-        <li><a href="login.html" id="auth-link">Login</a></li>
-      </ul>
+    <div class="header-inner">
+      <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking"></a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <div class="dropdown">
+          <a href="categories.html">Recipes ▾</a>
+          <div class="dropdown-content">
+            <a href="category.html?cat=keto">🥑 Keto</a>
+            <a href="category.html?cat=carnivore">🥩 Carnivore</a>
+            <a href="category.html?cat=low-carb">🥗 Low Carb</a>
+            <a href="categories.html">All Recipes</a>
+          </div>
+        </div>
+        <a href="submit-recipe.html">Submit</a>
+        <div class="dropdown">
+          <a href="about.html">About ▾</a>
+          <div class="dropdown-content">
+            <a href="about.html">About Us</a>
+            <a href="privacy.html" class="active">Privacy</a>
+          </div>
+        </div>
+        <a href="login.html">Login</a>
+      </nav>
+      <button class="mobile-toggle" onclick="document.querySelector('.mobile-menu').classList.toggle('open')">☰</button>
+    </div>
+    <nav class="mobile-menu">
+      <div class="mobile-section">
+        <div class="mobile-section-title">Menu</div>
+        <a href="index.html">Home</a>
+        <a href="categories.html">All Recipes</a>
+        <a href="submit-recipe.html">Submit Recipe</a>
+        <a href="about.html">About</a>
+        <a href="login.html">Login</a>
+      </div>
+      <div class="mobile-section">
+        <div class="mobile-section-title">Diets</div>
+        <a href="category.html?cat=keto">🥑 Keto</a>
+        <a href="category.html?cat=carnivore">🥩 Carnivore</a>
+        <a href="category.html?cat=low-carb">🥗 Low Carb</a>
+      </div>
+      <div class="mobile-section">
+        <div class="mobile-section-title">Info</div>
+        <a href="privacy.html">Privacy</a>
+      </div>
     </nav>
   </header>
   <main>
     <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: April 15, 2026</p>
-    
-    <h2>1. Information We Collect</h2>
-    <p>When you create an account and use CrowdSourced Cooking, we collect:</p>
-    <ul>
-      <li><strong>Account Information:</strong> Email address and display name when you register</li>
-      <li><strong>Recipe Content:</strong> Recipes you submit, including ingredients, instructions, photos, and tags</li>
-      <li><strong>MiMO Data:</strong> When you modify someone else's recipe, we link your version to the original</li>
-    </ul>
-    
-    <h2>2. How We Use Your Information</h2>
-    <p>We use your information to:</p>
-    <ul>
-      <li>Provide our recipe sharing platform services</li>
-      <li>Display your recipes to you and manage your account</li>
-      <li>Allow other users to view and interact with your public recipes</li>
-      <li>Keep MiMO'd recipes private to only you until you choose to make them public</li>
-    </ul>
-    
-    <h2>3. Recipe Visibility</h2>
-    <p>When you create or MiMO a recipe:</p>
-    <ul>
-      <li><strong>Original recipes</strong> you create are public and appear in search results</li>
-      <li><strong>MiMO'd recipes</strong> are private by default - only you can see them</li>
-      <li>You can choose to "Make Public" any MiMO'd recipe you've created</li>
-    </ul>
-    
-    <h2>4. Data Storage</h2>
-    <p>Your recipes and account data are stored on Google Firebase (Firestore). We retain your data as long as your account is active.</p>
-    
-    <h2>5. Your Rights</h2>
-    <p>You can:</p>
-    <ul>
-      <li>Access your account and recipes at any time</li>
-      <li>Edit or delete your recipes</li>
-      <li>Request deletion of your account and all associated data</li>
-    </ul>
-    
-    <h2>6. Contact Us</h2>
-    <p>If you have questions about this Privacy Policy, please contact us at support@crowdsourcedcooking.com</p>
+    <p><em>Last updated: April 2026</em></p>
+    <h2>What We Collect</h2>
+    <p>We collect recipes you submit, your email (for login), and basic usage data to improve the site. We don't sell your data.</p>
+    <h2>How We Use It</h2>
+    <p>Your recipes are shared publicly on the site. Your email is used for login only. We use analytics to understand how people use the site.</p>
+    <h2>Cookies</h2>
+    <p>We use essential cookies for login and site functionality. No ads or third-party tracking.</p>
+    <h2>Your Rights</h2>
+    <p>You can delete your account and recipes at any time. Contact us to request deletion.</p>
+    <h2>Contact</h2>
+    <p>Questions? Email us at privacy@crowdsourcedcooking.com</p>
   </main>
   <footer>
-    <p>&copy; 2026 CrowdSourced Cooking. All rights reserved.</p>
+    <p>© 2026 CrowdSourced Cooking — <a href="privacy.html">Privacy</a></p>
   </footer>
-<script>
-var page = window.location.pathname.split("/").pop().replace(".html","") || "index";
-document.querySelectorAll(".nav-links a").forEach(function(a) {
-  var href = a.getAttribute("href").replace(".html","");
-  if(href === page) a.classList.add("active");
-});
-</script></body>
+</body>
 </html>

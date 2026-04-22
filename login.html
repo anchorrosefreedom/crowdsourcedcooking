@@ -1,88 +1,165 @@
-<header>
-        <nav>
-      <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking" style="height:60px; vertical-align:middle;"></a>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="categories.html">Recipes</a></li>
-        <li><a href="submit-recipe.html">Submit Recipe</a></li>
-        <li><a href="keto.html">Diets</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="my-cookbook.html">My Cookbook</a></li>
-        <li><a href="login.html" id="auth-link">Login</a></li>
-      </ul>
-    </nav>
-  </header><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="Login to CrowdSourced Cooking">
   <title>Login - CrowdSourced Cooking</title>
   <style>
-    header ul, header li, nav ul, nav li { list-style: none; margin: 0; padding: 0; }
-    nav ul li { list-style: none; }
-    nav ul li:before { content: none; }
+    html, body { overflow-x: hidden; max-width: 100vw; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; max-width: 100%; }
 
-header { background: white; padding: 0.5rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
-nav { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center; }
-nav a { color: #2a9d8f; text-decoration: none; font-weight: 500; }
-nav a:hover { text-decoration: underline; }
-    .nav-links { display: flex; list-style: none; gap: 1.5rem; margin: 0; padding: 0; }
-    .nav-links a { color: #2a9d8f; text-decoration: none; font-weight: 500; }
-    .nav-links a.active { font-weight: bold; text-decoration: underline; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; }
-    .container { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100%; max-width: 400px; margin: 2rem auto; }
-    h1 { text-align: center; margin-bottom: 1.5rem; color: #333; }
-    .tabs { display: flex; margin-bottom: 1.5rem; border-bottom: 2px solid #eee; }
-    .tab { flex: 1; padding: 0.75rem; text-align: center; cursor: pointer; color: #666; font-weight: 500; transition: all 0.2s; }
-    .tab.active { color: #2a9d8f; border-bottom: 2px solid #2a9d8f; margin-bottom: -2px; }
+    :root {
+      --primary: #E76F51;
+      --secondary: #2A9D8F;
+      --dark: #264653;
+      --cream: #FEF7F4;
+      --text: #333;
+      --text-light: #666;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --radius: 12px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--cream); color: var(--text); line-height: 1.6; }
+
+    header { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0.75rem 1rem; }
+    header a img { height: 50px; width: auto; flex-shrink: 0; }
+
+    .nav { display: flex; gap: 0.25rem; align-items: center; }
+    .nav a { color: var(--text); text-decoration: none; font-weight: 500; font-size: 0.95rem; padding: 0.5rem 0.75rem; border-radius: 8px; transition: color 0.2s, background 0.2s; }
+    .nav a:hover { color: var(--primary); background: #fafafa; }
+    .nav a.active { color: var(--primary); }
+
+    .dropdown { position: relative; }
+    .dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: white; min-width: 160px; border-radius: 8px; box-shadow: var(--shadow); padding: 0.5rem 0; z-index: 101; }
+    .dropdown:hover .dropdown-content { display: block; }
+    .dropdown-content a { display: block; padding: 0.6rem 1rem; }
+    .dropdown-content a:hover { background: #fafafa; }
+
+    .mobile-toggle { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; }
+    .mobile-menu { display: none; background: white; padding: 1rem; border-top: 1px solid #eee; }
+    .mobile-menu.open { display: block; }
+    .mobile-menu a { display: block; color: var(--text); text-decoration: none; font-weight: 500; padding: 0.75rem 0; border-bottom: 1px solid #f0f0f0; }
+    .mobile-section { margin-bottom: 1rem; }
+    .mobile-section-title { font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; margin-bottom: 0.5rem; }
+
+    .container { max-width: 400px; margin: 3rem auto; background: white; padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow); }
+    .container h1 { text-align: center; margin-bottom: 1.5rem; color: var(--dark); }
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 2px solid #eee; }
+    .tab { flex: 1; text-align: center; padding: 0.75rem; cursor: pointer; color: var(--text-light); border-bottom: 2px solid transparent; margin-bottom: -2px; }
+    .tab.active { color: var(--secondary); border-bottom-color: var(--secondary); font-weight: bold; }
     .form-section { display: none; }
     .form-section.active { display: block; }
-    input { width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; }
-    button { width: 100%; padding: 0.75rem; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
-    .btn-google { background: #4285f4; color: white; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
-    .btn-google:hover { background: #3574e8; }
-    .btn-primary { background: #2a9d8f; color: white; }
-    .btn-primary:hover { background: #21867a; }
-    .error { color: #2a9d8f; font-size: 0.875rem; margin-bottom: 1rem; text-align: center; display: none; }
-    .error.show { display: block; }
-    .success { color: #2a9d8f; font-size: 0.875rem; margin-bottom: 1rem; text-align: center; display: none; }
-    .success.show { display: block; }
-    .loading { opacity: 0.6; pointer-events: none; }
+
+    input { width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+    .btn { width: 100%; padding: 0.75rem; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-bottom: 1rem; }
+    .btn-primary { background: var(--secondary); }
+    .btn-primary:hover { background: #248a7d; }
+    .btn-google { background: #E31937; }
+    .btn-google:hover { background: #C00F2D; }
+
+    .error { color: #e53e3e; background: #fee; padding: 0.75rem; border-radius: 8px; margin-bottom: 1rem; display: none; font-size: 0.9rem; }
+    .success { color: #2e7d32; background: #e8f5e9; padding: 0.75rem; border-radius: 8px; margin-bottom: 1rem; display: none; font-size: 0.9rem; }
+    .forgot { text-align: right; margin-bottom: 1rem; }
+    .forgot a { color: var(--secondary); font-size: 0.9rem; }
+
+    footer { background: var(--dark); color: white; padding: 3rem 1rem; text-align: center; margin-top: 4rem; }
+    footer a { color: white; opacity: 0.8; }
+    footer a:hover { opacity: 1; }
+
+    @media (max-width: 768px) {
+      .nav { display: none; }
+      .mobile-toggle { display: block; }
+      .container { margin: 2rem 1rem; }
+    }
   </style>
 </head>
 <body>
+  <header>
+    <div class="header-inner">
+      <a href="index.html"><img src="2026-03-31-14-48-30-crowdsourced-cooking-logo.png" alt="CrowdSourced Cooking"></a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <div class="dropdown">
+          <a href="categories.html">Recipes ▾</a>
+          <div class="dropdown-content">
+            <a href="category.html?cat=keto">🥑 Keto</a>
+            <a href="category.html?cat=carnivore">🥩 Carnivore</a>
+            <a href="category.html?cat=low-carb">🥗 Low Carb</a>
+            <a href="categories.html">All Recipes</a>
+          </div>
+        </div>
+        <a href="submit-recipe.html">Submit</a>
+        <div class="dropdown">
+          <a href="about.html">About ▾</a>
+          <div class="dropdown-content">
+            <a href="about.html">About Us</a>
+            <a href="privacy.html">Privacy</a>
+          </div>
+        </div>
+        <a href="login.html" class="active">Login</a>
+      </nav>
+      <button class="mobile-toggle" onclick="document.querySelector('.mobile-menu').classList.toggle('open')">☰</button>
+    </div>
+    <nav class="mobile-menu">
+      <div class="mobile-section">
+        <div class="mobile-section-title">Menu</div>
+        <a href="index.html">Home</a>
+        <a href="categories.html">All Recipes</a>
+        <a href="submit-recipe.html">Submit Recipe</a>
+        <a href="about.html">About</a>
+        <a href="login.html">Login</a>
+      </div>
+      <div class="mobile-section">
+        <div class="mobile-section-title">Diets</div>
+        <a href="category.html?cat=keto">🥑 Keto</a>
+        <a href="category.html?cat=carnivore">🥩 Carnivore</a>
+        <a href="category.html?cat=low-carb">🥗 Low Carb</a>
+      </div>
+      <div class="mobile-section">
+        <div class="mobile-section-title">Info</div>
+        <a href="privacy.html">Privacy</a>
+      </div>
+    </nav>
+  </header>
+
   <div class="container">
-    <h1>CrowdSourced Cooking</h1>
-    
+    <h1>Welcome Back</h1>
+
     <div class="tabs">
-      <div class="tab active" data-tab="login">Login</div>
-      <div class="tab" data-tab="register">Register</div>
+      <div class="tab active" onclick="switchTab('login')">Login</div>
+      <div class="tab" onclick="switchTab('signup')">Sign Up</div>
     </div>
-    
-    <div id="error" class="error"></div>
-    <div id="success" class="success"></div>
-    
-    <button class="btn-google" id="googleBtn">Continue with Google</button>
-    
-    <div class="form-section active" id="loginForm">
-      <input type="email" id="loginEmail" placeholder="Email">
-      <input type="password" id="loginPassword" placeholder="Password">
-      <button class="btn-primary" id="loginBtn">Login</button>
+
+    <div id="login-form" class="form-section active">
+      <div class="error" id="login-error"></div>
+      <input type="email" id="login-email" placeholder="Email">
+      <input type="password" id="login-password" placeholder="Password">
+      <div class="forgot"><a href="#" onclick="resetPassword()">Forgot password?</a></div>
+      <button class="btn btn-primary" onclick="loginEmail()">Login</button>
+      <button class="btn btn-google" onclick="loginGoogle()">Continue with Google</button>
     </div>
-    
-    <div class="form-section" id="registerForm">
-      <input type="email" id="registerEmail" placeholder="Email">
-      <input type="password" id="registerPassword" placeholder="Password">
-      <button class="btn-primary" id="registerBtn">Register</button>
+
+    <div id="signup-form" class="form-section">
+      <div class="error" id="signup-error"></div>
+      <input type="email" id="signup-email" placeholder="Email">
+      <input type="password" id="signup-password" placeholder="Password (6+ characters)">
+      <button class="btn btn-primary" onclick="signupEmail()">Sign Up</button>
+      <button class="btn btn-google" onclick="loginGoogle()">Continue with Google</button>
     </div>
+
+    <div class="success" id="success-message"></div>
   </div>
 
+  <footer>
+    <p>© 2026 CrowdSourced Cooking — <a href="privacy.html">Privacy</a></p>
+  </footer>
+
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyA55nT8wJ4wr4YgwqezR9joLoAxk2p3f6U",
@@ -95,153 +172,73 @@ nav a:hover { text-decoration: underline; }
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    
-    // Get redirect target FIRST
-    const urlParams = new URLSearchParams(window.location.search);
-    const targetPage = urlParams.get('redirect') || 'index.html';
-    
-    // Set persistence to local so user stays logged in
-    setPersistence(auth, browserLocalPersistence).then(() => {
-      // After persistence is set, check if user is already logged in
-      if (auth.currentUser) {
-        window.location.href = targetPage;
-      }
-    }).catch(err => console.log('Persistence error:', err));
 
-    // Listen for auth state changes - if logged in, redirect
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        window.location.href = targetPage;
-      }
-    });
-
-    // Tab switching
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.form-section').forEach(f => f.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById(tab.dataset.tab + 'Form').classList.add('active');
-        hideMessages();
-      });
-    });
-
-    function showError(msg) {
-      const el = document.getElementById('error');
-      el.textContent = msg;
-      el.classList.add('show');
-      document.getElementById('success').classList.remove('show');
-    }
-
-    function showSuccess(msg) {
-      const el = document.getElementById('success');
-      el.textContent = msg;
-      el.classList.add('show');
-      document.getElementById('error').classList.remove('show');
-    }
-
-    function hideMessages() {
-      document.getElementById('error').classList.remove('show');
-      document.getElementById('success').classList.remove('show');
-    }
-
-    function setLoading(loading) {
-      const container = document.querySelector('.container');
-      if (loading) {
-        container.classList.add('loading');
+    window.switchTab = function(tab) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.form-section').forEach(f => f.classList.remove('active'));
+      if (tab === 'login') {
+        document.querySelector('.tab:nth-child(1)').classList.add('active');
+        document.getElementById('login-form').classList.add('active');
       } else {
-        container.classList.remove('loading');
+        document.querySelector('.tab:nth-child(2)').classList.add('active');
+        document.getElementById('signup-form').classList.add('active');
       }
-    }
+    };
 
-    // Email/Password Login
-    document.getElementById('loginBtn').addEventListener('click', async () => {
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-      
-      if (!email || !password) {
-        showError('Please fill in all fields');
+    window.loginEmail = async function() {
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const errorEl = document.getElementById('login-error');
+      errorEl.style.display = 'none';
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        const params = new URLSearchParams(window.location.search);
+        window.location.href = params.get('redirect') || 'index.html';
+      } catch (e) {
+        errorEl.textContent = e.message.split('Firebase: ').pop();
+        errorEl.style.display = 'block';
+      }
+    };
+
+    window.signupEmail = async function() {
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+      const errorEl = document.getElementById('signup-error');
+      errorEl.style.display = 'none';
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        window.location.href = 'index.html';
+      } catch (e) {
+        errorEl.textContent = e.message.split('Firebase: ').pop();
+        errorEl.style.display = 'block';
+      }
+    };
+
+    window.loginGoogle = async function() {
+      try {
+        const provider = new GoogleAuthProvider();
+        await signInWithPopup(auth, provider);
+        window.location.href = 'index.html';
+      } catch (e) {
+        alert('Google login failed: ' + e.message);
+      }
+    };
+
+    window.resetPassword = async function() {
+      const email = document.getElementById('login-email').value;
+      if (!email) {
+        alert('Enter your email first');
         return;
       }
-      
-      setLoading(true);
-      hideMessages();
-      
       try {
-        const result = await signInWithEmailAndPassword(auth, email, password);
-        // Direct redirect - no delay
-        window.location.href = targetPage;
-      } catch (err) {
-        showError(err.message);
-        setLoading(false);
+        await sendPasswordResetEmail(auth, email);
+        const successEl = document.getElementById('success-message');
+        successEl.textContent = 'Password reset email sent! Check your inbox.';
+        successEl.style.display = 'block';
+      } catch (e) {
+        alert('Error: ' + e.message);
       }
-    });
-
-    // Email/Password Register
-    document.getElementById('registerBtn').addEventListener('click', async () => {
-      const email = document.getElementById('registerEmail').value;
-      const password = document.getElementById('registerPassword').value;
-      
-      if (!email || !password) {
-        showError('Please fill in all fields');
-        return;
-      }
-      
-      if (password.length < 6) {
-        showError('Password must be at least 6 characters');
-        return;
-      }
-      
-      setLoading(true);
-      hideMessages();
-      
-      try {
-        const result = await createUserWithEmailAndPassword(auth, email, password);
-        window.location.href = targetPage;
-      } catch (err) {
-        showError(err.message);
-        setLoading(false);
-      }
-    });
-
-    // Google Login
-    document.getElementById('googleBtn').addEventListener('click', async () => {
-      const provider = new GoogleAuthProvider();
-      setLoading(true);
-      hideMessages();
-      try {
-        const result = await signInWithPopup(auth, provider);
-        window.location.href = targetPage;
-      } catch (err) {
-        setLoading(false);
-        if (err.code === 'auth/popup-blocked') {
-          showError('Popup was blocked. Please allow popups for this site.');
-        } else if (err.code === 'auth/unauthorized-domain') {
-          showError('Google login not configured. Please use email/password, or ask the admin to enable Google Sign-In in Firebase Console.');
-        } else if (err.code === 'auth/api-key-not-valid') {
-          showError('Google login not configured. Please use email/password, or ask the admin to enable Google Sign-In in Firebase Console.');
-        } else {
-          showError(err.message);
-        }
-      }
-    });
-
-    console.log('Login page loaded');
-  
-    // Set active nav link based on current page
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      const href = link.getAttribute('href');
-      if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-        link.classList.add('active');
-      }
-    });
+    };
   </script>
-<script>
-    var page = window.location.pathname.split("/").pop().replace(".html","") || "index";
-    document.querySelectorAll(".nav-links a").forEach(function(a) {
-      var href = a.getAttribute("href").replace(".html","").replace("?redirect="+page,"");
-      if(href === page) a.classList.add("active");
-    });
-    </script></body>
+</body>
 </html>
